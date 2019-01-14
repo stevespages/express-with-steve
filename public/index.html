@@ -1,0 +1,885 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Learning Express &mdash; Learning Express 0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Learning Express 0 documentation" href="#" />
+    <link rel="next" title="The hallo page" href="hallo.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="learning-express">
+<h1>Learning Express<a class="headerlink" href="#learning-express" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hallo.html">The hallo page</a></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="note-to-self">
+<h3>Note To Self<a class="headerlink" href="#note-to-self" title="Permalink to this headline">¶</a></h3>
+<p>The examples should all be closely based on the MDN code....</p>
+<p>Provide references to modules&#8217; documentation wherever relevant so process of accessing documentation is clarified.</p>
+<hr class="docutils" />
+<p>This tutorial is based on the Mozilla Development Network (MDN) Express Web Framework Tutorial. While the MDN tutorial builds a prototype of a catalog for an online local library with over 30 routes I have kept the code simple and short. All the node-express code examples are written in a single file: <cite>app.js</cite>. The explanations here are attempts to provide simplified examples of the topics covered in the MDN tutorial. This tutorial could be used with or without the MDN tutorial.</p>
+<p>The MDN tutorial uses the MongoDB database with the node module mongoose. I have additionally touched on the use of SQLite. The MDN tutorial uses the Express Application Generator to start their app. I have used Express on its own and installed other modules when they become necessary.</p>
+</div>
+</div>
+<div class="section" id="create-an-express-app">
+<h2>Create an Express App<a class="headerlink" href="#create-an-express-app" title="Permalink to this headline">¶</a></h2>
+<p>The following is based closely on the instructions at <cite>expressjs.com/Getting Started/Installing</cite> and <cite>express.com/Getting Started/Hello World</cite>.</p>
+<p>Install node globally. Make a directory with the name you have chosen for the app. From a command line terminal change directory so you are in the new app directory and run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span></code>. Install Express by running the command <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express</span> <span class="pre">--save</span></code>.</p>
+<p>Create a file called <cite>app.js</cite> and place the following contents in it:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">))</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`listening on port 3000</span>
+<span class="sb">(fields, message) =&gt; check(fields, locations, message)</span>
+</pre></div>
+</div>
+<p>Now run the app from your terminal with the command <code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>. Open a browser window and navigate to <cite>www.localhost:3000/example</cite>. You should see &#8216;Hello World!</p>
+<p>If any changes are made to the <cite>app.js</cite> code the server has to be restarted and the browser window has to be refreshed in order for the changes to take effect. Follow the MDN tutorial instructions for installing the nodemon module and modifying the package.json file. This will obviate the need for restarting the server after making changes to the app. Also, useful information will be displayed in the console if the app is started with the command: <code class="docutils literal"><span class="pre">DEBUG=myapp:*</span> <span class="pre">npm</span> <span class="pre">run</span> <span class="pre">devstart</span></code>.</p>
+<p>Now we can modify the app and just refresh the browser to see the changes. The <cite>get</cite> method of the express <cite>app</cite> object, <cite>app.get()</cite> is an example of the general pattern app.METHOD(PATH, HANDLER) where HANDLER is one function. Later in this tutorial we will see that a chain of HANDLER functions can be used. This is central to the Express middleware approach to app development.</p>
+<p>Here we have the same code as before but with the handler function written in a different but equivalent form which is more suitable when there is more code inside it.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!!&#39;</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We can introduce a variable which we will call <cite>firstName</cite> with a value of &#8216;Brian&#8217;. In a real app this might be the result of a database query. This can be used inside the <cite>res.send</cite> function so it is displayed in the browser. In the code below I have used a variable called <cite>output</cite> as the argument to <cite>res.send()</cite>. This will be helpful in later examples where there will be more to output to the browser.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">firstName</span> <span class="o">=</span> <span class="s1">&#39;Brian&#39;</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="nx">firstName</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-an-sqlite-database">
+<h2>Create an SQLite Database<a class="headerlink" href="#create-an-sqlite-database" title="Permalink to this headline">¶</a></h2>
+<p>sqlite official documentation: <a class="reference external" href="https://www.sqlite.org/lang.html">https://www.sqlite.org/lang.html</a></p>
+<p>sqlite node module official documentation: <a class="reference external" href="https://github.com/mapbox/node-sqlite3/wiki">https://github.com/mapbox/node-sqlite3/wiki</a></p>
+<p>Tutorial for sqlite3 and sqlite3 node module: <a class="reference external" href="http://www.sqlitetutorial.net/">http://www.sqlitetutorial.net/</a></p>
+<p>See sqlite.org for definitive documentation on SQLite. For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see sqlitetutorial.net</p>
+<p>First install sqlite3 globally. Then, from a terminal (while in the root directory of the app) run the command sqlite3 x where x is the name of the database you would like to create. In this case the database will be called <cite>music.db</cite> and we will then create a table called <cite>musicians</cite>:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~/Desktop/myapp $ sqlite3 music.db
+SQLite version 3.11.0 2016-02-15 17:29:24
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; CREATE TABLE musicians (
+...&gt; id INTEGER PRIMARY KEY,
+...&gt; firstName TEXT,
+...&gt; lastName TEXT
+...&gt; );
+sqlite&gt;
+</pre></div>
+</div>
+<p>We now have a file called <cite>music.db</cite> in the root directory of our app. This is an SQLite database with a table called <cite>musicians</cite> in it. The table has three columns. The <cite>id</cite> column is known as an <cite>integer primary key</cite>. Case is important for the type specification: INTEGER PRIMARY KEY. Do not use autoincrement as it is usually not needed and it reduces performance. It is not necessary to provide values for <cite>id</cite> when inserting rows into the table. SQLite will automatically generate a unique value and insert it into this column for every row created in the table. So we only need to insert data for the <cite>firstName</cite> and <cite>lastName fields</cite>:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">sqlite</span><span class="o">&gt;</span> <span class="nx">INSERT</span> <span class="nx">INTO</span> <span class="nx">musicians</span>
+<span class="p">...</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">firstName</span><span class="p">,</span> <span class="nx">lastName</span><span class="p">)</span>
+<span class="p">...</span><span class="o">&gt;</span> <span class="nx">VALUES</span>
+<span class="p">...</span><span class="o">&gt;</span> <span class="p">(</span><span class="s2">&quot;Brian&quot;</span><span class="p">,</span> <span class="s2">&quot;Eno&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If we query this table to select all the values in it we can see that SQLite automatically created a value (1) for the <cite>id</cite> field:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">sqlite</span><span class="o">&gt;</span> <span class="nx">SELECT</span> <span class="o">*</span> <span class="nx">FROM</span> <span class="nx">musicians</span><span class="p">;</span>
+<span class="mi">1</span><span class="o">|</span><span class="nx">Brian</span><span class="o">|</span><span class="nx">Eno</span>
+<span class="nx">sqlite</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="foreign-keys">
+<h3>Foreign Keys<a class="headerlink" href="#foreign-keys" title="Permalink to this headline">¶</a></h3>
+<p>You can have foreign keys in tables but if you want these to constrain SQL operations allowable then foreign key support needs to be turned on. At the command line this requires <code class="docutils literal"><span class="pre">sqlite&gt;</span> <span class="pre">PRAGMA</span> <span class="pre">foreign_keys</span> <span class="pre">=</span> <span class="pre">ON'</span></code>. To see if they are on use: <code class="docutils literal"><span class="pre">sqlite&gt;</span> <span class="pre">PRAGMA</span> <span class="pre">foreign_keys;</span></code>. This will return 0 if support is off and 1 if support is on. From node you could turn foreign key support on for every query or by using an anonymous callback into the function which creates the SQLite session used throughout the code:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="s1">&#39;PRAGMA foreign_keys=on&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>To see if foreign key support is on from the node script:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;PRAGMA foreign_keys&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;pragma res is &#39;</span> <span class="o">+</span> <span class="nx">res</span><span class="p">.</span><span class="nx">foreign_keys</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>This comes from: <a class="reference external" href="https://sysdef.xyz/post/2012-07-20-node-sqlite-foreign-keys">https://sysdef.xyz/post/2012-07-20-node-sqlite-foreign-keys</a></p>
+</div>
+</div>
+<div class="section" id="database-query-from-the-express-app">
+<h2>Database Query from the Express App<a class="headerlink" href="#database-query-from-the-express-app" title="Permalink to this headline">¶</a></h2>
+<p>SQLite3 is an RDBMS that, as we have seen, can be used on the command line to create databases and do SQL CRUD (Create, Read, Update and Delete) operations. It is also the name of an NPM (Node Package Manager) module. Installing the sqlite3 module in a node app allows a Database object to be instantiated. The methods available on this object enable SQL CRUD operations to be carried out from within the node app.</p>
+<p>So, first we need to install the sqlite3 module in our app. Open a terminal, change to the myapp directory and run the command:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">sqlite3</span>
+</pre></div>
+</div>
+<p>Then open <cite>app.js</cite> in a text editor and import the sqlite3 module and create the Database object which we will call <cite>db</cite>. When we create the database object we pass the path to <cite>music.db</cite> to it so that the <cite>music</cite> database is connected to the object. The two lines of code we need are const <code class="docutils literal"><span class="pre">sqlite3</span> <span class="pre">=</span> <span class="pre">require('sqlite3').verbose()</span></code> and <code class="docutils literal"><span class="pre">let</span> <span class="pre">db</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">sqlite3.Database('music.db')</span></code>. This can be seen below where the full contents of <cite>app.js</cite> are reproduced:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">sqlite3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;sqlite3&#39;</span><span class="p">).</span><span class="nx">verbose</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="kd">let</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="s1">&#39;music.db&#39;</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">firstName</span> <span class="o">=</span> <span class="s1">&#39;Brian&#39;</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="nx">firstName</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In the code above we have created an sqlite3 database object but we are not actually using it to do anything. Let us remove the two lines where we assign a value of &#8216;Brian&#8217; to the variable <cite>firstName</cite> and replace it with a query to our <cite>music.db</cite> database using the <cite>get</cite> method of our database object, <cite>db</cite>:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">sqlite3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;sqlite3&#39;</span><span class="p">).</span><span class="nx">verbose</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="kd">let</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="s1">&#39;music.db&#39;</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`SELECT * FROM musicians`</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;His name is &#39;</span>
+    <span class="nx">output</span> <span class="o">+=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">firsName</span> <span class="o">+</span> <span class="nx">row</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In the example above we create our sqlite3 Database object, <cite>db</cite>, in the global space. We can see from the code that we have created an express object called <cite>app</cite> (<code class="docutils literal"><span class="pre">const</span> <span class="pre">app</span> <span class="pre">=</span> <span class="pre">express()</span></code>) and we are using the <cite>get</cite> method of this object. Inside that method we call the sqlite3 Database object method (<cite>db.get()</cite>). I have added an exclamation mark to the output to the browser otherwise there would be no change to the output using this new code and we may think we have not refreshed the browser.</p>
+<p>If the handler only makes one database query we can put the res.send() or res.render() method inside the function that makes the query. This can be seen in the example above where res.send() is inside the db.get() function. If more than one query is necessary it would be better to use the <cite>async</cite> module. This allows the queries to be made and for them all to pass their result to the same callback function.</p>
+</div>
+<div class="section" id="login-using-bcrypt">
+<h2>Login Using bcrypt<a class="headerlink" href="#login-using-bcrypt" title="Permalink to this headline">¶</a></h2>
+<p>Starting with an empty directory do <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code> then <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express</span> <span class="pre">sqlite3</span> <span class="pre">bcrypt</span></code> and then create an sqlite database called myApp.db and create a table called users in it with three fields: <cite>id</cite>, <cite>username</cite> and <cite>password</cite>.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~/Desktop/myapp $ sqlite3 myApp.db
+SQLite version 3.11.0 2016-02-15 17:29:24
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; CREATE TABLE users (
+   ...&gt; id INTEGER PRIMARY KEY,
+   ...&gt; username TEXT,
+   ...&gt; password TEXT
+   ...&gt; );
+</pre></div>
+</div>
+<p>Now create an app.js file with a post route called <cite>register</cite>  which will create a new user in the users table when a username and password is posted to it:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">bcrypt</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;bcrypt&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">sqlite3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;sqlite3&#39;</span><span class="p">).</span><span class="nx">verbose</span><span class="p">();</span>
+
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+
+<span class="kr">const</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="s1">&#39;myApp.db&#39;</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/register&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You posted to the /register path&#39;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">hash</span> <span class="o">=</span> <span class="nx">bcrypt</span><span class="p">.</span><span class="nx">hashSync</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hash: &#39;</span><span class="p">,</span> <span class="nx">hash</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`INSERT INTO users(username, password) VALUES (?, ?)`</span><span class="p">;</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">hash</span><span class="p">],</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;See localhost:3000&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now when we use <cite>httpie</cite> to send a post request to <cite>localhost:3000/register</cite> we create a new row in the users table in the myApp.db database. Here is the request:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~ $ http POST localhost:3000/register username=&#39;fred&#39; password=&#39;secret&#39;
+</pre></div>
+</div>
+<p>and here is the new row in the table:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~/Desktop/myapp $ sqlite3 myApp.db
+SQLite version 3.11.0 2016-02-15 17:29:24
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; select * from users;
+1|fred|$2b$10$sCN1XYjW/q/51QBOgwfPRuiq.fccVaNAbjUhSw0lKuHkUUszeecZG
+sqlite&gt;
+</pre></div>
+</div>
+<p>The next step is to enable a registered user to login. We will create a new post route at <cite>/login</cite> in our <cite>app.js</cite> file:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You posted to the /login path&#39;</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`SELECT * FROM users WHERE username = ?`</span><span class="p">;</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">],</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">row</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Invalid Username&#39;</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">bcrypt</span><span class="p">.</span><span class="nx">compareSync</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="nx">row</span><span class="p">.</span><span class="nx">password</span><span class="p">)){</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You are logged in&#39;</span><span class="p">);</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Incorrect Password&#39;</span><span class="p">);</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Then <cite>httpie</cite> is used to post the correct details, followed by wrong username and finally wrong password:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">http</span> <span class="nx">POST</span> <span class="nx">localhost</span><span class="o">:</span><span class="mi">3000</span><span class="o">/</span><span class="nx">login</span> <span class="nx">username</span><span class="o">=</span><span class="s1">&#39;fred&#39;</span> <span class="nx">password</span><span class="o">=</span><span class="s1">&#39;secret&#39;</span>
+<span class="nx">http</span> <span class="nx">POST</span> <span class="nx">localhost</span><span class="o">:</span><span class="mi">3000</span><span class="o">/</span><span class="nx">login</span> <span class="nx">username</span><span class="o">=</span><span class="s1">&#39;frediii&#39;</span> <span class="nx">password</span><span class="o">=</span><span class="s1">&#39;secret&#39;</span>
+<span class="nx">http</span> <span class="nx">POST</span> <span class="nx">localhost</span><span class="o">:</span><span class="mi">3000</span><span class="o">/</span><span class="nx">login</span> <span class="nx">username</span><span class="o">=</span><span class="s1">&#39;fred&#39;</span> <span class="nx">password</span><span class="o">=</span><span class="s1">&#39;wrongpassword&#39;</span>
+</pre></div>
+</div>
+<p>This gave the following output in the console:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="p">[</span><span class="nx">nodemon</span><span class="p">]</span> <span class="nx">restarting</span> <span class="nx">due</span> <span class="nx">to</span> <span class="nx">changes</span><span class="p">...</span>
+<span class="p">[</span><span class="nx">nodemon</span><span class="p">]</span> <span class="nx">starting</span> <span class="sb">`node app.js`</span>
+<span class="nx">See</span> <span class="nx">localhost</span><span class="o">:</span><span class="mi">3000</span>
+<span class="nx">You</span> <span class="nx">posted</span> <span class="nx">to</span> <span class="nx">the</span> <span class="o">/</span><span class="nx">login</span> <span class="nx">path</span>
+<span class="nx">You</span> <span class="nx">are</span> <span class="nx">logged</span> <span class="k">in</span>
+<span class="nx">You</span> <span class="nx">posted</span> <span class="nx">to</span> <span class="nx">the</span> <span class="o">/</span><span class="nx">login</span> <span class="nx">path</span>
+<span class="nx">Invalid</span> <span class="nx">Username</span>
+<span class="nx">You</span> <span class="nx">posted</span> <span class="nx">to</span> <span class="nx">the</span> <span class="o">/</span><span class="nx">login</span> <span class="nx">path</span>
+<span class="nx">Incorrect</span> <span class="nx">Password</span>
+</pre></div>
+</div>
+<p>We have now reached a point where our app is able to register new users by storing their username and hashed password in the users table of our database. We have also enabled them to login in by supplying a username and password. If there is a username in the users table corresponding to the one they login with and if the hashed password from the database is the same as the hashed password they supply at login our app is recognizes this.</p>
+<p>We now need a way of enabling this logged in user to make requests to our web site without having to keep logging in for every request. This can be done by initiating a cookie based session or by JSON Web Tokens (JWT).</p>
+<div class="section" id="json-web-tokens">
+<h3>JSON Web Tokens<a class="headerlink" href="#json-web-tokens" title="Permalink to this headline">¶</a></h3>
+<p>Now run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">jsonwebtoken</span></code>. In <cite>app.js</cite> require it and also create a secret. Modify the <cite>post.login</cite> scriptto create and return a JWT if the user logs in successfully:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">bcrypt</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;bcrypt&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">sqlite3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;sqlite3&#39;</span><span class="p">).</span><span class="nx">verbose</span><span class="p">();</span>
+
+<span class="c1">// NEW CODE</span>
+<span class="kr">const</span> <span class="nx">jsonwebtoken</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jsonwebtoken&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+
+<span class="kr">const</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="s1">&#39;myApp.db&#39;</span><span class="p">);</span>
+
+<span class="c1">// NEW CODE</span>
+<span class="kr">const</span> <span class="nx">SECRET</span> <span class="o">=</span> <span class="s2">&quot;NEVER MAKE THIS PUBLIC IN PRODUCTION&quot;</span><span class="p">;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/register&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You posted to the /register path&#39;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">hash</span> <span class="o">=</span> <span class="nx">bcrypt</span><span class="p">.</span><span class="nx">hashSync</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hash: &#39;</span><span class="p">,</span> <span class="nx">hash</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`INSERT INTO users(username, password) VALUES (?, ?)`</span><span class="p">;</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">hash</span><span class="p">],</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You posted to the /login path&#39;</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`SELECT * FROM users WHERE username = ?`</span><span class="p">;</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">],</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">row</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Invalid Username&#39;</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">bcrypt</span><span class="p">.</span><span class="nx">compareSync</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="nx">row</span><span class="p">.</span><span class="nx">password</span><span class="p">)){</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You are logged in&#39;</span><span class="p">);</span>
+
+                <span class="c1">// NEW CODE</span>
+                <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">jsonwebtoken</span><span class="p">.</span><span class="nx">sign</span><span class="p">(</span>
+                    <span class="p">{</span> <span class="nx">username</span><span class="o">:</span> <span class="nx">row</span><span class="p">.</span><span class="nx">username</span> <span class="p">},</span>
+                    <span class="nx">SECRET</span><span class="p">,</span>
+                    <span class="p">{</span> <span class="nx">expiresIn</span><span class="o">:</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="p">}</span>
+                <span class="p">);</span>
+                <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">token</span> <span class="p">});</span>
+                <span class="c1">// END OF NEW CODE</span>
+
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Incorrect Password&#39;</span><span class="p">);</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;See localhost:3000&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>If we now make a successful login using <cite>httpie</cite> we can see a JWT is returned:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~ $ http POST localhost:3000/login username=&#39;fred&#39; password=&#39;secret&#39;
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 164
+Content-Type: application/json; charset=utf-8
+Date: Sun, 13 Jan 2019 23:26:08 GMT
+ETag: W/&quot;a4-jxHLjTk91r3su8TlKUVWUnsFyjk&quot;
+X-Powered-By: Express
+
+{
+    &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+}
+
+steve@Dell ~ $
+</pre></div>
+</div>
+<p>The browser would send this token back to the server on any future requests in its <cite>Authorization</cite> header. The server would verify the JWT and then return password protected data back to the browser. We can implement a <cite>get</cite> route in <cite>app.js</cite> to demonstrate this:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">authHeaderValue</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">authorization</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">jsonwebtoken</span><span class="p">.</span><span class="nx">verify</span><span class="p">(</span><span class="nx">authHeaderValue</span><span class="p">,</span> <span class="nx">SECRET</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;You made it&quot;</span> <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Now when we make a request to the <cite>/secret</cite> route with the JWT in the <cite>Authorization</cite> header, the JWT is verified and the server returns the protected data:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 25
+Content-Type: application/json; charset=utf-8
+Date: Sun, 13 Jan 2019 23:57:59 GMT
+ETag: W/&quot;19-pXLuIQc7MqYjz2bJcUKii/lc2L0&quot;
+X-Powered-By: Express
+
+{
+    &quot;message&quot;: &quot;You made it&quot;
+}
+</pre></div>
+</div>
+<p>In the <cite>get</cite> route to <cite>/secret</cite> the code should be in a <cite>try / catch</cite> block so that if the JWT is not verified a response can be sent to the browser indicating that they are not authorized. This can be seen here:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">authHeaderValue</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">authorization</span><span class="p">;</span>
+        <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">jsonwebtoken</span><span class="p">.</span><span class="nx">verify</span><span class="p">(</span><span class="nx">authHeaderValue</span><span class="p">,</span> <span class="nx">SECRET</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;You made it&quot;</span> <span class="p">});</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">401</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Unauthorized&quot;</span> <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Now we send a request with the JWT followed by one in which a single character of the JWT has been changed from a z to a y:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 25
+Content-Type: application/json; charset=utf-8
+Date: Mon, 14 Jan 2019 00:14:07 GMT
+ETag: W/&quot;19-pXLuIQc7MqYjz2bJcUKii/lc2L0&quot;
+X-Powered-By: Express
+
+{
+    &quot;message&quot;: &quot;You made it&quot;
+}
+
+steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0yFX_s&quot;
+HTTP/1.1 401 Unauthorized
+Connection: keep-alive
+Content-Length: 26
+Content-Type: application/json; charset=utf-8
+Date: Mon, 14 Jan 2019 00:14:38 GMT
+ETag: W/&quot;1a-pljHtlo127JYJR4E/RYOPb6ucbw&quot;
+X-Powered-By: Express
+
+{
+    &quot;message&quot;: &quot;Unauthorized&quot;
+}
+
+steve@Dell ~ $
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>db.get()</cite> function used here has two arguments. The first is the sql query that it should run on the database it is connected to. The second argument is a callback function that the developer can write to make use of the result of the query to the database. We chose to write a function which sends the result to the browser. The function the devloper supplies should have two arguments here called <cite>err</cite> and <cite>row</cite>. The query result supplied to our callback function has two parts. The first is the error value and the second is the result value. If there is no error the first part of the result will be null and the second part will have data from the query. If there was an error the first part will have a description of the error and the second, result, part will be null. This enables the result to be processed on success and an error to be generated on failure of the query.</p>
+</div>
+<div class="section" id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h2>
+<p>We may not know what sort of data structure our query result is. This is a question that may arise in many situations when programming. One way to find out is to include a <code class="docutils literal"><span class="pre">console.log()</span></code> statement in our code. This will be logged to the console when we refresh the browser. The code above is reproduced below with an additional statement: <code class="docutils literal"><span class="pre">console.log(row)</span></code>.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">sqlite3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;sqlite3&#39;</span><span class="p">).</span><span class="nx">verbose</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="kd">let</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="s1">&#39;music.db&#39;</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`SELECT * FROM musicians`</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
+  <span class="p">})</span>
+    <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;His name is &#39;</span>
+    <span class="nx">output</span> <span class="o">+=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">firsName</span> <span class="o">+</span> <span class="nx">row</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When this is run the output to the browser is the same but in the console we see:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">Example</span> <span class="nx">app</span> <span class="nx">listening</span> <span class="nx">on</span> <span class="nx">port</span> <span class="mi">3000</span>
+<span class="p">[</span><span class="nx">nodemon</span><span class="p">]</span> <span class="nx">restarting</span> <span class="nx">due</span> <span class="nx">to</span> <span class="nx">changes</span><span class="p">...</span>
+<span class="p">[</span><span class="nx">nodemon</span><span class="p">]</span> <span class="nx">starting</span> <span class="sb">`node ./bin/www app.js`</span>
+<span class="nx">Example</span> <span class="nx">app</span> <span class="nx">listening</span> <span class="nx">on</span> <span class="nx">port</span> <span class="mi">3000</span>
+<span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">firstName</span><span class="o">:</span> <span class="s1">&#39;Brian&#39;</span><span class="p">,</span> <span class="nx">lastName</span><span class="o">:</span> <span class="s1">&#39;Eno&#39;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mongodb-and-mongoose">
+<h2>MongoDB and mongoose<a class="headerlink" href="#mongodb-and-mongoose" title="Permalink to this headline">¶</a></h2>
+<p>A Mongo database consists of JSON objects called collections in which the keys are assigned values. A mongoose schema can be written which describes the a particular collection and which inherits mongoose methods for CRUD operations. An example from the MDN tutorial is shown below:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">mongoose</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mongoose&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">Schema</span> <span class="o">=</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">BookSchema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Schema</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="nx">title</span><span class="o">:</span> <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span> <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span>
+    <span class="nx">author</span><span class="o">:</span> <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span><span class="p">,</span> <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;Author&#39;</span><span class="p">,</span> <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span>
+    <span class="nx">summary</span><span class="o">:</span> <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span> <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span>
+    <span class="nx">isbn</span><span class="o">:</span> <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span> <span class="nx">required</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span>
+    <span class="nx">genre</span><span class="o">:</span> <span class="p">[{</span><span class="nx">type</span><span class="o">:</span> <span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span><span class="p">,</span> <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;Genre&#39;</span><span class="p">}]</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="c1">// Virtual for book&#39;s URL</span>
+<span class="nx">BookSchema</span>
+<span class="p">.</span><span class="nx">virtual</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;/catalog/book/&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="c1">//Export model</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="nx">BookSchema</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>After instantiation of the BookSchema object from the mongoose Schema object a &#8216;virtual&#8217; is then added to the schema.
+Virtuals can combine data from different fields of the collection with hard coded data. In the example here a virtual for a URL for a specific book is constructed using the _id field from the database and hardcoded details for other parts of the URL (&#8216;/catalog/book/&#8217;).</p>
+<p>countDocuments() is an example of a mongoose schema method which will be available to a schema object such as BookSchema.</p>
+</div>
+<div class="section" id="user-input-forms">
+<h2>User Input: Forms<a class="headerlink" href="#user-input-forms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Note To Self<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Explain that value of input element&#8217;s name attribute will be accessible from the req object and can be used to persist or display or validate sanitize etc.....</p>
+<p>According to express-validator maintainer: &#8221;...all methods accessible from the req object are considered legacy&#8221; see <a class="reference external" href="https://stackoverflow.com/questions/50430625/getting-req-getvalidationresult-is-not-a-function-with-expess-validator">https://stackoverflow.com/questions/50430625/getting-req-getvalidationresult-is-not-a-function-with-expess-validator</a> and the link from that. &#8221;...validationResult(req) is the correct way... [it is] synchronous&#8221;. So the MDN tutorial is preferred to the example I have given which is taken from an (oherwise) excellent turtorial at <a class="reference external" href="https://booker.codes/input-validation-in-express-with-express-validator/">https://booker.codes/input-validation-in-express-with-express-validator/</a></p>
+<hr class="docutils" />
+<p>The code shown below displays a simple form in the browser:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Because the form element does not have an action attribute the form will be sent to the same URL that was used to display it. In this case that is localhost:3000/example. The form element&#8217;s method attribute is set to post. So, at the moment the app program does not have a route for handling the submitted form. We need to create a new route in our app with the same URL as the existing one but with post not get as the method. This is shown below.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Your form has been recieved&#39;</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In the example above the route specified as the first argument in the app.post() method (the route is &#8216;/example&#8217;) is matched when the form is submitted causing the function supplied as the second argument to app.post() to be executed. It simply uses the res.send() method to send &#8216;Your form has been recieved&#8217; to the browser. A real app would probably use a series of middlware functions to process the data which might include saving it to a database or making a database query using the submitted data to search a database</p>
+</div>
+</div>
+<div class="section" id="validate-and-sanitize">
+<h2>Validate and Sanitize<a class="headerlink" href="#validate-and-sanitize" title="Permalink to this headline">¶</a></h2>
+<p>We want to control the data that is sent to our app from the user. The data can be validated. If the data is not valid, for example a date has been entered using a format that our code will not recognize, the form can be displayed again to the user. This time the various form fields will contain the values the user entered with error messages helping them to alter their input to a form that will validate.</p>
+<p>Once a form is submitted which passes the validation stage it may be sanitized. This actually changes the data. It can strip white spaces and escape html code.</p>
+<p>Express provides the express-validator module which include built in validation and sanitization methods as well as enabling custom built methods to be built.</p>
+<p><code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express-validator</span></code></p>
+<p>The express-validator module requires the <cite>body-parser</cite> module so we need to install this:</p>
+<p><code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">body-parser</span></code></p>
+<p>If you use the Express Application Generator to start your project it will install body-parser. Otherwise you should install it.</p>
+<p>These two modules are imported into the app.js file below and used to validate the <cite>firstName</cite> field submitted by the form:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="c1">// This method is deprecated. DO NOT USE!</span>
+
+<span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;body-parser&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">validator</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-validator&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">urlencoded</span><span class="p">({</span> <span class="nx">extended</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}))</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">validator</span><span class="p">())</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;</span>
+  <span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;Enter valid name&quot;</span><span class="p">).</span><span class="nx">isLength</span><span class="p">({</span> <span class="nx">min</span><span class="o">:</span> <span class="mi">1</span> <span class="p">})</span>
+  <span class="kd">var</span> <span class="nx">errors</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">()</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">errors</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">errors</span><span class="p">)</span>
+    <span class="k">return</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;OK&#39;</span> <span class="o">+</span> <span class="nx">errors</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The code below is similar to the previous example but it conforms more closely to the approach taken in the MDN tutorial and the <cite>express-validator</cite> documentation.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span> <span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;body-parser&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">check</span><span class="p">,</span> <span class="nx">validationResult</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-validator/check&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">urlencoded</span><span class="p">({</span> <span class="nx">extended</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}))</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot;&gt;&#39;</span>
+<span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;</span>
+<span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;</span>
+<span class="nx">output</span> <span class="o">+=</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">check</span><span class="p">(</span><span class="s1">&#39;firstName&#39;</span><span class="p">).</span><span class="nx">isEmail</span><span class="p">()],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">errors</span> <span class="o">=</span> <span class="nx">validationResult</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">errors</span><span class="p">)</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">errors</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">()){</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;errors&#39;</span><span class="p">)</span>
+<span class="k">return</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;OK&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="p">})</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the form is submitted with a value for the <cite>firstName</cite> input field less than 1 character long (ie. if nothing is entered into that form element by the user) then the <cite>errors</cite> variable will have a value so <cite>res.send(errors)</cite> will be executed. If the user enters a value in the <cite>firstName</cite> field <cite>errors</cite> will not have a value and so <cite>res.send(&#8216;OK&#8217; + errors)</cite> will be executed</p>
+<p>The express middleware function <cite>app.use()</cite> appears twice in the above function. This is an example of Express middleware. If a route is not provided as an argument to <cite>app.use()</cite> then it will run every time an http request is made to the app no matter what route is in the URL. In the code above the order of the <cite>app.use()</cite> statements is important. The body-parser functions need to be executed before the validator functions can be executed.</p>
+<p>In order to test and debug post routes you can construct a get route which displays a form (with <code class="docutils literal"><span class="pre">method='post'</span></code>). Then fill in the form with values which are chosen to test the post route and then submit the form. The post route will then be called and the resuls displayed in the browser and/or console. This is long winded particularly because once you have sumbitted the form returning to the site elicits a pop up which other than cancel only allows you to resend the data that was submitted previously. To circumvent this you need to type a different url in the address bar, visit that site  and then type the original url. Alternatively,  a new tab can be used to visit the original url. You can use <cite>curl</cite> as a more convenient way to send a post request.</p>
+</div>
+<div class="section" id="using-curl">
+<h2>Using curl<a class="headerlink" href="#using-curl" title="Permalink to this headline">¶</a></h2>
+<p>To make a curl post request:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre>curl -d firstName=steve@stevespages.org -d lastName=xyz -d submit=submit localhost:3000
+</pre></div>
+</div>
+<p>The above request returned OK to the browser since it passed the validation test in the post handler function. When the &#64; symbol was deleted it returned <cite>errors</cite> because it failed the isEmail() validation test. See <a class="reference external" href="https://ec.haxx.se/http-post.html">https://ec.haxx.se/http-post.html</a>.</p>
+<div class="section" id="links">
+<h3>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://ec.haxx.se/">https://ec.haxx.se/</a></p>
+</div>
+</div>
+<div class="section" id="middleware">
+<h2>Middleware<a class="headerlink" href="#middleware" title="Permalink to this headline">¶</a></h2>
+<p>The code for our app is still of the general form app.METHOD(PATH, HANDLER) where HANDLER is one function. In our code this function does two major things: it queries a database and it sends information to the browser. The information sent to the browser is partly hardcoded (for example &#8216;His name is &#8216;) and partly dynamically derived from the database (for example <cite>row.firstName</cite>). Because of the imposition of scope limitations the information from the database is only accessible from within the function (<cite>db.get()</cite>) in which it was generated. If we move the <cite>res.send()</cite> function outside the <cite>db.get()</cite> function but still keeping it within the HANDLER function the browser shows an error: &#8216;<cite>ReferenceError: row is not defined</cite>&#8216;. The code is shown below:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">sqlite3</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;sqlite3&#39;</span><span class="p">).</span><span class="nx">verbose</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="kd">let</span> <span class="nx">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sqlite3</span><span class="p">.</span><span class="nx">Database</span><span class="p">(</span><span class="s1">&#39;music.db&#39;</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`SELECT * FROM musicians`</span>
+  <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;His name is &#39;</span> <span class="o">+</span> <span class="nx">row</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">row</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Where we just have one query it is fine to keep the <cite>res.send()</cite> function within the <cite>db.get()</cite> function. However if more than one query were to be made to this or other databases or if other functionality were required we would want to move the <cite>res.send()</cite> function outside of the <cite>db.get()</cite> function. There are several ways to do this. Which method is most appropriate will depend on the situation. Two approaches will be discussed here. Firstly chaining functions with next and secondly using the <cite>async</cite> object.</p>
+<div class="section" id="chaining-with-next">
+<h3>Chaining with next()<a class="headerlink" href="#chaining-with-next" title="Permalink to this headline">¶</a></h3>
+<p>This method is not used in the MDN tutorial for constructing the Local Library app. However the tutorial does describe it. In the code below the pattern is app.METHOD(PATH, HANDLER_1, HANDLER_2, HANDLER_3, HANDLER_4) where each HANDLER is a seperate function. The term <cite>next</cite> refers to the <cite>next</cite> function in the chain. So the first function has <cite>next</cite> as one of its arguments and this refers to the argument coming after it. The argument is used as the last statement in each function ensuring that the next function is indeed called.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="nx">next</span><span class="p">()</span> <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="nx">next</span><span class="p">()</span> <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="nx">next</span><span class="p">()</span> <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In the code below we assign variables to the Request object in each of the middleware functions and display them to the browser in the final function in the chain. Note that the final function has been given &#8216;<cite>next</cite>&#8216; as one of its arguments even though it does not need it because it is the last argument.</p>
+<p>So, we can now encapsulate different functionality into different middleware functions and still have the results from them available to send to the browser at the end of the middleware chain. An example of several database queries is shown below:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">query1</span> <span class="o">=</span> <span class="s1">&#39;one &#39;</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">query1</span> <span class="o">=</span> <span class="nx">query1</span>
+    <span class="nx">next</span><span class="p">()</span>
+  <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">query2</span> <span class="o">=</span> <span class="s1">&#39;two &#39;</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">query2</span> <span class="o">=</span> <span class="nx">query2</span>
+    <span class="nx">next</span><span class="p">()</span>
+  <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">query3</span> <span class="o">=</span> <span class="s1">&#39;three&#39;</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">query3</span> <span class="o">=</span> <span class="nx">query3</span>
+    <span class="nx">next</span><span class="p">()</span>
+  <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query1</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query2</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query3</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We could have saved some typing by assigning the values directly to the <cite>Request</cite> object like this:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">query1</span> <span class="o">=</span> <span class="s1">&#39;one &#39;</span>
+    <span class="nx">next</span><span class="p">()</span>
+  <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">query2</span> <span class="o">=</span> <span class="s1">&#39;two &#39;</span>
+    <span class="nx">next</span><span class="p">()</span>
+  <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">query3</span> <span class="o">=</span> <span class="s1">&#39;three &#39;</span>
+    <span class="nx">next</span><span class="p">()</span> <span class="p">},</span>
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query1</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query2</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query3</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-async-module">
+<h3>The async Module<a class="headerlink" href="#the-async-module" title="Permalink to this headline">¶</a></h3>
+<p>This method allows a number of functions to be run either in parallel or in series. The functions all call the same callback function and they can all pass information to it. This approach is used in the MDN Local Library tutorial as it is applicable where repeated database queries are necessary.</p>
+</div>
+</div>
+<div class="section" id="node-modules">
+<h2>Node Modules<a class="headerlink" href="#node-modules" title="Permalink to this headline">¶</a></h2>
+<p>In the Node.js module system, each file is treated as a separate module. Node.js has several modules compiled into the binary. These core modules are defined within Node.js&#8217;s source code and are located in the lib/ folder. Core modules will be preferentially loaded if a file with the same name exists.</p>
+<p>If the module identifier passed to <cite>require()</cite> is not a core module and does not begin with &#8216;/&#8217;, &#8216;../&#8217; or &#8216;./&#8217;, then Node.js starts at the parent directory of the current module, and adds <cite>/node_modules</cite>. Node.js will not append <cite>node_modules</cite> to a pathe already ending in <cite>node_modules</cite>. If <cite>node_modules</cite> is not found there Node.js goes to the parent directory and looks for it. If it is not there it goes to the parent of that directory and so on until the root of the file systeme is reached.</p>
+<div class="section" id="node-package-manager-npm">
+<h3>Node Package Manager (NPM)<a class="headerlink" href="#node-package-manager-npm" title="Permalink to this headline">¶</a></h3>
+<p>Node modules that use the npm system are (all?) listed at www.npmjs.com. A description of the package is found there. Also, a link to the github page is normally found. The github page often has the same information reproduced in a ReadMe file. Whether the documentation at npmjs.com and github is always the same I doubt. So, best to check out both.</p>
+<p>Generally an npm package has the same name as its github page. For example <cite>multer</cite> is found at github.com/expressjs/multer and is installed with: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save</span> <span class="pre">multer</span></code>. However, <cite>express-session</cite> is found at github.com/expressjs/session. It is installed with: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save</span> <span class="pre">express-session</span></code>.</p>
+<p>On the npm page for a package (for example npmjs.com/package/express) there is a link to the homepage (for example expressjs.com) and a link to the repository (github for express). For express-sessions the link to the homepage is the same link as for the repository except that it takes you to the ReadMe file on the github page not the top of the page. So, the express-sessions API is documented on the npm page and the github page and there is not an official website for it. The express module has the same information on its npm and github pages. The express API documentation is not on these pages it is on the expressjs.com website.</p>
+</div>
+</div>
+<div class="section" id="synchronous-vs-asynchronous">
+<h2>Synchronous vs Asynchronous<a class="headerlink" href="#synchronous-vs-asynchronous" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="views-with-pug">
+<h2>Views with PUG<a class="headerlink" href="#views-with-pug" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="express-file-structure">
+<h2>Express File Structure<a class="headerlink" href="#express-file-structure" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The Express Application Generator generates: var express = require(&#8216;express&#8217;); Check this: still using var? semicolon? The Express Hello world example: const express = require(&#8216;express&#8217; 4.16.4 ) with no semicolon. Is there any significance to these discrepancies? When I tried to run the version ($ node app.js) with 4.16.4 it threw an error. I removed 4.16.4 so I just had &#8216;express&#8217; as argument to require and it worked.</li>
+<li>The MDN Local Library tutorial uses the async module. For the home page a number of queries to the MongoDB are made to obtain the number or books, authors, genres and bookinstances in the library. It appears that these functionsare supplied in the form of a list (eg. an iterable) as the first argument to async.parallel(). When they have all run the second argument to async.parallel() (the callback function) is run using the results from the list of functions as input on which to act. This second argument (the callback) could send the results of the list of functions to the browser using res.render() for example. How does this pattern relate to the middleware concept of req, res, next()?</li>
+<li>Can you do: app.METHOD(PATH, HANDLER_1, HANDLER_2)?</li>
+<li>The two variable thing:
+For various reasons it is usually not a good idea to have more than one database query in the same handler function. It is better to chain middleware functions with each having one database query in it. Only the last middleware function can send results to the browser. The problem of scope arises because a variable created in one function will not normally be available in the next one. There seem to be two approaches to solving this. A variable created in one function can be converted into a property of the Request object. So, in our example we could do the following: req.firstName = firstName. Now the value of the firstName variable will be available to all future functions in the middleware chain.</li>
+<li>I can do res.send(req.body) or (errors.array()) and both give a useful output. If I combine them: res.send(req.body + errors.array()) it does not work. If I try and assign both to a variable and then use that ie. res.send(variable) it still fails. It seems to be errors.array() that is the problem. The best I can get when trying to combine it with req.body is [object Object]</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Learning Express</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#note-to-self">Note To Self</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#create-an-express-app">Create an Express App</a></li>
+<li><a class="reference internal" href="#create-an-sqlite-database">Create an SQLite Database</a><ul>
+<li><a class="reference internal" href="#foreign-keys">Foreign Keys</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-query-from-the-express-app">Database Query from the Express App</a></li>
+<li><a class="reference internal" href="#login-using-bcrypt">Login Using bcrypt</a><ul>
+<li><a class="reference internal" href="#json-web-tokens">JSON Web Tokens</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li><a class="reference internal" href="#debugging">Debugging</a></li>
+<li><a class="reference internal" href="#mongodb-and-mongoose">MongoDB and mongoose</a></li>
+<li><a class="reference internal" href="#user-input-forms">User Input: Forms</a><ul>
+<li><a class="reference internal" href="#id1">Note To Self</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validate-and-sanitize">Validate and Sanitize</a></li>
+<li><a class="reference internal" href="#using-curl">Using curl</a><ul>
+<li><a class="reference internal" href="#links">Links</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#middleware">Middleware</a><ul>
+<li><a class="reference internal" href="#chaining-with-next">Chaining with next()</a></li>
+<li><a class="reference internal" href="#the-async-module">The async Module</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#node-modules">Node Modules</a><ul>
+<li><a class="reference internal" href="#node-package-manager-npm">Node Package Manager (NPM)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#synchronous-vs-asynchronous">Synchronous vs Asynchronous</a></li>
+<li><a class="reference internal" href="#views-with-pug">Views with PUG</a></li>
+<li><a class="reference internal" href="#express-file-structure">Express File Structure</a></li>
+<li><a class="reference internal" href="#deployment">Deployment</a></li>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="hallo.html" title="next chapter">The hallo page</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Steve Greig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
