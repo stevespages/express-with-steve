@@ -1,3 +1,5 @@
+:doc:`Home </index>`
+
 Deploy Using Github and Heroku
 ==============================
 

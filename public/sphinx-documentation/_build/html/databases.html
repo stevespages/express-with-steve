@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Databases &mdash; Learning Express 0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+    <link rel="next" title="Login" href="login.html" />
+    <link rel="prev" title="User Input" href="user-input.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p><a class="reference internal" href="index.html"><em>Home</em></a></p>
+<div class="section" id="databases">
+<h1>Databases<a class="headerlink" href="#databases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-an-sqlite-database">
+<h2>Create an SQLite Database<a class="headerlink" href="#create-an-sqlite-database" title="Permalink to this headline">¶</a></h2>
+<p>sqlite official documentation: <a class="reference external" href="https://www.sqlite.org/lang.html">https://www.sqlite.org/lang.html</a></p>
+<p>sqlite node module official documentation: <a class="reference external" href="https://github.com/mapbox/node-sqlite3/wiki">https://github.com/mapbox/node-sqlite3/wiki</a></p>
+<p>Tutorial for sqlite3 and sqlite3 node module: <a class="reference external" href="http://www.sqlitetutorial.net/">http://www.sqlitetutorial.net/</a></p>
+<p>For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see www.sqlitetutorial.net</p>
+<p>First install sqlite3 globally. Then, from a terminal (while in the root directory of the app) run the command sqlite3 x where x is the name of the database you would like to create. In this case the database will be called <cite>music.db</cite> and we will then create a table called <cite>musicians</cite>:</p>
+<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/myapp $ sqlite3 music.db
+SQLite version 3.11.0 2016-02-15 17:29:24
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; CREATE TABLE musicians (
+...&gt; id INTEGER PRIMARY KEY,
+...&gt; firstName TEXT,
+...&gt; lastName TEXT
+...&gt; );
+sqlite&gt;
+</pre></div>
+</div>
+<p>We now have a file called <cite>music.db</cite> in the root directory of our app. This is an SQLite database with a table called <cite>musicians</cite> in it. The table has three columns. The <cite>id</cite> column is known as an <cite>integer primary key</cite>. Case is important for the type specification: INTEGER PRIMARY KEY. Do not use autoincrement as it is usually not needed and it reduces performance. It is not necessary to provide values for <cite>id</cite> when inserting rows into the table. SQLite will automatically generate a unique value and insert it into this column for every row created in the table. So we only need to insert data for the <cite>firstName</cite> and <cite>lastName fields</cite>:</p>
+<div class="code highlight-python"><div class="highlight"><pre>sqlite&gt; INSERT INTO musicians
+...&gt; (firstName, lastName)
+...&gt; VALUES
+...&gt; (&quot;Brian&quot;, &quot;Eno&quot;);
+</pre></div>
+</div>
+<p>If we query this table to select all the values in it we can see that SQLite automatically created a value (1) for the <cite>id</cite> field:</p>
+<div class="code highlight-python"><div class="highlight"><pre>sqlite&gt; SELECT * FROM musicians;
+1|Brian|Eno
+sqlite&gt;
+</pre></div>
+</div>
+<div class="section" id="foreign-keys">
+<h3>Foreign Keys<a class="headerlink" href="#foreign-keys" title="Permalink to this headline">¶</a></h3>
+<p>You can have foreign keys in tables but if you want these to constrain SQL operations allowable then foreign key support needs to be turned on. At the command line this requires <code class="docutils literal"><span class="pre">sqlite&gt;</span> <span class="pre">PRAGMA</span> <span class="pre">foreign_keys</span> <span class="pre">=</span> <span class="pre">ON'</span></code>. To see if they are on use: <code class="docutils literal"><span class="pre">sqlite&gt;</span> <span class="pre">PRAGMA</span> <span class="pre">foreign_keys;</span></code>. This will return 0 if support is off and 1 if support is on. From node you could turn foreign key support on for every query or by using an anonymous callback into the function which creates the SQLite session used throughout the code:</p>
+<div class="code highlight-python"><div class="highlight"><pre>var db = new sqlite3.Database(config.DB, function() {
+  db.run(&#39;PRAGMA foreign_keys=on&#39;);
+});
+</pre></div>
+</div>
+<p>To see if foreign key support is on from the node script:</p>
+<div class="code highlight-python"><div class="highlight"><pre>db.get(&#39;PRAGMA foreign_keys&#39;, function(err, res) {
+  console.log(&#39;pragma res is &#39; + res.foreign_keys);
+});
+</pre></div>
+</div>
+<p>This comes from: <a class="reference external" href="https://sysdef.xyz/post/2012-07-20-node-sqlite-foreign-keys">https://sysdef.xyz/post/2012-07-20-node-sqlite-foreign-keys</a></p>
+</div>
+</div>
+<div class="section" id="database-query-from-the-express-app">
+<h2>Database Query from the Express App<a class="headerlink" href="#database-query-from-the-express-app" title="Permalink to this headline">¶</a></h2>
+<p>SQLite3 is an RDBMS that, as we have seen, can be used on the command line to create databases and do SQL CRUD (Create, Read, Update and Delete) operations. It is also the name of an NPM (Node Package Manager) module. Installing the sqlite3 module in a node app allows a Database object to be instantiated. The methods available on this object enable SQL CRUD operations to be carried out from within the node app.</p>
+<p>So, first we need to install the sqlite3 module in our app. Open a terminal, change to the myapp directory and run the command:</p>
+<div class="code highlight-python"><div class="highlight"><pre>npm install sqlite3
+</pre></div>
+</div>
+<p>Then open <cite>app.js</cite> in a text editor and import the sqlite3 module and create the Database object which we will call <cite>db</cite>. When we create the database object we pass the path to <cite>music.db</cite> to it so that the <cite>music</cite> database is connected to the object. The two lines of code we need are const <code class="docutils literal"><span class="pre">sqlite3</span> <span class="pre">=</span> <span class="pre">require('sqlite3').verbose()</span></code> and <code class="docutils literal"><span class="pre">let</span> <span class="pre">db</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">sqlite3.Database('music.db')</span></code>. This can be seen below where the full contents of <cite>app.js</cite> are reproduced:</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;)
+const app = express()
+const sqlite3 = require(&#39;sqlite3&#39;).verbose()
+const port =3000
+
+let db = new sqlite3.Database(&#39;music.db&#39;)
+
+app.get(&#39;/example&#39;, function (req, res, next) {
+  let firstName = &#39;Brian&#39;
+  let output = &#39;Hello &#39;
+  output += firstName
+  res.send(output)
+})
+
+app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
+</pre></div>
+</div>
+<p>In the code above we have created an sqlite3 database object but we are not actually using it to do anything. Let us remove the two lines where we assign a value of &#8216;Brian&#8217; to the variable <cite>firstName</cite> and replace it with a query to our <cite>music.db</cite> database using the <cite>get</cite> method of our database object, <cite>db</cite>:</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;)
+const app = express()
+const sqlite3 = require(&#39;sqlite3&#39;).verbose()
+const port =3000
+
+let db = new sqlite3.Database(&#39;music.db&#39;)
+
+app.get(&#39;/example&#39;, function (req, res, next) {
+
+  let sql = `SELECT * FROM musicians`
+  db.get(sql, (err, row) =&gt; {
+    let output = &#39;His name is &#39;
+    output += row.firsName + row.lastName + &#39;!&#39;
+    res.send(output)
+  })
+})
+
+app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
+</pre></div>
+</div>
+<p>In the example above we create our sqlite3 Database object, <cite>db</cite>, in the global space. We can see from the code that we have created an express object called <cite>app</cite> (<code class="docutils literal"><span class="pre">const</span> <span class="pre">app</span> <span class="pre">=</span> <span class="pre">express()</span></code>) and we are using the <cite>get</cite> method of this object. Inside that method we call the sqlite3 Database object method (<cite>db.get()</cite>). I have added an exclamation mark to the output to the browser otherwise there would be no change to the output using this new code and we may think we have not refreshed the browser.</p>
+<p>If the handler only makes one database query we can put the res.send() or res.render() method inside the function that makes the query. This can be seen in the example above where res.send() is inside the db.get() function. If more than one query is necessary it would be better to use the <cite>async</cite> module. This allows the queries to be made and for them all to pass their result to the same callback function.</p>
+</div>
+<div class="section" id="mongodb-and-mongoose">
+<h2>MongoDB and mongoose<a class="headerlink" href="#mongodb-and-mongoose" title="Permalink to this headline">¶</a></h2>
+<p>A Mongo database consists of JSON objects called collections in which the keys are assigned values. A mongoose schema can be written which describes the a particular collection and which inherits mongoose methods for CRUD operations. An example from the MDN tutorial is shown below:</p>
+<div class="code highlight-python"><div class="highlight"><pre>var mongoose = require(&#39;mongoose&#39;);
+
+var Schema = mongoose.Schema;
+
+var BookSchema = new Schema(
+  {
+    title: {type: String, required: true},
+    author: {type: Schema.Types.ObjectId, ref: &#39;Author&#39;, required: true},
+    summary: {type: String, required: true},
+    isbn: {type: String, required: true},
+    genre: [{type: Schema.Types.ObjectId, ref: &#39;Genre&#39;}]
+  }
+);
+
+// Virtual for book&#39;s URL
+BookSchema
+.virtual(&#39;url&#39;)
+.get(function () {
+  return &#39;/catalog/book/&#39; + this._id;
+});
+
+//Export model
+module.exports = mongoose.model(&#39;Book&#39;, BookSchema);
+</pre></div>
+</div>
+<p>After instantiation of the BookSchema object from the mongoose Schema object a &#8216;virtual&#8217; is then added to the schema.
+Virtuals can combine data from different fields of the collection with hard coded data. In the example here a virtual for a URL for a specific book is constructed using the _id field from the database and hardcoded details for other parts of the URL (&#8216;/catalog/book/&#8217;).</p>
+<p>countDocuments() is an example of a mongoose schema method which will be available to a schema object such as BookSchema.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Databases</a><ul>
+<li><a class="reference internal" href="#create-an-sqlite-database">Create an SQLite Database</a><ul>
+<li><a class="reference internal" href="#foreign-keys">Foreign Keys</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-query-from-the-express-app">Database Query from the Express App</a></li>
+<li><a class="reference internal" href="#mongodb-and-mongoose">MongoDB and mongoose</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="user-input.html" title="previous chapter">User Input</a></li>
+      <li>Next: <a href="login.html" title="next chapter">Login</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/databases.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Steve Greig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/databases.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

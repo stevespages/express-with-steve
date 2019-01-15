@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User Input &mdash; Learning Express 0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+    <link rel="next" title="Databases" href="databases.html" />
+    <link rel="prev" title="Debugging" href="debugging.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p><a class="reference internal" href="index.html"><em>Home</em></a></p>
+<div class="section" id="user-input">
+<h1>User Input<a class="headerlink" href="#user-input" title="Permalink to this headline">¶</a></h1>
+<p>The value of an input element&#8217;s name attribute will be accessible from the req object and can be used to persist or display or validate sanitize etc.....</p>
+<p>According to express-validator maintainer: &#8221;...all methods accessible from the req object are considered legacy&#8221; see <a class="reference external" href="https://stackoverflow.com/questions/50430625/getting-req-getvalidationresult-is-not-a-function-with-expess-validator">https://stackoverflow.com/questions/50430625/getting-req-getvalidationresult-is-not-a-function-with-expess-validator</a> and the link from that. &#8221;...validationResult(req) is the correct way... [it is] synchronous&#8221;. So the MDN tutorial is preferred to the example I have given which is taken from an (oherwise) excellent turtorial at <a class="reference external" href="https://booker.codes/input-validation-in-express-with-express-validator/">https://booker.codes/input-validation-in-express-with-express-validator/</a></p>
+<p>The code shown below displays a simple form in the browser:</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;)
+const app = express()
+const port =3000
+
+app.get(&#39;/example&#39;, function (req, res, next) {
+  let output = &#39;&lt;form method=&quot;post&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;
+  res.send(output)
+})
+
+app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
+</pre></div>
+</div>
+<p>Because the form element does not have an action attribute the form will be sent to the same URL that was used to display it. In this case that is localhost:3000/example. The form element&#8217;s method attribute is set to post. So, at the moment the app program does not have a route for handling the submitted form. We need to create a new route in our app with the same URL as the existing one but with post not get as the method. This is shown below.</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;)
+const app = express()
+const port =3000
+
+app.get(&#39;/example&#39;, function (req, res, next) {
+  let output = &#39;&lt;form method=&quot;post&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;
+  res.send(output)
+})
+
+app.post(&#39;/example&#39;, function (req, res, next) {
+  res.send(&#39;Your form has been recieved&#39;)
+})
+
+app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
+</pre></div>
+</div>
+<p>In the example above the route specified as the first argument in the app.post() method (the route is &#8216;/example&#8217;) is matched when the form is submitted causing the function supplied as the second argument to app.post() to be executed. It simply uses the res.send() method to send &#8216;Your form has been recieved&#8217; to the browser. A real app would probably use a series of middlware functions to process the data which might include saving it to a database or making a database query using the submitted data to search a database</p>
+<div class="section" id="validate-and-sanitize">
+<h2>Validate and Sanitize<a class="headerlink" href="#validate-and-sanitize" title="Permalink to this headline">¶</a></h2>
+<p>We want to control the data that is sent to our app from the user. The data can be validated. If the data is not valid, for example a date has been entered using a format that our code will not recognize, the form can be displayed again to the user. This time the various form fields will contain the values the user entered with error messages helping them to alter their input to a form that will validate.</p>
+<p>Once a form is submitted which passes the validation stage it may be sanitized. This actually changes the data. It can strip white spaces and escape html code.</p>
+<p>Express provides the express-validator module which includes built in validation and sanitization methods as well as enabling custom built methods to be built.</p>
+<p><code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express-validator</span></code></p>
+<div class="code highlight-python"><div class="highlight"><pre>// This method is deprecated. DO NOT USE!
+
+const express = require(&#39;express&#39;)
+const validator = require(&#39;express-validator&#39;)
+const app = express()
+const port =3000
+
+app.use(express.urlencoded({ extended: false }))
+app.use(validator())
+
+app.get(&#39;/example&#39;, function (req, res, next) {
+  let output = &#39;&lt;form method=&quot;post&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;
+  output += &#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;
+  res.send(output)
+})
+
+app.post(&#39;/example&#39;, function (req, res) {
+  req.checkBody(&quot;firstName&quot;, &quot;Enter valid name&quot;).isLength({ min: 1 })
+  var errors = req.validationErrors()
+  if(errors){
+    res.send(errors)
+    return
+  } else {
+    res.send(&#39;OK&#39; + errors)
+  }
+})
+
+app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
+</pre></div>
+</div>
+<p>The code below is similar to the previous example but it conforms more closely to the approach taken in the MDN tutorial and the <cite>express-validator</cite> documentation.</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require (&#39;express&#39;)
+const bodyParser = require(&#39;body-parser&#39;)
+const { check, validationResult } = require(&#39;express-validator/check&#39;)
+const app = express()
+const port = 3000
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.get(&#39;/&#39;, function (req, res) {
+let output = &#39;&lt;form method=&quot;post&quot;&gt;&#39;
+output += &#39;&lt;input type=&quot;text&quot; name=&quot;firstName&quot; placeholder=&quot;first name&quot;&gt;&#39;
+output += &#39;&lt;input type=&quot;text&quot; name=&quot;lastName&quot; placeholder=&quot;last name&quot;&gt;&#39;
+output += &#39;&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;&#39;
+res.send(output)
+})
+
+app.post(&#39;/&#39;, [check(&#39;firstName&#39;).isEmail()], function (req, res) {
+const errors = validationResult(req)
+console.log(errors)
+if(!errors.isEmpty()){
+res.send(&#39;errors&#39;)
+return
+} else {
+res.send(&#39;OK&#39;)
+}
+})
+
+
+app.listen(port, () =&gt; console.log(`listening on port ${port}`))
+</pre></div>
+</div>
+<p>If the form is submitted with a value for the <cite>firstName</cite> input field less than 1 character long (ie. if nothing is entered into that form element by the user) then the <cite>errors</cite> variable will have a value so <cite>res.send(errors)</cite> will be executed. If the user enters a value in the <cite>firstName</cite> field <cite>errors</cite> will not have a value and so <cite>res.send(&#8216;OK&#8217; + errors)</cite> will be executed</p>
+<p>The express middleware function <cite>app.use()</cite> appears twice in the above function. This is an example of Express middleware. If a route is not provided as an argument to <cite>app.use()</cite> then it will run every time an http request is made to the app no matter what route is in the URL. In the code above the order of the <cite>app.use()</cite> statements is important. The body-parser functions need to be executed before the validator functions can be executed.</p>
+<p>In order to test and debug post routes you can construct a get route which displays a form (with <code class="docutils literal"><span class="pre">method='post'</span></code>). Then fill in the form with values which are chosen to test the post route and then submit the form. The post route will then be called and the resuls displayed in the browser and/or console. This is long winded particularly because once you have sumbitted the form returning to the site elicits a pop up which other than cancel only allows you to resend the data that was submitted previously. To circumvent this you need to type a different url in the address bar, visit that site  and then type the original url. Alternatively,  a new tab can be used to visit the original url. You can use <cite>curl</cite> as a more convenient way to send a post request.</p>
+</div>
+<div class="section" id="using-curl">
+<h2>Using curl<a class="headerlink" href="#using-curl" title="Permalink to this headline">¶</a></h2>
+<p>To make a curl post request:</p>
+<div class="code highlight-python"><div class="highlight"><pre>curl -d firstName=steve@stevespages.org -d lastName=xyz -d submit=submit localhost:3000
+</pre></div>
+</div>
+<p>The above request returned OK to the browser since it passed the validation test in the post handler function. When the &#64; symbol was deleted it returned <cite>errors</cite> because it failed the isEmail() validation test. See <a class="reference external" href="https://ec.haxx.se/http-post.html">https://ec.haxx.se/http-post.html</a>.</p>
+<div class="section" id="links">
+<h3>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://ec.haxx.se/">https://ec.haxx.se/</a></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">User Input</a><ul>
+<li><a class="reference internal" href="#validate-and-sanitize">Validate and Sanitize</a></li>
+<li><a class="reference internal" href="#using-curl">Using curl</a><ul>
+<li><a class="reference internal" href="#links">Links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="debugging.html" title="previous chapter">Debugging</a></li>
+      <li>Next: <a href="databases.html" title="next chapter">Databases</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/user-input.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Steve Greig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/user-input.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

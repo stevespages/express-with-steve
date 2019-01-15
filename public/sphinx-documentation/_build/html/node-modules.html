@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Node Modules &mdash; Learning Express 0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+    <link rel="next" title="Middleware" href="middleware.html" />
+    <link rel="prev" title="Express With Steve" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p><a class="reference internal" href="index.html"><em>Home</em></a></p>
+<div class="section" id="node-modules">
+<h1>Node Modules<a class="headerlink" href="#node-modules" title="Permalink to this headline">¶</a></h1>
+<p>In the Node.js module system, each file is treated as a separate module. Node.js has several modules compiled into the binary. These core modules are defined within Node.js&#8217;s source code and are located in the lib/ folder. Core modules will be preferentially loaded if a file with the same name exists.</p>
+<p>If the module identifier passed to <cite>require()</cite> is not a core module and does not begin with &#8216;/&#8217;, &#8216;../&#8217; or &#8216;./&#8217;, then Node.js starts at the parent directory of the current module, and adds <cite>/node_modules</cite>. Node.js will not append <cite>node_modules</cite> to a pathe already ending in <cite>node_modules</cite>. If <cite>node_modules</cite> is not found there Node.js goes to the parent directory and looks for it. If it is not there it goes to the parent of that directory and so on until the root of the file systeme is reached.</p>
+<div class="section" id="node-package-manager-npm">
+<h2>Node Package Manager (NPM)<a class="headerlink" href="#node-package-manager-npm" title="Permalink to this headline">¶</a></h2>
+<p>Node modules that use the npm system are (all?) listed at www.npmjs.com. A description of the package is found there. Also, a link to the github page is normally found. The github page often has the same information reproduced in a ReadMe file. Whether the documentation at npmjs.com and github is always the same I doubt. So, best to check out both.</p>
+<p>Generally an npm package has the same name as its github page. For example <cite>multer</cite> is found at github.com/expressjs/multer and is installed with: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save</span> <span class="pre">multer</span></code>. However, <cite>express-session</cite> is found at github.com/expressjs/session. It is installed with: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save</span> <span class="pre">express-session</span></code>.</p>
+<p>On the npm page for a package (for example npmjs.com/package/express) there is a link to the homepage (for example expressjs.com) and a link to the repository (github for express). For express-sessions the link to the homepage is the same link as for the repository except that it takes you to the ReadMe file on the github page not the top of the page. So, the express-sessions API is documented on the npm page and the github page and there is not an official website for it. The express module has the same information on its npm and github pages. The express API documentation is not on these pages it is on the expressjs.com website.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Node Modules</a><ul>
+<li><a class="reference internal" href="#node-package-manager-npm">Node Package Manager (NPM)</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Express With Steve</a></li>
+      <li>Next: <a href="middleware.html" title="next chapter">Middleware</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/node-modules.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Steve Greig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/node-modules.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

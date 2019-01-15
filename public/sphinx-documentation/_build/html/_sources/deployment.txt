@@ -48,7 +48,3 @@ The overall directory structure for the express app that serves the html files g
 We can see that we have a directory, `express-with-steve`. This directory is under git version control (it has `.git` and `.gitignore` in it but these and also `node_modules` are not shown in the tree structure above). When `.rst` files are edited and the command ``make html`` is run html files in `public/sphinx-documentation/_build/html` are updated. As can be seen from the `app.js` code this directory is being accessed by `app.js`.
 
 The contents of the `express-with-steve` directory is pushed to www.github.com/stevespages/express-with-steve. An app called `express-with-steve` was created at `heroku` and linked to the github repo referred to above. So, when changes to the sphinx documentation are made and pushed to github they update the heroku website.
-
-New Heading
-...........
-
