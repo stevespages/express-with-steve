@@ -9,44 +9,32 @@ Express With Steve
 .. toctree::
    :maxdepth: 2
 
-   hallo
+   heroku 
 
 .. highlight:: javascript
 
 Overview
 --------
 
-Note To Self
-............
-
-The examples should all be closely based on the MDN code....
-
-
-Provide references to modules' documentation wherever relevant so process of accessing documentation is clarified.
-
-********************************************************************************************************************
-
-This tutorial is based on the Mozilla Development Network (MDN) Express Web Framework Tutorial. While the MDN tutorial builds a prototype of a catalog for an online local library with over 30 routes I have kept the code simple and short. All the node-express code examples are written in a single file: `app.js`. The explanations here are attempts to provide simplified examples of the topics covered in the MDN tutorial. This tutorial could be used with or without the MDN tutorial.
-
-The MDN tutorial uses the MongoDB database with the node module mongoose. I have additionally touched on the use of SQLite. The MDN tutorial uses the Express Application Generator to start their app. I have used Express on its own and installed other modules when they become necessary.
+I have attempted to isolate various aspects of node express into very simple complete express apps. Mostly all the code is in a single `app.js` file to make it easier to follow.
 
 Create an Express App
 ---------------------
 The following is based closely on the instructions at `expressjs.com/Getting Started/Installing` and `express.com/Getting Started/Hello World`.
 
-Install node globally. Make a directory with the name you have chosen for the app. From a command line terminal change directory so you are in the new app directory and run ``npm init``. Install Express by running the command ``npm install express --save``.
+Install node globally. Make a directory with the name you have chosen for the app. From a command line terminal change directory so you are in the new app directory and run ``npm init -y``. Install Express by running the command ``npm install express``.
 
 Create a file called `app.js` and place the following contents in it:
 
 .. code::
 
-   const express = require('express')
-   const app = express()
+   const express = require('express');
+
+   const app = express();
    
-   app.get('/example', (req, res) => res.send('Hello World!'))
+   app.get('/example', (req, res) => res.send('Hello World!'));
    
-   app.listen(3000, () => console.log(`listening on port 3000
-   (fields, message) => check(fields, locations, message)
+   app.listen(3000, () => console.log(`Go to localhost:3000`));
 
 Now run the app from your terminal with the command ``node app.js``. Open a browser window and navigate to `www.localhost:3000/example`. You should see 'Hello World!
 
@@ -60,7 +48,7 @@ Here we have the same code as before but with the handler function written in a 
 
    const express = require('express')
    const app = express()
-   const port =3000
+   const port = 3000
    
    app.get('/example', function (req, res) {
      res.send('Hello World!!')
@@ -74,7 +62,7 @@ We can introduce a variable which we will call `firstName` with a value of 'Bria
 
    const express = require('express')
    const app = express()
-   const port =3000
+   const port = 3000
    
    app.get('/example', function (req, res) {
      let firstName = 'Brian'
@@ -95,7 +83,7 @@ sqlite node module official documentation: https://github.com/mapbox/node-sqlite
 
 Tutorial for sqlite3 and sqlite3 node module: http://www.sqlitetutorial.net/
 
-See sqlite.org for definitive documentation on SQLite. For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see sqlitetutorial.net
+For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see www.sqlitetutorial.net
 
 First install sqlite3 globally. Then, from a terminal (while in the root directory of the app) run the command sqlite3 x where x is the name of the database you would like to create. In this case the database will be called `music.db` and we will then create a table called `musicians`:
 

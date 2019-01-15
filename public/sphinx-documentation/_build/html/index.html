@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Learning Express 0 documentation" href="#" />
-    <link rel="next" title="The hallo page" href="hallo.html" />
+    <link rel="next" title="Deploy Using Github and Heroku" href="heroku.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -41,32 +41,25 @@
 <h1>Express With Steve<a class="headerlink" href="#express-with-steve" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="hallo.html">The hallo page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heroku.html">Deploy Using Github and Heroku</a></li>
 </ul>
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="note-to-self">
-<h3>Note To Self<a class="headerlink" href="#note-to-self" title="Permalink to this headline">¶</a></h3>
-<p>The examples should all be closely based on the MDN code....</p>
-<p>Provide references to modules&#8217; documentation wherever relevant so process of accessing documentation is clarified.</p>
-<hr class="docutils" />
-<p>This tutorial is based on the Mozilla Development Network (MDN) Express Web Framework Tutorial. While the MDN tutorial builds a prototype of a catalog for an online local library with over 30 routes I have kept the code simple and short. All the node-express code examples are written in a single file: <cite>app.js</cite>. The explanations here are attempts to provide simplified examples of the topics covered in the MDN tutorial. This tutorial could be used with or without the MDN tutorial.</p>
-<p>The MDN tutorial uses the MongoDB database with the node module mongoose. I have additionally touched on the use of SQLite. The MDN tutorial uses the Express Application Generator to start their app. I have used Express on its own and installed other modules when they become necessary.</p>
-</div>
+<p>I have attempted to isolate various aspects of node express into very simple complete express apps. Mostly all the code is in a single <cite>app.js</cite> file to make it easier to follow.</p>
 </div>
 <div class="section" id="create-an-express-app">
 <h2>Create an Express App<a class="headerlink" href="#create-an-express-app" title="Permalink to this headline">¶</a></h2>
 <p>The following is based closely on the instructions at <cite>expressjs.com/Getting Started/Installing</cite> and <cite>express.com/Getting Started/Hello World</cite>.</p>
-<p>Install node globally. Make a directory with the name you have chosen for the app. From a command line terminal change directory so you are in the new app directory and run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span></code>. Install Express by running the command <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express</span> <span class="pre">--save</span></code>.</p>
+<p>Install node globally. Make a directory with the name you have chosen for the app. From a command line terminal change directory so you are in the new app directory and run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code>. Install Express by running the command <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express</span></code>.</p>
 <p>Create a file called <cite>app.js</cite> and place the following contents in it:</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
-<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">))</span>
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`listening on port 3000</span>
-<span class="sb">(fields, message) =&gt; check(fields, locations, message)</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Go to localhost:3000`</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>Now run the app from your terminal with the command <code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>. Open a browser window and navigate to <cite>www.localhost:3000/example</cite>. You should see &#8216;Hello World!</p>
@@ -75,7 +68,7 @@
 <p>Here we have the same code as before but with the handler function written in a different but equivalent form which is more suitable when there is more code inside it.</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
 <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
-<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!!&#39;</span><span class="p">)</span>
@@ -87,7 +80,7 @@
 <p>We can introduce a variable which we will call <cite>firstName</cite> with a value of &#8216;Brian&#8217;. In a real app this might be the result of a database query. This can be used inside the <cite>res.send</cite> function so it is displayed in the browser. In the code below I have used a variable called <cite>output</cite> as the argument to <cite>res.send()</cite>. This will be helpful in later examples where there will be more to output to the browser.</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
 <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
-<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span><span class="mi">3000</span>
+<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">firstName</span> <span class="o">=</span> <span class="s1">&#39;Brian&#39;</span>
@@ -105,7 +98,7 @@
 <p>sqlite official documentation: <a class="reference external" href="https://www.sqlite.org/lang.html">https://www.sqlite.org/lang.html</a></p>
 <p>sqlite node module official documentation: <a class="reference external" href="https://github.com/mapbox/node-sqlite3/wiki">https://github.com/mapbox/node-sqlite3/wiki</a></p>
 <p>Tutorial for sqlite3 and sqlite3 node module: <a class="reference external" href="http://www.sqlitetutorial.net/">http://www.sqlitetutorial.net/</a></p>
-<p>See sqlite.org for definitive documentation on SQLite. For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see sqlitetutorial.net</p>
+<p>For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see www.sqlitetutorial.net</p>
 <p>First install sqlite3 globally. Then, from a terminal (while in the root directory of the app) run the command sqlite3 x where x is the name of the database you would like to create. In this case the database will be called <cite>music.db</cite> and we will then create a table called <cite>musicians</cite>:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre>steve@Dell ~/Desktop/myapp $ sqlite3 music.db
 SQLite version 3.11.0 2016-02-15 17:29:24
@@ -505,8 +498,8 @@ Virtuals can combine data from different fields of the collection with hard code
 </div>
 <div class="section" id="user-input-forms">
 <h2>User Input: Forms<a class="headerlink" href="#user-input-forms" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Note To Self<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="note-to-self">
+<h3>Note To Self<a class="headerlink" href="#note-to-self" title="Permalink to this headline">¶</a></h3>
 <p>Explain that value of input element&#8217;s name attribute will be accessible from the req object and can be used to persist or display or validate sanitize etc.....</p>
 <p>According to express-validator maintainer: &#8221;...all methods accessible from the req object are considered legacy&#8221; see <a class="reference external" href="https://stackoverflow.com/questions/50430625/getting-req-getvalidationresult-is-not-a-function-with-expess-validator">https://stackoverflow.com/questions/50430625/getting-req-getvalidationresult-is-not-a-function-with-expess-validator</a> and the link from that. &#8221;...validationResult(req) is the correct way... [it is] synchronous&#8221;. So the MDN tutorial is preferred to the example I have given which is taken from an (oherwise) excellent turtorial at <a class="reference external" href="https://booker.codes/input-validation-in-express-with-express-validator/">https://booker.codes/input-validation-in-express-with-express-validator/</a></p>
 <hr class="docutils" />
@@ -790,10 +783,7 @@ For various reasons it is usually not a good idea to have more than one database
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Express With Steve</a><ul>
-<li><a class="reference internal" href="#overview">Overview</a><ul>
-<li><a class="reference internal" href="#note-to-self">Note To Self</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
 <li><a class="reference internal" href="#create-an-express-app">Create an Express App</a></li>
 <li><a class="reference internal" href="#create-an-sqlite-database">Create an SQLite Database</a><ul>
 <li><a class="reference internal" href="#foreign-keys">Foreign Keys</a></li>
@@ -808,7 +798,7 @@ For various reasons it is usually not a good idea to have more than one database
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
 <li><a class="reference internal" href="#mongodb-and-mongoose">MongoDB and mongoose</a></li>
 <li><a class="reference internal" href="#user-input-forms">User Input: Forms</a><ul>
-<li><a class="reference internal" href="#id1">Note To Self</a></li>
+<li><a class="reference internal" href="#note-to-self">Note To Self</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#validate-and-sanitize">Validate and Sanitize</a></li>
@@ -838,7 +828,7 @@ For various reasons it is usually not a good idea to have more than one database
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="hallo.html" title="next chapter">The hallo page</a></li>
+      <li>Next: <a href="heroku.html" title="next chapter">Deploy Using Github and Heroku</a></li>
   </ul></li>
 </ul>
 </div>
