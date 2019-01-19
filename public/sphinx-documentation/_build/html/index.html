@@ -63,6 +63,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="login.html#login-using-bcrypt">Login Using bcrypt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#express-session">express-session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#register-login-sessions">Register, Login, Sessions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#json-web-tokens">JSON Web Tokens</a></li>
 </ul>
 </li>
@@ -74,70 +76,77 @@
 <li class="toctree-l1"><a class="reference internal" href="file-structure.html">File Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="template-engines.html">Template Engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">Deploy Using Github and Heroku</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">Notes</a></li>
 </ul>
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>I have attempted to isolate various aspects of node express into very simple complete express apps. Mostly all the code is in a single <cite>app.js</cite> file to make it easier to follow.</p>
+<p>I have attempted to isolate various aspects of node express into very simple complete express apps. Mostly all the code is in a single <cite>app.js</cite> file to make it easier to follow. Most of the examples can be followed by creating a new directory, changing directory into that directory, running <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code> followed by <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express</span></code>. Other modules can be installed as necessary. You will of course need <cite>node</cite> to be installed on your computer.</p>
 </div>
 <div class="section" id="create-an-express-app">
 <h2>Create an Express App<a class="headerlink" href="#create-an-express-app" title="Permalink to this headline">¶</a></h2>
-<p>The following is based closely on the instructions at <cite>expressjs.com/Getting Started/Installing</cite> and <cite>express.com/Getting Started/Hello World</cite>.</p>
-<p>Install node globally. Make a directory with the name you have chosen for the app. From a command line terminal change directory so you are in the new app directory and run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code>. Install Express by running the command <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">express</span></code>.</p>
-<p>Create a file called <cite>app.js</cite> and place the following contents in it:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">mkdir</span> <span class="k">new</span><span class="o">-</span><span class="nx">directory</span>
+<span class="nx">cd</span> <span class="k">new</span><span class="o">-</span><span class="nx">directory</span>
+<span class="nx">npm</span> <span class="nx">init</span> <span class="o">-</span><span class="nx">y</span>
+<span class="nx">npm</span> <span class="nx">install</span> <span class="nx">express</span>
+</pre></div>
+</div>
+<p>Use a text editor to create a file called <cite>app.js</cite> and place the following contents in it:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
 
 <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">));</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Go to localhost:3000`</span><span class="p">));</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">);</span>
+
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Now run the app from your terminal with the command <code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>. Open a browser window and navigate to <cite>www.localhost:3000/example</cite>. You should see &#8216;Hello World!</p>
+<div class="section" id="links">
+<h3>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
+<p><cite>expressjs.com/Getting Started/Installing</cite></p>
+<p><cite>express.com/Getting Started/Hello World</cite></p>
+</div>
 <div class="section" id="nodemon">
 <h3>nodemon<a class="headerlink" href="#nodemon" title="Permalink to this headline">¶</a></h3>
-<p>If any changes are made to the <cite>app.js</cite> code the server has to be restarted and the browser window has to be refreshed in order for the changes to take effect. Follow the MDN tutorial instructions for installing the nodemon module and modifying the package.json file. This will obviate the need for restarting the server after making changes to the app. Also, useful information will be displayed in the console if the app is started with the command: <code class="docutils literal"><span class="pre">DEBUG=myapp:*</span> <span class="pre">npm</span> <span class="pre">run</span> <span class="pre">devstart</span></code>. Now we can modify the app and just refresh the browser to see the changes.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">nodemon</span>
+</pre></div>
+</div>
+<p>If any changes are made to the <cite>app.js</cite> code the server has to be stopped (use <code class="docutils literal"><span class="pre">Ctr</span> <span class="pre">c</span></code>) and restarted (<code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>) and the browser window has to be refreshed in order for the changes to take effect. Installing <cite>nodemon</cite> and starting the app with <code class="docutils literal"><span class="pre">nodemon</span> <span class="pre">app.js</span></code> enables changes to <cite>app.js</cite> to be made without the need for manually restarting the server every time these changes are saved. The browser will still have to be refreshed manually.</p>
 </div>
 <div class="section" id="app-method-path-handler">
 <h3>app.METHOD(PATH, HANDLER)<a class="headerlink" href="#app-method-path-handler" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>get</cite> method of the express <cite>app</cite> object, <cite>app.get()</cite> is an example of the general pattern app.METHOD(PATH, HANDLER) where HANDLER is one function. Later in this tutorial we will see that a chain of HANDLER functions can be used. This is central to the Express middleware approach to app development.</p>
-<p>Here we have the same code as before but with the handler function written in a different but equivalent form which is more suitable when there is more code inside it.</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
-<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
-<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello World!!&#39;</span><span class="p">)</span>
-<span class="p">})</span>
+<span class="p">});</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>We can introduce a variable which we will call <cite>firstName</cite> with a value of &#8216;Brian&#8217;. In a real app this might be the result of a database query. This can be used inside the <cite>res.send</cite> function so it is displayed in the browser. In the code below I have used a variable called <cite>output</cite> as the argument to <cite>res.send()</cite>. This will be helpful in later examples where there will be more to output to the browser.</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
-<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
-<span class="kr">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">firstName</span> <span class="o">=</span> <span class="s1">&#39;Brian&#39;</span>
   <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span>
   <span class="nx">output</span> <span class="o">+=</span> <span class="nx">firstName</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
-<span class="p">})</span>
+<span class="p">});</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">))</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Notes</p>
-<ul class="simple">
-<li>The Express Application Generator generates: var express = require(&#8216;express&#8217;); Check this: still using var? semicolon? The Express Hello world example: const express = require(&#8216;express&#8217; 4.16.4 ) with no semicolon. Is there any significance to these discrepancies? When I tried to run the version ($ node app.js) with 4.16.4 it threw an error. I removed 4.16.4 so I just had &#8216;express&#8217; as argument to require and it worked.</li>
-<li>The MDN Local Library tutorial uses the async module. For the home page a number of queries to the MongoDB are made to obtain the number or books, authors, genres and bookinstances in the library. It appears that these functionsare supplied in the form of a list (eg. an iterable) as the first argument to async.parallel(). When they have all run the second argument to async.parallel() (the callback function) is run using the results from the list of functions as input on which to act. This second argument (the callback) could send the results of the list of functions to the browser using res.render() for example. How does this pattern relate to the middleware concept of req, res, next()?</li>
-<li>Can you do: app.METHOD(PATH, HANDLER_1, HANDLER_2)?</li>
-<li>The two variable thing:
-For various reasons it is usually not a good idea to have more than one database query in the same handler function. It is better to chain middleware functions with each having one database query in it. Only the last middleware function can send results to the browser. The problem of scope arises because a variable created in one function will not normally be available in the next one. There seem to be two approaches to solving this. A variable created in one function can be converted into a property of the Request object. So, in our example we could do the following: req.firstName = firstName. Now the value of the firstName variable will be available to all future functions in the middleware chain.</li>
-<li>I can do res.send(req.body) or (errors.array()) and both give a useful output. If I combine them: res.send(req.body + errors.array()) it does not work. If I try and assign both to a variable and then use that ie. res.send(variable) it still fails. It seems to be errors.array() that is the problem. The best I can get when trying to combine it with req.body is [object Object]</li>
-</ul>
 </div>
 </div>
 </div>
@@ -153,6 +162,7 @@ For various reasons it is usually not a good idea to have more than one database
 <li><a class="reference internal" href="#">Express With Steve</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
 <li><a class="reference internal" href="#create-an-express-app">Create an Express App</a><ul>
+<li><a class="reference internal" href="#links">Links</a></li>
 <li><a class="reference internal" href="#nodemon">nodemon</a></li>
 <li><a class="reference internal" href="#app-method-path-handler">app.METHOD(PATH, HANDLER)</a></li>
 </ul>

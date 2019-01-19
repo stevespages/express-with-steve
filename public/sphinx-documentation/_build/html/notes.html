@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Notes &mdash; Learning Express 0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="notes">
+<h1>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>The Express Application Generator generates: var express = require(&#8216;express&#8217;); Check this: still using var? semicolon? The Express Hello world example: const express = require(&#8216;express&#8217; 4.16.4 ) with no semicolon. Is there any significance to these discrepancies? When I tried to run the version ($ node app.js) with 4.16.4 it threw an error. I removed 4.16.4 so I just had &#8216;express&#8217; as argument to require and it worked.</li>
+<li>The MDN Local Library tutorial uses the async module. For the home page a number of queries to the MongoDB are made to obtain the number or books, authors, genres and bookinstances in the library. It appears that these functionsare supplied in the form of a list (eg. an iterable) as the first argument to async.parallel(). When they have all run the second argument to async.parallel() (the callback function) is run using the results from the list of functions as input on which to act. This second argument (the callback) could send the results of the list of functions to the browser using res.render() for example. How does this pattern relate to the middleware concept of req, res, next()?</li>
+<li>Can you do: app.METHOD(PATH, HANDLER_1, HANDLER_2)?</li>
+<li>The two variable thing:
+For various reasons it is usually not a good idea to have more than one database query in the same handler function. It is better to chain middleware functions with each having one database query in it. Only the last middleware function can send results to the browser. The problem of scope arises because a variable created in one function will not normally be available in the next one. There seem to be two approaches to solving this. A variable created in one function can be converted into a property of the Request object. So, in our example we could do the following: req.firstName = firstName. Now the value of the firstName variable will be available to all future functions in the middleware chain.</li>
+<li>I can do res.send(req.body) or (errors.array()) and both give a useful output. If I combine them: res.send(req.body + errors.array()) it does not work. If I try and assign both to a variable and then use that ie. res.send(variable) it still fails. It seems to be errors.array() that is the problem. The best I can get when trying to combine it with req.body is [object Object]</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/notes.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Steve Greig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/notes.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
