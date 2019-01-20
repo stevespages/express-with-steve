@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Login2 &mdash; Learning Express 0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+    <link rel="next" title="Error Handling" href="error-handling.html" />
+    <link rel="prev" title="Login" href="login.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <embed>
+   <style>
+      body {
+         background-color: pink;
+      }
+   </style>
+</embed><p><a class="reference internal" href="index.html"><em>Home</em></a></p>
+<div class="section" id="login2">
+<h1>Login2<a class="headerlink" href="#login2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>It is very often important for the response from a website to be tailored to the particular person who requested that response. In order to do this the server side script generating the response needs to have access to the identity of the user and what that user is authorized to access. Some websites may have several levels of authorization. Non logged in users can see some material while logged in ordinary users can additionally see password protected material and logged in administrators can edit material on the website. An overview of a typical implementation of a simple login system is given below.</p>
+<p>On initial registration the user supplies a username and password which is stored in a database on the server. The database will generate a unique user id for each user. Other information supplied by the user at registration or on later visits to the website may also be stored. Also information such as the date and time the user registered may be stored if it is likely to be useful. So after registration there will be a row in a <cite>users</cite> table corresponding to that user. The three columns (often called fields) of interest to the login mechanism are the <cite>user id</cite>, <cite>username</cite>, and <cite>password</cite>. The username is often the email address of the user and a verification step can be introduced involving sending an email to the user asking them to click a link if they want to register with the website. At its simplest a registered user consists of a single row in a <cite>users</cite> table with the three columns referred to above in it.</p>
+<p>When the user wants to login to the website they submit a form which posts a request to the website with their username and password. The server looks in the <cite>users</cite> table for a row in which the username matches the username given in the login form. It then extracts the password from that row and compares it with the password supplied by the user in the login form. If the passwords match the server then extracts the <cite>user id</cite> from the same row in the table and assigns it to a program variable which can be accessed from any part of the code that provides the website&#8217;s functionality. That program variable can provide two pieces of information. The first is the fact that it has been assigned a value. This indicates that a user is logged in and could be used to decide whether or not to display material that should not be available to non logged in users but which can be viewed by all logged in users. If the variable has not been assigned a value then the program knows that the user of the website is not logged in. The second piece of information the variable provides is the <cite>user id</cite> that was assigned to it. This can enable the program to fetch material specific to that user, for example from a database, and display it to them.</p>
+<p>The system described above would need the user to login to every page they visited on the website because there is no mechanism to remember that they are logged in. Every time they make a request for a page the server treats them as if they are a new unknown user. In order for the login to persist for a number of requests to the same site the server can send a unique string of characters to the users computer and keep a copy of that unique string together with the user&#8217;s <cite>user id</cite>. When the browser makes requests to the same website (the same domain) it will include this unique string in its request. The server will compare the string with all the strings it has sent out (each one represents a different user) and select the one that matches it and extract the <cite>user id</cite> associated with it. It will put this into the program variable discussed in the previous paragraph thereby reinstating the logged in state for that particular user. The unique string here will either be a session cookie or part of a session cookie or part of a JSON Web Token (JWT).</p>
+<p>We now have an outline description of how a login session might work. In order to obtain a more complete picture we need to consider mechanisms to encrypt the passwords, how the Hyper Text Transfer Protocol (HTTP) works and how cookie sessions and JWT work.</p>
+</div>
+<div class="section" id="password-hashing">
+<h2>Password Hashing<a class="headerlink" href="#password-hashing" title="Permalink to this headline">¶</a></h2>
+<p>If the passwords were stored in the users table unaltered it would be a security risk because the computer they were stored on might be accessed by a criminal. It is normal practice to encrypt the passwords with an algorithm called <cite>bcrypt</cite> which creates a long (around 50) unique string of characters from any password. The bcrypt algorithm has the property that given the same string (password in this case) it will always give the same output. However, it can not be used in reverse to recreate a password from the encrypted password. In fact there is no known way of reversing the bcrypt encryption of a password.</p>
+<p>When the password is posted to the server during registration the server script should encrypt it with bcrypt and only store the encrypted version in the <cite>users</cite> table. When the password is posted to the server during login it should be encrypted with bcrypt and the encrypted version compared with the encrypted version stored in the <cite>users</cite> table.</p>
+<p>As described above the <cite>users</cite> table, if it fell into the wrong hands, could still be a security risk even though the passwords are all encrypted. This is because it is possible to feed in very large numbers of candidate passwords into the bcrypt algorithm and construct a table of passwords with their corresponding bcrypt hash. This is known as a rainbow table. Now if any of the bcrypt hashes in the rainbow table is the same as one of the bcrypt hashes in the <cite>users</cite> table then that user&#8217;s username and password are now known to the criminal.</p>
+<p>Two factors make the rainbow table approach to hacking users&#8217; passwords difficult. Firstly, bcrypt is very slow because it requires a lot of processing power to hash a password. This means that it takes a long time even with powerful computers to generate a rainbow table. Despite this it would be feasable albeit expensive for large rainbow tables to be made. The second factor is that before the passwords are hashed by bcrypt a random string of characters (called a salt) is added to the passwords. This makes a rainbow table much less useful to the criminal since with the salt added nobodys password will be in a dictionary or a list of pets names and they will all be very long even if the users password was very short.</p>
+<p>When the salt (random string of characters) is added to a user&#8217;s password at registration it is necessary to store the salt with the hashed password in the <cite>users</cite> table. This is because the same salt needs to be appended to the user&#8217;s password when they log in before bcrypt hashes it for comparison with the value in the table. The salt for each user is therefore recorded in the <cite>users</cite> table. A criminal could make a rainbow table by adding a particular user&#8217;s salt to a large number of possible passwords and hashing them all with bcrypt. In effect the criminal now needs to construct a rainbow table for each user. This together with the slowness of bcrypt makes this system or storing passwords resistant to rainbow attacks.</p>
+<p>An example of the output from the node bcrypt module&#8217;s implementation of bcrypt is: <code class="docutils literal"><span class="pre">$2a$10$Ns876QMLlCV4nT5ctzDHJeRMrvbVvZeGHn3gtJ6sJn5fILfEivZGa</span></code> This is representitive of what would be stored in the <cite>password</cite> field of our <cite>users</cite> table.</p>
+<p>The output can be broken down into four parts:</p>
+<div class="code highlight-python"><div class="highlight"><pre>2a -&gt; prefix
+10 -&gt; work factor
+Ns876QMLlCV4nT5ctzDHJe -&gt; salt
+RMrvbVvZeGHn3gtJ6sJn5fILfEivZGa -&gt; hashed password
+</pre></div>
+</div>
+<p>The first part indicates that bcrypt was used to generate the string. Next is the <cite>work factor</cite> which is 10 in this case. The higher this number the more processing power is required for bcrypt to generate the hash. By including it in the output of the hash, bcrypt can use that same number if it is asked to hash and compare a password with one it has previously hashed with that work number. Next is the salt which enables bcrypt to add this to a password if it is asked to hash and compare a password with one it has previously hashed with the same salt.</p>
+<p>Passwords for more important confidential information can be hashed using higher work factors giving greater security for a small cost. Also, as computers get more powerful the work factor used can be increased to maintain the same level of security for users&#8217; passwords.</p>
+</div>
+<div class="section" id="http">
+<h2>HTTP<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.webnots.com/seo-tools/http-header-checker">https://www.webnots.com/seo-tools/http-header-checker</a></p>
+<div class="section" id="curl">
+<h3>cURL<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="registration-script">
+<h2>Registration Script<a class="headerlink" href="#registration-script" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="login-script">
+<h2>Login Script<a class="headerlink" href="#login-script" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="cookie-sessions">
+<h2>Cookie Sessions<a class="headerlink" href="#cookie-sessions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="json-web-tokens">
+<h2>Json Web Tokens<a class="headerlink" href="#json-web-tokens" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Login2</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#password-hashing">Password Hashing</a></li>
+<li><a class="reference internal" href="#http">HTTP</a><ul>
+<li><a class="reference internal" href="#curl">cURL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#registration-script">Registration Script</a></li>
+<li><a class="reference internal" href="#login-script">Login Script</a></li>
+<li><a class="reference internal" href="#cookie-sessions">Cookie Sessions</a></li>
+<li><a class="reference internal" href="#json-web-tokens">Json Web Tokens</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="login.html" title="previous chapter">Login</a></li>
+      <li>Next: <a href="error-handling.html" title="next chapter">Error Handling</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/login2.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Steve Greig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/login2.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
