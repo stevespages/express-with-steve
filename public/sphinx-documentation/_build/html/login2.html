@@ -353,6 +353,9 @@ app.listen(3000)
 </div>
 <p>The session object with its modifications is stored on the server with its corresponding sid. So, when a request with a cookie header containing a sid is made to the server the server will get the session object corresponding to that sid from memory (RAM or disc) and use it in preparing the http response it sends to the browser. In the login script we are going to write a <cite>userId</cite> property will be created on the session object and set to the id of the user taken from the <cite>users</cite> table. The <cite>userId</cite> will be an integer not text as we used above to demonstrate that we can modify the session object.</p>
 <p>It would be possible to use the username instead of the user&#8217;s id and so our login system would only require username and password to work. One reason not to do this is that looking up data in a table tends to be faster using integers than text. Although at login we have to look up the username we can use the user&#8217;s id (an integer) for any subsequent data queries. For a complex website such as banking software there maybe many database queries necessary before sending the response to the browser.</p>
+</div>
+<div class="section" id="app-from-scratch">
+<h2>App from Scratch<a class="headerlink" href="#app-from-scratch" title="Permalink to this headline">¶</a></h2>
 <p>We will create an app from scratch with registration, login and different homepages for logged in and non-logged in users. The homepage for logged in users will be personalised. First create a new directory for the app and change directory into it and then initiate the npm system and install the necessary npm modules:</p>
 <div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ mkdir my-app
 steve@Dell ~ $ cd my-app
@@ -375,31 +378,54 @@ sqlite&gt; CREATE TABLE users (
 sqlite&gt;
 </pre></div>
 </div>
-<p>Next create app.js (<code class="docutils literal"><span class="pre">vim</span> <span class="pre">app.js</span></code>) and write the code:</p>
-<div class="code highlight-python"><div class="highlight"><pre>// app.js code
+<p>Next create app.js (<code class="docutils literal"><span class="pre">vim</span> <span class="pre">app.js</span></code>) and write the code for the register route:</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+const bcrypt = require(&#39;bcrypt&#39;);
+const sqlite3 = require(&#39;sqlite3&#39;);
+
+const app = express();
+
+const db = new sqlite3.Database(&#39;my-app.db&#39;);
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post(&#39;/register&#39;, function(req, res) {
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    let sql = `INSERT INTO users(username, password) VALUES (?, ?)`;
+    db.run(sql, [req.body.username, hash], () =&gt; {});
+    res.end();
+});
+
+app.listen(3000)
 </pre></div>
 </div>
 <p>Next open a new terminal, change directory into <cite>my-app</cite> and run <code class="docutils literal"><span class="pre">nodemon</span> <span class="pre">app.js</span></code></p>
-<p>Next test the registration code with <cite>cURL</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ curl -d &quot;username=Steve&amp;password=secret&quot; -X POST http://localhost:3001/register
-steve@Dell ~ $
+<p>Next test the registration code with <cite>cURL</cite>. We will put the curl command in a bash (<cite>.sh</cite>) file so that as the testing becomes more complex to handle the full registration and login procedure we can run a series of curl commands by running a single bash script. Using a text editor we create <cite>curl-test.sh</cite> and put the following code in it:</p>
+<div class="code highlight-python"><div class="highlight"><pre>#!/bin/bash
+USERNAME=$1
+PASSWORD=$2
+curl -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; -X POST http://localhost:3000/register
 </pre></div>
 </div>
-<p>Next check the user has been entered into the <cite>users</cite> table:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/my-app $ sqlite3 my-app.db
+<p>Next run this script providing username, Jack, and password, 1234, as arguments to the bash script:</p>
+<div class="code highlight-python"><div class="highlight"><pre>bash curl-test.sh Jack 1234
+</pre></div>
+</div>
+<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sqlite3 my-app.db
 SQLite version 3.11.0 2016-02-15 17:29:24
 Enter &quot;.help&quot; for usage hints.
 sqlite&gt; SELECT * FROM users;
-1|Steve|$2b$10$dOHTICZC0TwvHnUgmKr6AuHJD.GR6PmrTes7BATGe.EEcjC3jPvfG
+1|fred|$2b$10$.YfhD7MGMaiSJDcHffj64O9bWhfJJCldoRQkJnrgsMRJ4o51RFmO6
+3|Matt|$2b$10$PLrs3GcBm3anAFR8a5v7HOCLWgjdowOPyoug.ykP6QY7xE7GPT5cS
+5|Steve|$2b$10$xikSVmyZoG4p3qM1wSCopOCBM7qGT0RkaSsVQLwtMGflgwW8gGFDG
+7|Jack|$2b$10$SnXhQbfSJCXNmE5V12WntOCDW/oVdBZwd2rHcj9Pw3WMkb.EmBRZW
 sqlite&gt;
 </pre></div>
 </div>
-<p>Next check the user with a series of <cite>cURL</cite> requests. There are now a large number of requests we would like to test on our app. If we ran these individually it would get time consuming especially if we had to change the code in app.js and then run them again. So, we can put the <cite>cURL</cite> requests in a file called <cite>curlrequests.sh</cite> and then run the contents of the file from the command line.</p>
-<p><cite>curlrequests.sh</cite> looks like this:</p>
-<div class="code highlight-python"><div class="highlight"><pre>curl....
+<p>Next add the login route to app.js:</p>
+<div class="code highlight-python"><div class="highlight"><pre>// code
 </pre></div>
 </div>
-<p>We alter the permissions on <cite>curlrequests.sh</cite> so we can run it:</p>
 <div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/my-app $ chmod +x curlrequests.sh
 </pre></div>
 </div>
@@ -414,6 +440,152 @@ sqlite&gt;
 </div>
 <div class="section" id="json-web-tokens">
 <h2>Json Web Tokens<a class="headerlink" href="#json-web-tokens" title="Permalink to this headline">¶</a></h2>
+<p>Instead of using sessions to perpetuate the logged in state we can use JWTs.</p>
+<div class="code highlight-python"><div class="highlight"><pre>npm install jsonwebtoken
+</pre></div>
+</div>
+<p>In app.js require it and also create a secret. Modify the post.login script to create and return a JWT if the user logs in successfully:</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+const bcrypt = require(&#39;bcrypt&#39;);
+const sqlite3 = require(&#39;sqlite3&#39;).verbose();
+
+// NEW CODE
+const jsonwebtoken = require(&#39;jsonwebtoken&#39;);
+
+const app = express()
+
+const db = new sqlite3.Database(&#39;myApp.db&#39;);
+
+// NEW CODE
+const SECRET = &quot;NEVER MAKE THIS PUBLIC IN PRODUCTION&quot;;
+
+app.use(express.json());
+
+app.post(&#39;/register&#39;, (req, res) =&gt; {
+    console.log(&#39;You posted to the /register path&#39;);
+    console.log(req.body.username);
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    console.log(&#39;hash: &#39;, hash);
+    let sql = `INSERT INTO users(username, password) VALUES (?, ?)`;
+    db.run(sql, [req.body.username, hash], () =&gt; {});
+    res.end();
+});
+
+app.post(&#39;/login&#39;, (req, res) =&gt; {
+    console.log(&#39;You posted to the /login path&#39;);
+    let sql = `SELECT * FROM users WHERE username = ?`;
+    db.get(sql, [req.body.username], (err, row) =&gt; {
+        if(!row){
+            console.log(&#39;Invalid Username&#39;);
+            res.end();
+        } else {
+            if(bcrypt.compareSync(req.body.password, row.password)){
+                console.log(&#39;You are logged in&#39;);
+
+                // NEW CODE
+                const token = jsonwebtoken.sign(
+                    { username: row.username },
+                    SECRET,
+                    { expiresIn: 60 * 60 }
+                );
+                return res.json({ token });
+                // END OF NEW CODE
+
+            } else {
+                console.log(&#39;Incorrect Password&#39;);
+                res.end()
+            }
+        }
+    })
+});
+
+app.listen(3000, () =&gt; {
+    console.log(&#39;See localhost:3000&#39;);
+});
+</pre></div>
+</div>
+<p>If we now make a successful login using httpie we can see a JWT is returned:</p>
+<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ http POST localhost:3000/login username=&#39;fred&#39; password=&#39;secret&#39;
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 164
+Content-Type: application/json; charset=utf-8
+Date: Sun, 13 Jan 2019 23:26:08 GMT
+ETag: W/&quot;a4-jxHLjTk91r3su8TlKUVWUnsFyjk&quot;
+X-Powered-By: Express
+
+{
+    &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+}
+
+steve@Dell ~ $
+</pre></div>
+</div>
+<p>The browser would send this token back to the server on any future requests in its Authorization header. The server would verify the JWT and then return password protected data back to the browser. We can implement a get route in app.js to demonstrate this:</p>
+<div class="code highlight-python"><div class="highlight"><pre>app.get(&#39;/secret&#39;, (req, res) =&gt; {
+    const authHeaderValue = req.headers.authorization;
+    const token = jsonwebtoken.verify(authHeaderValue, SECRET);
+    return res.json({ message: &quot;You made it&quot; });
+});
+</pre></div>
+</div>
+<p>Now when we make a request to the /secret route with the JWT in the Authorization header, the JWT is verified and the server returns the protected data:</p>
+<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 25
+Content-Type: application/json; charset=utf-8
+Date: Sun, 13 Jan 2019 23:57:59 GMT
+ETag: W/&quot;19-pXLuIQc7MqYjz2bJcUKii/lc2L0&quot;
+X-Powered-By: Express
+
+{
+    &quot;message&quot;: &quot;You made it&quot;
+}
+</pre></div>
+</div>
+<p>In the get route to /secret the code should be in a try / catch block so that if the JWT is not verified a response can be sent to the browser indicating that they are not authorized. This can be seen here:</p>
+<div class="code highlight-python"><div class="highlight"><pre>app.get(&#39;/secret&#39;, (req, res) =&gt; {
+    try {
+        const authHeaderValue = req.headers.authorization;
+        const token = jsonwebtoken.verify(authHeaderValue, SECRET);
+        return res.json({ message: &quot;You made it&quot; });
+    } catch(e) {
+        return res.status(401).json({ message: &quot;Unauthorized&quot; });
+    }
+});
+</pre></div>
+</div>
+<p>Now we send a request with the JWT followed by one in which a single character of the JWT has been changed from a z to a y:</p>
+<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 25
+Content-Type: application/json; charset=utf-8
+Date: Mon, 14 Jan 2019 00:14:07 GMT
+ETag: W/&quot;19-pXLuIQc7MqYjz2bJcUKii/lc2L0&quot;
+X-Powered-By: Express
+
+{
+    &quot;message&quot;: &quot;You made it&quot;
+}
+
+steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0yFX_s&quot;
+HTTP/1.1 401 Unauthorized
+Connection: keep-alive
+Content-Length: 26
+Content-Type: application/json; charset=utf-8
+Date: Mon, 14 Jan 2019 00:14:38 GMT
+ETag: W/&quot;1a-pljHtlo127JYJR4E/RYOPb6ucbw&quot;
+X-Powered-By: Express
+
+{
+    &quot;message&quot;: &quot;Unauthorized&quot;
+}
+
+steve@Dell ~ $
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -431,6 +603,7 @@ sqlite&gt;
 <li><a class="reference internal" href="#registration-script">Registration Script</a></li>
 <li><a class="reference internal" href="#login-script">Login Script</a></li>
 <li><a class="reference internal" href="#cookie-sessions">Cookie Sessions</a></li>
+<li><a class="reference internal" href="#app-from-scratch">App from Scratch</a></li>
 <li><a class="reference internal" href="#json-web-tokens">Json Web Tokens</a></li>
 </ul>
 </li>

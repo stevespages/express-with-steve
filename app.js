@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 // heroku will assign a port env variable
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const app = express()
 
