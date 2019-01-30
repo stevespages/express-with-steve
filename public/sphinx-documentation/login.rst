@@ -433,25 +433,158 @@ Next test the registration code with `cURL`. We will put the curl command in a b
    #!/bin/bash
    USERNAME=$1
    PASSWORD=$2
-   curl -d "username=${USERNAME}&password=${PASSWORD}" -X POST http://localhost:3000/register
-
+   echo '********************************************'
+   echo ''
+   echo 'curl -L -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register'
+   echo ''
+   curl -L -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'sqlite3 my-app.db "select * from users";'
+   echo ''
+   sqlite3 my-app.db "select * from users";
+   sleep 1
+   echo ''
+   echo '********************************************'
+   
 Next run this script providing username, Jack, and password, 1234, as arguments to the bash script:
 
 .. code::
 
    bash curl-test.sh Jack 1234
 
+The output in the terminal:
+
 .. code::
 
-   steve@Dell ~/Desktop/my-app $ sqlite3 my-app.db
-   SQLite version 3.11.0 2016-02-15 17:29:24
-   Enter ".help" for usage hints.
-   sqlite> SELECT * FROM users;
-   1|fred|$2b$10$.YfhD7MGMaiSJDcHffj64O9bWhfJJCldoRQkJnrgsMRJ4o51RFmO6
-   3|Matt|$2b$10$PLrs3GcBm3anAFR8a5v7HOCLWgjdowOPyoug.ykP6QY7xE7GPT5cS
-   5|Steve|$2b$10$xikSVmyZoG4p3qM1wSCopOCBM7qGT0RkaSsVQLwtMGflgwW8gGFDG
-   7|Jack|$2b$10$SnXhQbfSJCXNmE5V12WntOCDW/oVdBZwd2rHcj9Pw3WMkb.EmBRZW
-   sqlite>
+   steve@Dell ~/Desktop/my-app $ sh curl-test.sh Jack 1234
+   ********************************************
+   
+   curl -L -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register
+   
+   Home Page!
+   
+   ********************************************
+   
+   sqlite3 my-app.db "select * from users";
+   
+   18|Jack|$2b$10$L2gx89pxkwI7v6BSDuBvDOuewOrsLBe2GXyFGdlCrEbry/yaGh476
+   
+   ********************************************
+   steve@Dell ~/Desktop/my-app $
+
+
+Next add the post route for handling login:
+
+..code::
+
+   const express = require('express');
+   const session = require('express-session');
+   const bcrypt = require('bcrypt');
+   const sqlite3 = require('sqlite3');
+   
+   const app = express();
+   
+   const db = new sqlite3.Database('my-app.db');
+   
+   app.use(express.urlencoded({ extended: true }));
+   
+   app.use(session({
+       secret: 'keyboard cat'
+   }));
+   
+   app.post('/register', function(req, res) {
+       const hash = bcrypt.hashSync(req.body.password, 10);
+       let sql = `INSERT INTO users(username, password) VALUES (?, ?)`;
+       db.run(sql, [req.body.username, hash], () => {});
+       res.redirect('/');
+   });
+   
+   app.post('/login', (req, res) => {
+       let sql = `SELECT * FROM users WHERE username = ?`;
+       db.get(sql, [req.body.username], function(err, row) {
+           if(!row){
+               console.log('Invalid Username');
+               res.redirect('/login');
+           } else {
+               if(bcrypt.compareSync(req.body.password, row.password)){
+                   req.session.userId = row.id;
+                   console.log('You are logged in');
+                   console.log(req.session);
+                   res.redirect('/');
+               } else {
+                   console.log('Incorrect Password');
+                   res.redirect('/login');
+               }
+           }
+       })
+   });
+   
+   app.get('/', function(req, res, next){
+       if(typeof req.session.userId !== 'undefined'){
+           res.send('Home page! You are Logged In.\n');
+       } else {
+           res.send('Home page! You are not Logged In.\n');
+       }
+   });
+   
+   app.listen(3000)
+
+Next test the code by extending our `curl-test.sh` file to store cookies (-c) on the register post request and send them (-b) to the server on the login post request:
+
+.. code::
+
+   #!/bin/bash
+   USERNAME=$1
+   PASSWORD=$2
+   echo '********************************************'
+   echo ''
+   echo 'curl -L -c cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register'
+   echo ''
+   curl -L -c cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'sqlite3 my-app.db "select * from users";'
+   echo ''
+   sqlite3 my-app.db "select * from users";
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'curl -L -b cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/login'
+   echo ''
+   curl -L -b cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/login
+   echo ''
+
+Next run the above and see the output:
+
+.. code::
+
+   steve@Dell ~/Desktop/my-app $ sh curl-test.sh Jane x
+   ********************************************
+   
+   curl -L -c cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register
+   
+   Home page! You are not Logged In.
+   
+   ********************************************
+   
+   sqlite3 my-app.db "select * from users";
+   
+   18|Jack|$2b$10$L2gx89pxkwI7v6BSDuBvDOuewOrsLBe2GXyFGdlCrEbry/yaGh476
+   30|Jane|$2b$10$j8DqXHt/9d2Bc.eBkOfWCOSo2xEUTFjcwj384hYAabS/UPB/5TkW2
+   
+   ********************************************
+   
+   curl -L -b cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/login
+   
+   Home page! You are Logged In.
+   
+   steve@Dell ~/Desktop/my-app $
 
 Next add the kitchen sink to app.js:
 
