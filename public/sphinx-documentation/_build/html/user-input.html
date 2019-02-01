@@ -91,7 +91,6 @@ app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
 const express = require(&#39;express&#39;)
 const validator = require(&#39;express-validator&#39;)
 const app = express()
-const port =3000
 
 app.use(express.urlencoded({ extended: false }))
 app.use(validator())
@@ -115,17 +114,15 @@ app.post(&#39;/example&#39;, function (req, res) {
   }
 })
 
-app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
+app.listen(3000)
 </pre></div>
 </div>
 <p>The code below is similar to the previous example but it conforms more closely to the approach taken in the MDN tutorial and the <cite>express-validator</cite> documentation.</p>
 <div class="code highlight-python"><div class="highlight"><pre>const express = require (&#39;express&#39;)
-const bodyParser = require(&#39;body-parser&#39;)
 const { check, validationResult } = require(&#39;express-validator/check&#39;)
 const app = express()
-const port = 3000
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }))
 
 app.get(&#39;/&#39;, function (req, res) {
 let output = &#39;&lt;form method=&quot;post&quot;&gt;&#39;
@@ -147,7 +144,7 @@ res.send(&#39;OK&#39;)
 })
 
 
-app.listen(port, () =&gt; console.log(`listening on port ${port}`))
+app.listen(3000)
 </pre></div>
 </div>
 <p>If the form is submitted with a value for the <cite>firstName</cite> input field less than 1 character long (ie. if nothing is entered into that form element by the user) then the <cite>errors</cite> variable will have a value so <cite>res.send(errors)</cite> will be executed. If the user enters a value in the <cite>firstName</cite> field <cite>errors</cite> will not have a value and so <cite>res.send(&#8216;OK&#8217; + errors)</cite> will be executed</p>

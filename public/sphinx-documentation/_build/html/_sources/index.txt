@@ -12,6 +12,7 @@ Express With Steve
    node-modules
    middleware
    debugging
+   error-handling
    user-input
    databases
    login

@@ -586,6 +586,150 @@ Next run the above and see the output:
    
    steve@Dell ~/Desktop/my-app $
 
+Next add validation for the username (which should be an email) and password (which should be at least 5 characters long) in the app.post('/register') handler:
+
+.. code::
+
+   const express = require('express');
+   const session = require('express-session');
+   const bcrypt = require('bcrypt');
+   const sqlite3 = require('sqlite3');
+   const { check, validationResult } = require('express-validator/check');
+   
+   const app = express();
+   
+   const db = new sqlite3.Database('my-app.db');
+   
+   app.use(express.urlencoded({ extended: true }));
+   
+   app.use(session({
+       secret: 'keyboard cat'
+   }));
+   
+   app.post('/register', [
+           check('username').isEmail(),
+           check('password').isLength({ min:5 })
+       ], function(req, res) {
+           const errors = validationResult(req);
+           if(!errors.isEmpty()){
+               res.send('errors');
+           } else {
+               const hash = bcrypt.hashSync(req.body.password, 10);
+               let sql = `INSERT INTO users(username, password) VALUES (?, ?)`;
+               db.run(sql, [req.body.username, hash], () => {});
+               res.redirect('/');
+           }
+   });
+   
+   app.post('/login', (req, res) => {
+       let sql = `SELECT * FROM users WHERE username = ?`;
+       db.get(sql, [req.body.username], function(err, row) {
+           if(!row){
+               console.log('Invalid Username');
+               res.redirect('/login');
+           } else {
+               if(bcrypt.compareSync(req.body.password, row.password)){
+                   req.session.userId = row.id;
+                   console.log('You are logged in');
+                   console.log(req.session);
+                   res.redirect('/');
+               } else {
+                   console.log('Incorrect Password');
+                   res.redirect('/login');
+               }
+           }
+       })
+   });
+   
+   app.get('/', function(req, res, next){
+       if(typeof req.session.userId !== 'undefined'){
+           res.send('Home page! You are Logged In.\n');
+       } else {
+           res.send('Home page! You are not Logged In.\n');
+       }
+   });
+   
+   app.listen(3000)
+
+Next modify curl-test.sh so as to test the username and password validation steps:
+
+.. code::
+
+   !/bin/bash
+   USERNAME=$1
+   PASSWORD=$2
+   echo '********************************************'
+   echo ''
+   echo 'curl -d "username=notanemail&password=${PASSWORD}" http://localhost:3000/register'
+   echo ''
+   curl -d "username=notanemail&password=${PASSWORD}" http://localhost:3000/register
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'curl -d "username=${USERNAME}&password=xyz" http://localhost:3000/register'
+   echo ''
+   curl -d "username=${USERNAME}&password=xyz" http://localhost:3000/register
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'curl -L -c cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register'
+   echo ''
+   curl -L -c cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'sqlite3 my-app.db "select * from users";'
+   echo ''
+   sqlite3 my-app.db "select * from users";
+   sleep 1
+   echo ''
+   echo '********************************************'
+   echo ''
+   echo 'curl -L -b cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/login'
+   echo ''
+   curl -L -b cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/login
+   echo ''
+
+Next run curl-test.sh to see if the validation is working:
+
+.. code::
+
+   steve@Dell ~/Desktop/my-app $ sh curl-test.sh helena@gmail.com blahjj
+   ********************************************
+   
+   curl -d "username=notanemail&password=${PASSWORD}" http://localhost:3000/register
+   
+   errors
+   ********************************************
+   
+   curl -d "username=${USERNAME}&password=xyz" http://localhost:3000/register
+   
+   errors
+   ********************************************
+   
+   curl -L -c cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/register
+   
+   Home page! You are not Logged In.
+   
+   ********************************************
+   
+   sqlite3 my-app.db "select * from users";
+   
+   18|Jack|$2b$10$L2gx89pxkwI7v6BSDuBvDOuewOrsLBe2GXyFGdlCrEbry/yaGh476
+   30|Jane|$2b$10$j8DqXHt/9d2Bc.eBkOfWCOSo2xEUTFjcwj384hYAabS/UPB/5TkW2
+   37|helena@gmail.com|$2b$10$fcXwTTcaGdUp6sNS91lfveKVOOcfXw8.xCctoQWXNUZ1iouod45Hy
+   
+   ********************************************
+   
+   curl -L -b cookie-jar.txt -d "username=${USERNAME}&password=${PASSWORD}" http://localhost:3000/login
+   
+   Home page! You are Logged In.
+   
+   steve@Dell ~/Desktop/my-app $ 
+
 Next add the kitchen sink to app.js:
 
 .. code::

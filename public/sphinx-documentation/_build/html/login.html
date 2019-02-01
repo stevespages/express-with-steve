@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Learning Express 0 documentation" href="index.html" />
-    <link rel="next" title="Error Handling" href="error-handling.html" />
+    <link rel="next" title="Asynchronous" href="asynchronous.html" />
     <link rel="prev" title="Databases" href="databases.html" />
    
   
@@ -542,6 +542,144 @@ Home page! You are Logged In.
 steve@Dell ~/Desktop/my-app $
 </pre></div>
 </div>
+<p>Next add validation for the username (which should be an email) and password (which should be at least 5 characters long) in the app.post(&#8216;/register&#8217;) handler:</p>
+<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+const session = require(&#39;express-session&#39;);
+const bcrypt = require(&#39;bcrypt&#39;);
+const sqlite3 = require(&#39;sqlite3&#39;);
+const { check, validationResult } = require(&#39;express-validator/check&#39;);
+
+const app = express();
+
+const db = new sqlite3.Database(&#39;my-app.db&#39;);
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: &#39;keyboard cat&#39;
+}));
+
+app.post(&#39;/register&#39;, [
+        check(&#39;username&#39;).isEmail(),
+        check(&#39;password&#39;).isLength({ min:5 })
+    ], function(req, res) {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            res.send(&#39;errors&#39;);
+        } else {
+            const hash = bcrypt.hashSync(req.body.password, 10);
+            let sql = `INSERT INTO users(username, password) VALUES (?, ?)`;
+            db.run(sql, [req.body.username, hash], () =&gt; {});
+            res.redirect(&#39;/&#39;);
+        }
+});
+
+app.post(&#39;/login&#39;, (req, res) =&gt; {
+    let sql = `SELECT * FROM users WHERE username = ?`;
+    db.get(sql, [req.body.username], function(err, row) {
+        if(!row){
+            console.log(&#39;Invalid Username&#39;);
+            res.redirect(&#39;/login&#39;);
+        } else {
+            if(bcrypt.compareSync(req.body.password, row.password)){
+                req.session.userId = row.id;
+                console.log(&#39;You are logged in&#39;);
+                console.log(req.session);
+                res.redirect(&#39;/&#39;);
+            } else {
+                console.log(&#39;Incorrect Password&#39;);
+                res.redirect(&#39;/login&#39;);
+            }
+        }
+    })
+});
+
+app.get(&#39;/&#39;, function(req, res, next){
+    if(typeof req.session.userId !== &#39;undefined&#39;){
+        res.send(&#39;Home page! You are Logged In.\n&#39;);
+    } else {
+        res.send(&#39;Home page! You are not Logged In.\n&#39;);
+    }
+});
+
+app.listen(3000)
+</pre></div>
+</div>
+<p>Next modify curl-test.sh so as to test the username and password validation steps:</p>
+<div class="code highlight-python"><div class="highlight"><pre>!/bin/bash
+USERNAME=$1
+PASSWORD=$2
+echo &#39;********************************************&#39;
+echo &#39;&#39;
+echo &#39;curl -d &quot;username=notanemail&amp;password=${PASSWORD}&quot; http://localhost:3000/register&#39;
+echo &#39;&#39;
+curl -d &quot;username=notanemail&amp;password=${PASSWORD}&quot; http://localhost:3000/register
+sleep 1
+echo &#39;&#39;
+echo &#39;********************************************&#39;
+echo &#39;&#39;
+echo &#39;curl -d &quot;username=${USERNAME}&amp;password=xyz&quot; http://localhost:3000/register&#39;
+echo &#39;&#39;
+curl -d &quot;username=${USERNAME}&amp;password=xyz&quot; http://localhost:3000/register
+sleep 1
+echo &#39;&#39;
+echo &#39;********************************************&#39;
+echo &#39;&#39;
+echo &#39;curl -L -c cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/register&#39;
+echo &#39;&#39;
+curl -L -c cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/register
+sleep 1
+echo &#39;&#39;
+echo &#39;********************************************&#39;
+echo &#39;&#39;
+echo &#39;sqlite3 my-app.db &quot;select * from users&quot;;&#39;
+echo &#39;&#39;
+sqlite3 my-app.db &quot;select * from users&quot;;
+sleep 1
+echo &#39;&#39;
+echo &#39;********************************************&#39;
+echo &#39;&#39;
+echo &#39;curl -L -b cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/login&#39;
+echo &#39;&#39;
+curl -L -b cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/login
+echo &#39;&#39;
+</pre></div>
+</div>
+<p>Next run curl-test.sh to see if the validation is working:</p>
+<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sh curl-test.sh helena@gmail.com blahjj
+********************************************
+
+curl -d &quot;username=notanemail&amp;password=${PASSWORD}&quot; http://localhost:3000/register
+
+errors
+********************************************
+
+curl -d &quot;username=${USERNAME}&amp;password=xyz&quot; http://localhost:3000/register
+
+errors
+********************************************
+
+curl -L -c cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/register
+
+Home page! You are not Logged In.
+
+********************************************
+
+sqlite3 my-app.db &quot;select * from users&quot;;
+
+18|Jack|$2b$10$L2gx89pxkwI7v6BSDuBvDOuewOrsLBe2GXyFGdlCrEbry/yaGh476
+30|Jane|$2b$10$j8DqXHt/9d2Bc.eBkOfWCOSo2xEUTFjcwj384hYAabS/UPB/5TkW2
+37|helena@gmail.com|$2b$10$fcXwTTcaGdUp6sNS91lfveKVOOcfXw8.xCctoQWXNUZ1iouod45Hy
+
+********************************************
+
+curl -L -b cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/login
+
+Home page! You are Logged In.
+
+steve@Dell ~/Desktop/my-app $
+</pre></div>
+</div>
 <p>Next add the kitchen sink to app.js:</p>
 <div class="code highlight-python"><div class="highlight"><pre>app.use(express.urlencoded({ extended: true }));
 
@@ -784,7 +922,7 @@ steve@Dell ~ $
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="databases.html" title="previous chapter">Databases</a></li>
-      <li>Next: <a href="error-handling.html" title="next chapter">Error Handling</a></li>
+      <li>Next: <a href="asynchronous.html" title="next chapter">Asynchronous</a></li>
   </ul></li>
 </ul>
 </div>

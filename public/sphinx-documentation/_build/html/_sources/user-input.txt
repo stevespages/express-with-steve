@@ -68,7 +68,6 @@ Express provides the express-validator module which includes built in validation
    const express = require('express')
    const validator = require('express-validator')
    const app = express()
-   const port =3000
    
    app.use(express.urlencoded({ extended: false }))
    app.use(validator())
@@ -92,19 +91,17 @@ Express provides the express-validator module which includes built in validation
      }
    })
    
-   app.listen(port, () => console.log(`app listening on port ${port}`))
+   app.listen(3000)
 
 The code below is similar to the previous example but it conforms more closely to the approach taken in the MDN tutorial and the `express-validator` documentation.
 
 .. code::
 
    const express = require ('express')
-   const bodyParser = require('body-parser')
    const { check, validationResult } = require('express-validator/check')
    const app = express()
-   const port = 3000
    
-   app.use(bodyParser.urlencoded({ extended: false }))
+   app.use(express.urlencoded({ extended: false }))
    
    app.get('/', function (req, res) {
    let output = '<form method="post">'
@@ -126,7 +123,7 @@ The code below is similar to the previous example but it conforms more closely t
    })
    
    
-   app.listen(port, () => console.log(`listening on port ${port}`))
+   app.listen(3000)
 
 If the form is submitted with a value for the `firstName` input field less than 1 character long (ie. if nothing is entered into that form element by the user) then the `errors` variable will have a value so `res.send(errors)` will be executed. If the user enters a value in the `firstName` field `errors` will not have a value and so `res.send('OK' + errors)` will be executed
 

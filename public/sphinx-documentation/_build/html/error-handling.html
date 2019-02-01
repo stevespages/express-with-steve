@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Learning Express 0 documentation" href="index.html" />
-    <link rel="next" title="Asynchronous" href="asynchronous.html" />
-    <link rel="prev" title="Login" href="login.html" />
+    <link rel="next" title="User Input" href="user-input.html" />
+    <link rel="prev" title="Debugging" href="debugging.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -41,7 +41,14 @@
   <p><a class="reference internal" href="index.html"><em>Home</em></a></p>
 <div class="section" id="error-handling">
 <h1>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h1>
-<p>The <cite>db.get()</cite> function used here has two arguments. The first is the sql query that it should run on the database it is connected to. The second argument is a callback function that the developer can write to make use of the result of the query to the database. We chose to write a function which sends the result to the browser. The function the devloper supplies should have two arguments here called <cite>err</cite> and <cite>row</cite>. The query result supplied to our callback function has two parts. The first is the error value and the second is the result value. If there is no error the first part of the result will be null and the second part will have data from the query. If there was an error the first part will have a description of the error and the second, result, part will be null. This enables the result to be processed on success and an error to be generated on failure of the query.</p>
+<p>The following is an example of throwing an error in Express:</p>
+<div class="code highlight-python"><div class="highlight"><pre>app.get(&#39;/next&#39;, (req, res, next) =&gt; {
+    setTimeout(() =&gt; {
+        return next(new Error(&#39;Something is dddddefinitely wrong&#39;));
+    })
+});
+</pre></div>
+</div>
 </div>
 
 
@@ -53,8 +60,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="login.html" title="previous chapter">Login</a></li>
-      <li>Next: <a href="asynchronous.html" title="next chapter">Asynchronous</a></li>
+      <li>Previous: <a href="debugging.html" title="previous chapter">Debugging</a></li>
+      <li>Next: <a href="user-input.html" title="next chapter">User Input</a></li>
   </ul></li>
 </ul>
 </div>
