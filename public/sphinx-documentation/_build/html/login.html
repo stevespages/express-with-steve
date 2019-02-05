@@ -1,86 +1,87 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Login &mdash; Learning Express 0 documentation</title>
-    
+    <title>Login &#8212; Learning Express 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
         VERSION:     '0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Asynchronous" href="asynchronous.html" />
     <link rel="prev" title="Databases" href="databases.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p><a class="reference internal" href="index.html"><em>Home</em></a></p>
+  <p><a class="reference internal" href="index.html"><span class="doc">Home</span></a></p>
 <div class="section" id="login">
 <h1>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>It is very often important for the response from a website to be tailored to the particular person who requested that response. In order to do this the server side script generating the response needs to have access to the identity of the user and what that user is authorized to access. Some websites may have several levels of authorization. Non logged in users can see some material while logged in ordinary users can additionally see password protected material and logged in administrators can edit material on the website. An overview of a typical implementation of a simple login system is given below.</p>
 <p>On initial registration the user supplies a username and password which is stored in a database on the server. The database will generate a unique user id for each user. Other information supplied by the user at registration or on later visits to the website may also be stored. Also information such as the date and time the user registered may be stored if it is likely to be useful. So after registration there will be a row in a <cite>users</cite> table corresponding to that user. The three columns (often called fields) of interest to the login mechanism are the <cite>user id</cite>, <cite>username</cite>, and <cite>password</cite>. The username is often the email address of the user and a verification step can be introduced involving sending an email to the user asking them to click a link if they want to register with the website. At its simplest a registered user consists of a single row in a <cite>users</cite> table with the three columns referred to above in it.</p>
-<p>When the user wants to login to the website they submit a form which posts a request to the website with their username and password. The server looks in the <cite>users</cite> table for a row in which the username matches the username given in the login form. It then extracts the password from that row and compares it with the password supplied by the user in the login form. If the passwords match the server then extracts the <cite>user id</cite> from the same row in the table and assigns it to a program variable which can be accessed from any part of the code that provides the website&#8217;s functionality. That program variable can provide two pieces of information. The first is the fact that it has been assigned a value. This indicates that a user is logged in and could be used to decide whether or not to display material that should not be available to non logged in users but which can be viewed by all logged in users. If the variable has not been assigned a value then the program knows that the user of the website is not logged in. The second piece of information the variable provides is the <cite>user id</cite> that was assigned to it. This can enable the program to fetch material specific to that user, for example from a database, and display it to them.</p>
-<p>The system described above would need the user to login to every page they visited on the website because there is no mechanism to remember that they are logged in. Every time they make a request for a page the server treats them as if they are a new unknown user. In order for the login to persist for a number of requests to the same site the server can send a unique string of characters to the users computer and keep a copy of that unique string together with the user&#8217;s <cite>user id</cite>. When the browser makes requests to the same website (the same domain) it will include this unique string in its request. The server will compare the string with all the strings it has sent out (each one represents a different user) and select the one that matches it and extract the <cite>user id</cite> associated with it. It will put this into the program variable discussed in the previous paragraph thereby reinstating the logged in state for that particular user. The unique string here will either be a session cookie or part of a session cookie or part of a JSON Web Token (JWT).</p>
+<p>When the user wants to login to the website they submit a form which posts a request to the website with their username and password. The server looks in the <cite>users</cite> table for a row in which the username matches the username given in the login form. It then extracts the password from that row and compares it with the password supplied by the user in the login form. If the passwords match the server then extracts the <cite>user id</cite> from the same row in the table and assigns it to a program variable which can be accessed from any part of the code that provides the website’s functionality. That program variable can provide two pieces of information. The first is the fact that it has been assigned a value. This indicates that a user is logged in and could be used to decide whether or not to display material that should not be available to non logged in users but which can be viewed by all logged in users. If the variable has not been assigned a value then the program knows that the user of the website is not logged in. The second piece of information the variable provides is the <cite>user id</cite> that was assigned to it. This can enable the program to fetch material specific to that user, for example from a database, and display it to them.</p>
+<p>The system described above would need the user to login to every page they visited on the website because there is no mechanism to remember that they are logged in. Every time they make a request for a page the server treats them as if they are a new unknown user. In order for the login to persist for a number of requests to the same site the server can send a unique string of characters to the users computer and keep a copy of that unique string together with the user’s <cite>user id</cite>. When the browser makes requests to the same website (the same domain) it will include this unique string in its request. The server will compare the string with all the strings it has sent out (each one represents a different user) and select the one that matches it and extract the <cite>user id</cite> associated with it. It will put this into the program variable discussed in the previous paragraph thereby reinstating the logged in state for that particular user. The unique string here will either be a session cookie or part of a session cookie or part of a JSON Web Token (JWT).</p>
 <p>We now have an outline description of how a login session might work. In order to obtain a more complete picture we need to consider mechanisms to encrypt the passwords, Hyper Text Transfer Protocol (HTTP) headers, cookie sessions and JWTs.</p>
 </div>
 <div class="section" id="password-hashing">
 <h2>Password Hashing<a class="headerlink" href="#password-hashing" title="Permalink to this headline">¶</a></h2>
 <p>If the passwords were stored in the users table unaltered it would be a security risk because the computer they were stored on might be accessed by a criminal. It is normal practice to encrypt the passwords with an algorithm called <cite>bcrypt</cite> which creates a long (around 50) unique string of characters from any password. The bcrypt algorithm has the property that given the same string (password in this case) it will always give the same output. However, it can not be used in reverse to recreate a password from the encrypted password. In fact there is no known way of reversing the bcrypt encryption of a password.</p>
 <p>When the password is posted to the server during registration the server script should encrypt it with bcrypt and only store the encrypted version in the <cite>users</cite> table. When the password is posted to the server during login it should be encrypted with bcrypt and the encrypted version compared with the encrypted version stored in the <cite>users</cite> table.</p>
-<p>As described above the <cite>users</cite> table, if it fell into the wrong hands, could still be a security risk even though the passwords are all encrypted. This is because it is possible to feed in very large numbers of candidate passwords into the bcrypt algorithm and construct a table of passwords with their corresponding bcrypt hash. This is known as a rainbow table. Now if any of the bcrypt hashes in the rainbow table is the same as one of the bcrypt hashes in the <cite>users</cite> table then that user&#8217;s username and password are now known to the criminal.</p>
-<p>Two factors make the rainbow table approach to hacking users&#8217; passwords difficult. Firstly, bcrypt is very slow because it requires a lot of processing power to hash a password. This means that it takes a long time even with powerful computers to generate a rainbow table. Despite this it would be feasable albeit expensive for large rainbow tables to be made. The second factor is that before the passwords are hashed by bcrypt a random string of characters (called a salt) is added to the passwords. This makes a rainbow table much less useful to the criminal since with the salt added nobodys password will be in a dictionary or a list of pets names and they will all be very long even if the users password was very short.</p>
-<p>When the salt (random string of characters) is added to a user&#8217;s password at registration it is necessary to store the salt with the hashed password in the <cite>users</cite> table. This is because the same salt needs to be appended to the user&#8217;s password when they log in before bcrypt hashes it for comparison with the value in the table. The salt for each user is therefore recorded in the <cite>users</cite> table. A criminal could make a rainbow table by adding a particular user&#8217;s salt to a large number of possible passwords and hashing them all with bcrypt. In effect the criminal now needs to construct a rainbow table for each user. This together with the slowness of bcrypt makes this system or storing passwords resistant to rainbow attacks.</p>
-<p>An example of the output from the node bcrypt module&#8217;s implementation of bcrypt is: <code class="docutils literal"><span class="pre">$2a$10$Ns876QMLlCV4nT5ctzDHJeRMrvbVvZeGHn3gtJ6sJn5fILfEivZGa</span></code> This is representitive of what would be stored in the <cite>password</cite> field of our <cite>users</cite> table.</p>
+<p>As described above the <cite>users</cite> table, if it fell into the wrong hands, could still be a security risk even though the passwords are all encrypted. This is because it is possible to feed in very large numbers of candidate passwords into the bcrypt algorithm and construct a table of passwords with their corresponding bcrypt hash. This is known as a rainbow table. Now if any of the bcrypt hashes in the rainbow table is the same as one of the bcrypt hashes in the <cite>users</cite> table then that user’s username and password are now known to the criminal.</p>
+<p>Two factors make the rainbow table approach to hacking users’ passwords difficult. Firstly, bcrypt is very slow because it requires a lot of processing power to hash a password. This means that it takes a long time even with powerful computers to generate a rainbow table. Despite this it would be feasable albeit expensive for large rainbow tables to be made. The second factor is that before the passwords are hashed by bcrypt a random string of characters (called a salt) is added to the passwords. This makes a rainbow table much less useful to the criminal since with the salt added nobodys password will be in a dictionary or a list of pets names and they will all be very long even if the users password was very short.</p>
+<p>When the salt (random string of characters) is added to a user’s password at registration it is necessary to store the salt with the hashed password in the <cite>users</cite> table. This is because the same salt needs to be appended to the user’s password when they log in before bcrypt hashes it for comparison with the value in the table. The salt for each user is therefore recorded in the <cite>users</cite> table. A criminal could make a rainbow table by adding a particular user’s salt to a large number of possible passwords and hashing them all with bcrypt. In effect the criminal now needs to construct a rainbow table for each user. This together with the slowness of bcrypt makes this system or storing passwords resistant to rainbow attacks.</p>
+<p>An example of the output from the node bcrypt module’s implementation of bcrypt is: <code class="docutils literal"><span class="pre">$2a$10$Ns876QMLlCV4nT5ctzDHJeRMrvbVvZeGHn3gtJ6sJn5fILfEivZGa</span></code> This is representitive of what would be stored in the <cite>password</cite> field of our <cite>users</cite> table.</p>
 <p>The output can be broken down into four parts:</p>
-<div class="code highlight-python"><div class="highlight"><pre>2a -&gt; prefix
-10 -&gt; work factor
-Ns876QMLlCV4nT5ctzDHJe -&gt; salt
-RMrvbVvZeGHn3gtJ6sJn5fILfEivZGa -&gt; hashed password
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">prefix</span>
+<span class="mi">10</span> <span class="o">-&gt;</span> <span class="n">work</span> <span class="n">factor</span>
+<span class="n">Ns876QMLlCV4nT5ctzDHJe</span> <span class="o">-&gt;</span> <span class="n">salt</span>
+<span class="n">RMrvbVvZeGHn3gtJ6sJn5fILfEivZGa</span> <span class="o">-&gt;</span> <span class="n">hashed</span> <span class="n">password</span>
 </pre></div>
 </div>
 <p>The first part indicates that bcrypt was used to generate the string. Next is the <cite>work factor</cite> which is 10 in this case. The higher this number the more processing power is required for bcrypt to generate the hash. By including it in the output of the hash, bcrypt can use that same number if it is asked to hash and compare a password with one it has previously hashed with that work number. Next is the salt which enables bcrypt to add this to a password if it is asked to hash and compare a password with one it has previously hashed with the same salt.</p>
-<p>Passwords for more important confidential information can be hashed using higher work factors giving greater security for a small cost. Also, as computers get more powerful the work factor used can be increased to maintain the same level of security for users&#8217; passwords.</p>
+<p>Passwords for more important confidential information can be hashed using higher work factors giving greater security for a small cost. Also, as computers get more powerful the work factor used can be increased to maintain the same level of security for users’ passwords.</p>
 </div>
 <div class="section" id="registration-script">
 <h2>Registration Script<a class="headerlink" href="#registration-script" title="Permalink to this headline">¶</a></h2>
 <p>A website will likely have a page with a form on for people to register. The user would enter their username and password into the form and click a submit button. This would send an http post request to the server with the username and password in it. To keep things simple we will make http requests to the server using the command line with a program called <cite>cURL</cite>. So, now we just need to write the script that handles the incoming http post request by storing the username and hashed password in a database. Before that we need to create the database. I will use SQLite which is a very widely used non-server based SQL database.</p>
 <p>First we create a new directory and change directory into it and then <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code> which creates a <cite>package.json</cite> file enabling us to install the <cite>node package modules</cite> (npm) that will be used to create an express app to handle the http post requests:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mkdir my-app
-cd my-app
-npm init -y
-npm install express
-npm install sqlite3
-npm install bcrypt
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span>
+<span class="n">cd</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span>
+<span class="n">npm</span> <span class="n">init</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">npm</span> <span class="n">install</span> <span class="n">express</span>
+<span class="n">npm</span> <span class="n">install</span> <span class="n">sqlite3</span>
+<span class="n">npm</span> <span class="n">install</span> <span class="n">bcrypt</span>
 </pre></div>
 </div>
 <p>The <cite>sqlite3</cite> npm module provides an SQL command line interface as well as SQL functionality inside node apps. So now we can create an sqlite database called <cite>my-app</cite> with a <cite>users</cite> table in it from the command line. We create an <cite>id</cite> field and specify a type of INTEGER since the id values will be integers. We also specify that this field should be the  primary key for the table. Then we create the <cite>username</cite> and <cite>password</cite> fields and specify TEXT as the type of data that will be stored in them:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sqlite3 my-app.db
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/Desktop/my-app $ sqlite3 my-app.db
 SQLite version 3.11.0 2016-02-15 17:29:24
 Enter &quot;.help&quot; for usage hints.
 sqlite&gt; CREATE TABLE users (
@@ -91,7 +92,7 @@ sqlite&gt; CREATE TABLE users (
 </pre></div>
 </div>
 <p>We should now have a file called <cite>my-app.db</cite> inside our <cite>my-app</cite> directory. The next step is to create the express app with a post route in it for handling http post requests. Create an <cite>app.js</cite> file with the following code in it:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const bcrypt = require(&#39;bcrypt&#39;);
 const sqlite3 = require(&#39;sqlite3&#39;);
 
@@ -112,11 +113,11 @@ app.listen(3000)
 </pre></div>
 </div>
 <p>If we run our app using <code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code> or <code class="docutils literal"><span class="pre">nodemon</span> <span class="pre">app.js</span></code> and send an http post request to it with username and password keys set to our chosen values they will be stored in our database along with an automatically generated value for the <cite>id</cite> field. Here is the request:</p>
-<div class="code highlight-python"><div class="highlight"><pre>curl -d &quot;username=Steve&amp;password=secret&quot; -X POST http://localhost:3000/register
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot;username=Steve&amp;password=secret&quot;</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">register</span>
 </pre></div>
 </div>
-<p>The -d (&#8211;data) option in the <cite>cURL</cite> request causes the specified data to be sent as a POST request. By default when <cite>cURL</cite> makes an http post request it will include a header called <cite>Content-Type</cite> with a value of <cite>application/x-www-form-urlencoded</cite>. We could use the -H (&#8211;header) option to specify this explicitly: <code class="docutils literal"><span class="pre">-H</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/x-www-form-urlencoded&quot;</span></code>. The path of <cite>/register</cite> appended to the domain, <cite>localhost:3000</cite>, used in our <cite>cURL</cite> request causes the route handler function we have written to be invoked with the posted data. If we now check the contents of our <cite>users</cite> table we can see a row has been added for the newly registered user with appropriate values in the <cite>id</cite>, <cite>username</cite> and <cite>password</cite> fields.</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sqlite3 my-app.db
+<p>The -d (–data) option in the <cite>cURL</cite> request causes the specified data to be sent as a POST request. By default when <cite>cURL</cite> makes an http post request it will include a header called <cite>Content-Type</cite> with a value of <cite>application/x-www-form-urlencoded</cite>. We could use the -H (–header) option to specify this explicitly: <code class="docutils literal"><span class="pre">-H</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/x-www-form-urlencoded&quot;</span></code>. The path of <cite>/register</cite> appended to the domain, <cite>localhost:3000</cite>, used in our <cite>cURL</cite> request causes the route handler function we have written to be invoked with the posted data. If we now check the contents of our <cite>users</cite> table we can see a row has been added for the newly registered user with appropriate values in the <cite>id</cite>, <cite>username</cite> and <cite>password</cite> fields.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/Desktop/my-app $ sqlite3 my-app.db
 SQLite version 3.11.0 2016-02-15 17:29:24
 Enter &quot;.help&quot; for usage hints.
 sqlite&gt; select * from users;
@@ -128,8 +129,8 @@ sqlite&gt;
 </div>
 <div class="section" id="login-script">
 <h2>Login Script<a class="headerlink" href="#login-script" title="Permalink to this headline">¶</a></h2>
-<p>Now that we can register users we will create a password protected home page for our website. The path for the home page will be <cite>&#8216;/&#8217;</cite>. It will handle login post requests to our app.js file and return the home page if the login is successful or inform the user if they submit an incorrect username or password. The app.js file with the new route handler is shown here:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+<p>Now that we can register users we will create a password protected home page for our website. The path for the home page will be <cite>‘/’</cite>. It will handle login post requests to our app.js file and return the home page if the login is successful or inform the user if they submit an incorrect username or password. The app.js file with the new route handler is shown here:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const bcrypt = require(&#39;bcrypt&#39;);
 const sqlite3 = require(&#39;sqlite3&#39;);
 
@@ -166,7 +167,7 @@ app.listen(3000);
 </pre></div>
 </div>
 <p>In order to simulate user logins we will use <cite>cURL</cite> to send post requests to our new route. We will send a login with the correct details followed by one with the wrong username and then one with the wrong password:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ curl -d &quot;username=Steve&amp;password=secret&quot; -X POST http://localhost:8000/
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ curl -d &quot;username=Steve&amp;password=secret&quot; -X POST http://localhost:8000/
 Hi Steve! Welcome to the website
 steve@Dell ~ $ curl -d &quot;username=Stee&amp;password=secret&quot; -X POST http://localhost:8000/
 Invalid Username
@@ -186,28 +187,28 @@ Invalid Password
 <p>In order to turn this session into a login session we need to arrange for the sid kept by the server to be associated with the identity of the user when they login with their username and password. A session store on the server does this. The session store is essentially a table with rows corresponding to users. A minimal implementation only requires two colums: one for the sid and the other for the user id. Memory stores can be held in RAM or on disc on the server.</p>
 <p>An alternative implementation which is now less popular and may be less secure is for the server to only store the sid. The identity of the user is appended to the copy of the sid sent to the browser. Now every time the browser makes a request it is sending the sid and the user id to the server. On receiving the sid with user id the server accepts that the user is logged in because it sent the sid with user id attached as a result of successful login. Encryption methods can be used to prevent user ids being attached to sids and then sent to the server as an attempt to fraudently login into the server.</p>
 <p>To use sessions in our app we will install the <cite>express-session</cite> module, require it and assign it to a variable called session. By including it as an argument to the app.use() function it will be invoked every time the server is called. Also, any routes we make for the app will be added below the app.use(session) function so that the session procedure always runs first before any routes are called.</p>
-<div class="code highlight-python"><div class="highlight"><pre>npm install express-session
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span> <span class="n">express</span><span class="o">-</span><span class="n">session</span>
 </pre></div>
 </div>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
-const session = require(&#39;express-session&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">session</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express-session&#39;</span><span class="p">);</span>
 
-const app = express();
+<span class="n">const</span> <span class="n">app</span> <span class="o">=</span> <span class="n">express</span><span class="p">();</span>
 
-app.use(session({
-    secret: &#39;keyboard cat&#39;
-}));
+<span class="n">app</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">session</span><span class="p">({</span>
+    <span class="n">secret</span><span class="p">:</span> <span class="s1">&#39;keyboard cat&#39;</span>
+<span class="p">}));</span>
 
-app.get(&#39;/&#39;, function(req, res, next){
-    res.send(&#39;Hallo World!\n&#39;);
-});
+<span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;Hallo World!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="p">});</span>
 
-app.listen(8000)
+<span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The registration and login routes from app.js have been removed and a simple home page at / added which outputs &#8216;Hallo World!&#8217;. The session function used as an argument in app.use() can take many options as arguments. The only necessary option is secret. The value given to secret should be a string that is unique to this app. This string is used in the encryption process that generates the sid and is necessary for <cite>express-session</cite> to identfiy that sids were originated by this app.</p>
-<p>We can now send an http get request to the / path using curl. We will use the -v (&#8211;verbose) option so that we can see details of the http request to the server and the http response from the server:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ curl http://localhost:8000 -v
+<p>The registration and login routes from app.js have been removed and a simple home page at / added which outputs ‘Hallo World!’. The session function used as an argument in app.use() can take many options as arguments. The only necessary option is secret. The value given to secret should be a string that is unique to this app. This string is used in the encryption process that generates the sid and is necessary for <cite>express-session</cite> to identfiy that sids were originated by this app.</p>
+<p>We can now send an http get request to the / path using curl. We will use the -v (–verbose) option so that we can see details of the http request to the server and the http response from the server:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ curl http://localhost:8000 -v
 * Rebuilt URL to: http://localhost:8000/
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8000 (#0)
@@ -230,8 +231,8 @@ Hallo World!
 steve@Dell ~ $
 </pre></div>
 </div>
-<p>The output from the curl http get request shows request information prefixed with &gt; and response information prefixed with &lt;. We can see that the value of the set-cookie response header is connect.sid=s%3AR50p....etc.etc... This is the unique sid generated by <cite>express-session</cite> in our app.js code. If we send the same http request again we would get a similar response but the sid would be different. This is because, unlike the browser, <cite>cURL</cite> does not by default send a cookie request header with a sid in it. So, the server, seeing there is not a sid cookie in the request generates a new sid and returns this to the browser in a set-cookie header. We can instruct <cite>cURL</cite> to store the sid cookie in the set-cookie header using the -c (&#8211;cookie-jar) option. This option followed by the name of a file tells <cite>cURL</cite> to store the sid in the specified file. Then if <cite>cURL</cite> is invoked with the -b (&#8211;cookie) option followed by the file name we used to store the cookie in, the request will have a cookie header with the sid in it. We can see the result of making a request with the -c flag here:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ curl http://localhost:8000 -v -c cookie-jar.txt
+<p>The output from the curl http get request shows request information prefixed with &gt; and response information prefixed with &lt;. We can see that the value of the set-cookie response header is connect.sid=s%3AR50p….etc.etc… This is the unique sid generated by <cite>express-session</cite> in our app.js code. If we send the same http request again we would get a similar response but the sid would be different. This is because, unlike the browser, <cite>cURL</cite> does not by default send a cookie request header with a sid in it. So, the server, seeing there is not a sid cookie in the request generates a new sid and returns this to the browser in a set-cookie header. We can instruct <cite>cURL</cite> to store the sid cookie in the set-cookie header using the -c (–cookie-jar) option. This option followed by the name of a file tells <cite>cURL</cite> to store the sid in the specified file. Then if <cite>cURL</cite> is invoked with the -b (–cookie) option followed by the file name we used to store the cookie in, the request will have a cookie header with the sid in it. We can see the result of making a request with the -c flag here:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ curl http://localhost:8000 -v -c cookie-jar.txt
 * Rebuilt URL to: http://localhost:8000/
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8000 (#0)
@@ -255,8 +256,8 @@ Hallo World!
 steve@Dell ~ $
 </pre></div>
 </div>
-<p>The result of this request is similar to the first request except that it additionally tells us that it added the cookie (ie stored it). Also, as explained above a new sid has been generated. If we now make the same request except with the -b (&#8211;cookie) option a cookie response header with this sid in it will be sent to the server:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ curl http://localhost:8000 -v -b cookie-jar.txt
+<p>The result of this request is similar to the first request except that it additionally tells us that it added the cookie (ie stored it). Also, as explained above a new sid has been generated. If we now make the same request except with the -b (–cookie) option a cookie response header with this sid in it will be sent to the server:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ curl http://localhost:8000 -v -b cookie-jar.txt
 * Rebuilt URL to: http://localhost:8000/
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8000 (#0)
@@ -281,77 +282,77 @@ steve@Dell ~ $
 </div>
 <p>In the output above we can see that the same sid that was sent in the previous response and which we stored in the <cite>cookie-jar.txt</cite> file is now being sent in the Cookie request header. Because a Cookie with a sid was sent to the server it does not send a set-cookie response header back. It is the job of the browser to persist the session by sending the cookie header in any further requests to that domain.</p>
 <p>When the <cite>express-session</cite> code runs, in addition to what has already been described, it also creates a session object. This is created as a property of the <cite>express</cite> request object. So, it can be accessed by req.session in our code. We can see this by adding <code class="docutils literal"><span class="pre">console.log(req.session);</span></code> to the route handler for the home page:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
-const session = require(&#39;express-session&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">session</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express-session&#39;</span><span class="p">);</span>
 
-const app = express();
+<span class="n">const</span> <span class="n">app</span> <span class="o">=</span> <span class="n">express</span><span class="p">();</span>
 
-app.use(session({
-    secret: &#39;keyboard cat&#39;
-}));
+<span class="n">app</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">session</span><span class="p">({</span>
+    <span class="n">secret</span><span class="p">:</span> <span class="s1">&#39;keyboard cat&#39;</span>
+<span class="p">}));</span>
 
-app.get(&#39;/&#39;, function(req, res, next){
-    console.log(req.session);
-    res.send(&#39;Hallo World!\n&#39;);
-});
+<span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">session</span><span class="p">);</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;Hallo World!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="p">});</span>
 
-app.listen(8000)
+<span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Now when we send an http get request to the home page with curl we see the session object displayed in the console that is running the server. First the <cite>cURL</cite> command and &#8216;Hallo World!&#8217; response:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ curl http://localhost:3000
+<p>Now when we send an http get request to the home page with curl we see the session object displayed in the console that is running the server. First the <cite>cURL</cite> command and ‘Hallo World!’ response:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ curl http://localhost:3000
 Hallo World!
 </pre></div>
 </div>
 <p>Next the output in the console running the app.js server:</p>
-<div class="code highlight-python"><div class="highlight"><pre>Session {
-  cookie:
-   { path: &#39;/&#39;,
-     _expires: null,
-     originalMaxAge: null,
-     httpOnly: true } }
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">Session</span> <span class="p">{</span>
+  <span class="n">cookie</span><span class="p">:</span>
+   <span class="p">{</span> <span class="n">path</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+     <span class="n">_expires</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+     <span class="n">originalMaxAge</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+     <span class="n">httpOnly</span><span class="p">:</span> <span class="n">true</span> <span class="p">}</span> <span class="p">}</span>
 </pre></div>
 </div>
 <p>This session object can be read from and written to by our code. We can see this by creating an app.use() function in our app.js which adds a userId key with a value in it to the session object:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
-const session = require(&#39;express-session&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">session</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express-session&#39;</span><span class="p">);</span>
 
-const app = express();
+<span class="n">const</span> <span class="n">app</span> <span class="o">=</span> <span class="n">express</span><span class="p">();</span>
 
-app.use(session({
-    secret: &#39;keyboard cat&#39;
-}));
+<span class="n">app</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">session</span><span class="p">({</span>
+    <span class="n">secret</span><span class="p">:</span> <span class="s1">&#39;keyboard cat&#39;</span>
+<span class="p">}));</span>
 
-app.use(function(req, res, next) {
-    req.session.userId = &#39;Steve&#39;;
-    next();
-});
+<span class="n">app</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">userId</span> <span class="o">=</span> <span class="s1">&#39;Steve&#39;</span><span class="p">;</span>
+    <span class="nb">next</span><span class="p">();</span>
+<span class="p">});</span>
 
-app.get(&#39;/&#39;, function(req, res, next){
-    console.log(req.session);
-    res.send(&#39;Hallo World!\n&#39;);
-});
+<span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">session</span><span class="p">);</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;Hallo World!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="p">});</span>
 
-app.listen(3000)
+<span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now when we run the same <cite>cURL</cite> request we get the modified session object output in the console:</p>
-<div class="code highlight-python"><div class="highlight"><pre>Session {
-  cookie:
-   { path: &#39;/&#39;,
-     _expires: null,
-     originalMaxAge: null,
-     httpOnly: true },
-  userId: &#39;Steve&#39; }
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">Session</span> <span class="p">{</span>
+  <span class="n">cookie</span><span class="p">:</span>
+   <span class="p">{</span> <span class="n">path</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+     <span class="n">_expires</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+     <span class="n">originalMaxAge</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+     <span class="n">httpOnly</span><span class="p">:</span> <span class="n">true</span> <span class="p">},</span>
+  <span class="n">userId</span><span class="p">:</span> <span class="s1">&#39;Steve&#39;</span> <span class="p">}</span>
 </pre></div>
 </div>
 <p>The session object with its modifications is stored on the server with its corresponding sid. So, when a request with a cookie header containing a sid is made to the server the server will get the session object corresponding to that sid from memory (RAM or disc) and use it in preparing the http response it sends to the browser. In the login script we are going to write a <cite>userId</cite> property will be created on the session object and set to the id of the user taken from the <cite>users</cite> table. The <cite>userId</cite> will be an integer not text as we used above to demonstrate that we can modify the session object.</p>
-<p>It would be possible to use the username instead of the user&#8217;s id and so our login system would only require username and password to work. One reason not to do this is that looking up data in a table tends to be faster using integers than text. Although at login we have to look up the username we can use the user&#8217;s id (an integer) for any subsequent data queries. For a complex website such as banking software there maybe many database queries necessary before sending the response to the browser.</p>
+<p>It would be possible to use the username instead of the user’s id and so our login system would only require username and password to work. One reason not to do this is that looking up data in a table tends to be faster using integers than text. Although at login we have to look up the username we can use the user’s id (an integer) for any subsequent data queries. For a complex website such as banking software there maybe many database queries necessary before sending the response to the browser.</p>
 </div>
 <div class="section" id="app-from-scratch">
 <h2>App from Scratch<a class="headerlink" href="#app-from-scratch" title="Permalink to this headline">¶</a></h2>
 <p>We will create an app from scratch with registration, login and different homepages for logged in and non-logged in users. The homepage for logged in users will be personalised. First create a new directory for the app and change directory into it and then initiate the npm system and install the necessary npm modules:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ mkdir my-app
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ mkdir my-app
 steve@Dell ~ $ cd my-app
 steve@Dell ~/my-app $ npm init -y
 steve@Dell ~/my-app $ npm install express
@@ -361,7 +362,7 @@ steve@Dell ~/my-app $ npm install sqlite3
 </pre></div>
 </div>
 <p>Next make the SQLite database with a <cite>users</cite> table in it:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/my-app $ sqlite3 my-app.db
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/my-app $ sqlite3 my-app.db
 SQLite version 3.11.0 2016-02-15 17:29:24
 Enter &quot;.help&quot; for usage hints.
 sqlite&gt; CREATE TABLE users (
@@ -373,7 +374,7 @@ sqlite&gt;
 </pre></div>
 </div>
 <p>Next create app.js (<code class="docutils literal"><span class="pre">vim</span> <span class="pre">app.js</span></code>) and write the code for the register route:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const bcrypt = require(&#39;bcrypt&#39;);
 const sqlite3 = require(&#39;sqlite3&#39;);
 
@@ -395,7 +396,7 @@ app.listen(3000)
 </div>
 <p>Next open a new terminal, change directory into <cite>my-app</cite> and run <code class="docutils literal"><span class="pre">nodemon</span> <span class="pre">app.js</span></code></p>
 <p>Next test the registration code with <cite>cURL</cite>. We will put the curl command in a bash (<cite>.sh</cite>) file so that as the testing becomes more complex to handle the full registration and login procedure we can run a series of curl commands by running a single bash script. Using a text editor we create <cite>curl-test.sh</cite> and put the following code in it:</p>
-<div class="code highlight-python"><div class="highlight"><pre>#!/bin/bash
+<div class="code highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash
 USERNAME=$1
 PASSWORD=$2
 echo &#39;********************************************&#39;
@@ -416,11 +417,11 @@ echo &#39;********************************************&#39;
 </pre></div>
 </div>
 <p>Next run this script providing username, Jack, and password, 1234, as arguments to the bash script:</p>
-<div class="code highlight-python"><div class="highlight"><pre>bash curl-test.sh Jack 1234
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">curl</span><span class="o">-</span><span class="n">test</span><span class="o">.</span><span class="n">sh</span> <span class="n">Jack</span> <span class="mi">1234</span>
 </pre></div>
 </div>
 <p>The output in the terminal:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sh curl-test.sh Jack 1234
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/Desktop/my-app $ sh curl-test.sh Jack 1234
 ********************************************
 
 curl -L -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/register
@@ -439,7 +440,7 @@ steve@Dell ~/Desktop/my-app $
 </div>
 <p>Next add the post route for handling login:</p>
 <p>..code:</p>
-<div class="highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+<div class="highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const session = require(&#39;express-session&#39;);
 const bcrypt = require(&#39;bcrypt&#39;);
 const sqlite3 = require(&#39;sqlite3&#39;);
@@ -493,7 +494,7 @@ app.listen(3000)
 </pre></div>
 </div>
 <p>Next test the code by extending our <cite>curl-test.sh</cite> file to store cookies (-c) on the register post request and send them (-b) to the server on the login post request:</p>
-<div class="code highlight-python"><div class="highlight"><pre>#!/bin/bash
+<div class="code highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash
 USERNAME=$1
 PASSWORD=$2
 echo &#39;********************************************&#39;
@@ -519,7 +520,7 @@ echo &#39;&#39;
 </pre></div>
 </div>
 <p>Next run the above and see the output:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sh curl-test.sh Jane x
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/Desktop/my-app $ sh curl-test.sh Jane x
 ********************************************
 
 curl -L -c cookie-jar.txt -d &quot;username=${USERNAME}&amp;password=${PASSWORD}&quot; http://localhost:3000/register
@@ -542,8 +543,8 @@ Home page! You are Logged In.
 steve@Dell ~/Desktop/my-app $
 </pre></div>
 </div>
-<p>Next add validation for the username (which should be an email) and password (which should be at least 5 characters long) in the app.post(&#8216;/register&#8217;) handler:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+<p>Next add validation for the username (which should be an email) and password (which should be at least 5 characters long) in the app.post(‘/register’) handler:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const session = require(&#39;express-session&#39;);
 const bcrypt = require(&#39;bcrypt&#39;);
 const sqlite3 = require(&#39;sqlite3&#39;);
@@ -606,7 +607,7 @@ app.listen(3000)
 </pre></div>
 </div>
 <p>Next modify curl-test.sh so as to test the username and password validation steps:</p>
-<div class="code highlight-python"><div class="highlight"><pre>!/bin/bash
+<div class="code highlight-default"><div class="highlight"><pre><span></span>!/bin/bash
 USERNAME=$1
 PASSWORD=$2
 echo &#39;********************************************&#39;
@@ -646,7 +647,7 @@ echo &#39;&#39;
 </pre></div>
 </div>
 <p>Next run curl-test.sh to see if the validation is working:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/my-app $ sh curl-test.sh helena@gmail.com blahjj
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/Desktop/my-app $ sh curl-test.sh helena@gmail.com blahjj
 ********************************************
 
 curl -d &quot;username=notanemail&amp;password=${PASSWORD}&quot; http://localhost:3000/register
@@ -681,7 +682,7 @@ steve@Dell ~/Desktop/my-app $
 </pre></div>
 </div>
 <p>Next add the kitchen sink to app.js:</p>
-<div class="code highlight-python"><div class="highlight"><pre>app.use(express.urlencoded({ extended: true }));
+<div class="code highlight-default"><div class="highlight"><pre><span></span>app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     secret: &#39;keyboard cat&#39;
@@ -750,11 +751,11 @@ app.listen(3000)
 <div class="section" id="json-web-tokens">
 <h2>Json Web Tokens<a class="headerlink" href="#json-web-tokens" title="Permalink to this headline">¶</a></h2>
 <p>Instead of using sessions to perpetuate the logged in state we can use JWTs.</p>
-<div class="code highlight-python"><div class="highlight"><pre>npm install jsonwebtoken
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span> <span class="n">jsonwebtoken</span>
 </pre></div>
 </div>
 <p>In app.js require it and also create a secret. Modify the post.login script to create and return a JWT if the user logs in successfully:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const bcrypt = require(&#39;bcrypt&#39;);
 const sqlite3 = require(&#39;sqlite3&#39;).verbose();
 
@@ -814,7 +815,7 @@ app.listen(3000, () =&gt; {
 </pre></div>
 </div>
 <p>If we now make a successful login using httpie we can see a JWT is returned:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ http POST localhost:3000/login username=&#39;fred&#39; password=&#39;secret&#39;
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ http POST localhost:3000/login username=&#39;fred&#39; password=&#39;secret&#39;
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Length: 164
@@ -831,15 +832,15 @@ steve@Dell ~ $
 </pre></div>
 </div>
 <p>The browser would send this token back to the server on any future requests in its Authorization header. The server would verify the JWT and then return password protected data back to the browser. We can implement a get route in app.js to demonstrate this:</p>
-<div class="code highlight-python"><div class="highlight"><pre>app.get(&#39;/secret&#39;, (req, res) =&gt; {
-    const authHeaderValue = req.headers.authorization;
-    const token = jsonwebtoken.verify(authHeaderValue, SECRET);
-    return res.json({ message: &quot;You made it&quot; });
-});
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="n">const</span> <span class="n">authHeaderValue</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">authorization</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">token</span> <span class="o">=</span> <span class="n">jsonwebtoken</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">authHeaderValue</span><span class="p">,</span> <span class="n">SECRET</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">({</span> <span class="n">message</span><span class="p">:</span> <span class="s2">&quot;You made it&quot;</span> <span class="p">});</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 <p>Now when we make a request to the /secret route with the JWT in the Authorization header, the JWT is verified and the server returns the protected data:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Length: 25
@@ -854,19 +855,19 @@ X-Powered-By: Express
 </pre></div>
 </div>
 <p>In the get route to /secret the code should be in a try / catch block so that if the JWT is not verified a response can be sent to the browser indicating that they are not authorized. This can be seen here:</p>
-<div class="code highlight-python"><div class="highlight"><pre>app.get(&#39;/secret&#39;, (req, res) =&gt; {
-    try {
-        const authHeaderValue = req.headers.authorization;
-        const token = jsonwebtoken.verify(authHeaderValue, SECRET);
-        return res.json({ message: &quot;You made it&quot; });
-    } catch(e) {
-        return res.status(401).json({ message: &quot;Unauthorized&quot; });
-    }
-});
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">const</span> <span class="n">authHeaderValue</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">authorization</span><span class="p">;</span>
+        <span class="n">const</span> <span class="n">token</span> <span class="o">=</span> <span class="n">jsonwebtoken</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">authHeaderValue</span><span class="p">,</span> <span class="n">SECRET</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">({</span> <span class="n">message</span><span class="p">:</span> <span class="s2">&quot;You made it&quot;</span> <span class="p">});</span>
+    <span class="p">}</span> <span class="n">catch</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">({</span> <span class="n">message</span><span class="p">:</span> <span class="s2">&quot;Unauthorized&quot;</span> <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 <p>Now we send a request with the JWT followed by one in which a single character of the JWT has been changed from a z to a y:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~ $ http get localhost:3000/secret Authorization:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWQiLCJpYXQiOjE1NDc0MjE5NjgsImV4cCI6MTU0NzQyNTU2OH0.wbfYTs5bkvIyn7XcYvzVPAFE0JPrXnkyH2fbg0zFX_s&quot;
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Length: 25
@@ -929,21 +930,18 @@ steve@Dell ~ $
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/login.txt"
+      <li><a href="_sources/login.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -954,11 +952,11 @@ steve@Dell ~ $
       &copy;2018, Steve Greig.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
-      <a href="_sources/login.txt"
+      <a href="_sources/login.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

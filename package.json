@@ -2,9 +2,10 @@
   "name": "express-with-steve",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devstart": "nodemon ./bin/www"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +13,8 @@
   "dependencies": {
     "express": "^4.16.4",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
   }
 }

@@ -1,44 +1,45 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Databases &mdash; Learning Express 0 documentation</title>
-    
+    <title>Databases &#8212; Learning Express 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
         VERSION:     '0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Learning Express 0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Login" href="login.html" />
     <link rel="prev" title="User Input" href="user-input.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p><a class="reference internal" href="index.html"><em>Home</em></a></p>
+  <p><a class="reference internal" href="index.html"><span class="doc">Home</span></a></p>
 <div class="section" id="databases">
 <h1>Databases<a class="headerlink" href="#databases" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="create-an-sqlite-database">
@@ -48,7 +49,7 @@
 <p>Tutorial for sqlite3 and sqlite3 node module: <a class="reference external" href="http://www.sqlitetutorial.net/">http://www.sqlitetutorial.net/</a></p>
 <p>For a tutorial that covers the use of the sqlite3 Relational Database Management System (RDBMS) on the command line and use of the sqlite3 node module see www.sqlitetutorial.net</p>
 <p>First install sqlite3 globally. Then, from a terminal (while in the root directory of the app) run the command sqlite3 x where x is the name of the database you would like to create. In this case the database will be called <cite>music.db</cite> and we will then create a table called <cite>musicians</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre>steve@Dell ~/Desktop/myapp $ sqlite3 music.db
+<div class="code highlight-default"><div class="highlight"><pre><span></span>steve@Dell ~/Desktop/myapp $ sqlite3 music.db
 SQLite version 3.11.0 2016-02-15 17:29:24
 Enter &quot;.help&quot; for usage hints.
 sqlite&gt; CREATE TABLE musicians (
@@ -60,30 +61,30 @@ sqlite&gt;
 </pre></div>
 </div>
 <p>We now have a file called <cite>music.db</cite> in the root directory of our app. This is an SQLite database with a table called <cite>musicians</cite> in it. The table has three columns. The <cite>id</cite> column is known as an <cite>integer primary key</cite>. Case is important for the type specification: INTEGER PRIMARY KEY. Do not use autoincrement as it is usually not needed and it reduces performance. It is not necessary to provide values for <cite>id</cite> when inserting rows into the table. SQLite will automatically generate a unique value and insert it into this column for every row created in the table. So we only need to insert data for the <cite>firstName</cite> and <cite>lastName fields</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre>sqlite&gt; INSERT INTO musicians
-...&gt; (firstName, lastName)
-...&gt; VALUES
-...&gt; (&quot;Brian&quot;, &quot;Eno&quot;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sqlite</span><span class="o">&gt;</span> <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">musicians</span>
+<span class="o">...&gt;</span> <span class="p">(</span><span class="n">firstName</span><span class="p">,</span> <span class="n">lastName</span><span class="p">)</span>
+<span class="o">...&gt;</span> <span class="n">VALUES</span>
+<span class="o">...&gt;</span> <span class="p">(</span><span class="s2">&quot;Brian&quot;</span><span class="p">,</span> <span class="s2">&quot;Eno&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>If we query this table to select all the values in it we can see that SQLite automatically created a value (1) for the <cite>id</cite> field:</p>
-<div class="code highlight-python"><div class="highlight"><pre>sqlite&gt; SELECT * FROM musicians;
-1|Brian|Eno
-sqlite&gt;
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sqlite</span><span class="o">&gt;</span> <span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">musicians</span><span class="p">;</span>
+<span class="mi">1</span><span class="o">|</span><span class="n">Brian</span><span class="o">|</span><span class="n">Eno</span>
+<span class="n">sqlite</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <div class="section" id="foreign-keys">
 <h3>Foreign Keys<a class="headerlink" href="#foreign-keys" title="Permalink to this headline">¶</a></h3>
 <p>You can have foreign keys in tables but if you want these to constrain SQL operations allowable then foreign key support needs to be turned on. At the command line this requires <code class="docutils literal"><span class="pre">sqlite&gt;</span> <span class="pre">PRAGMA</span> <span class="pre">foreign_keys</span> <span class="pre">=</span> <span class="pre">ON'</span></code>. To see if they are on use: <code class="docutils literal"><span class="pre">sqlite&gt;</span> <span class="pre">PRAGMA</span> <span class="pre">foreign_keys;</span></code>. This will return 0 if support is off and 1 if support is on. From node you could turn foreign key support on for every query or by using an anonymous callback into the function which creates the SQLite session used throughout the code:</p>
-<div class="code highlight-python"><div class="highlight"><pre>var db = new sqlite3.Database(config.DB, function() {
-  db.run(&#39;PRAGMA foreign_keys=on&#39;);
-});
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">db</span> <span class="o">=</span> <span class="n">new</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DB</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">db</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;PRAGMA foreign_keys=on&#39;</span><span class="p">);</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 <p>To see if foreign key support is on from the node script:</p>
-<div class="code highlight-python"><div class="highlight"><pre>db.get(&#39;PRAGMA foreign_keys&#39;, function(err, res) {
-  console.log(&#39;pragma res is &#39; + res.foreign_keys);
-});
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PRAGMA foreign_keys&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;pragma res is &#39;</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">foreign_keys</span><span class="p">);</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 <p>This comes from: <a class="reference external" href="https://sysdef.xyz/post/2012-07-20-node-sqlite-foreign-keys">https://sysdef.xyz/post/2012-07-20-node-sqlite-foreign-keys</a></p>
@@ -93,11 +94,11 @@ sqlite&gt;
 <h2>Database Query from the Express App<a class="headerlink" href="#database-query-from-the-express-app" title="Permalink to this headline">¶</a></h2>
 <p>SQLite3 is an RDBMS that, as we have seen, can be used on the command line to create databases and do SQL CRUD (Create, Read, Update and Delete) operations. It is also the name of an NPM (Node Package Manager) module. Installing the sqlite3 module in a node app allows a Database object to be instantiated. The methods available on this object enable SQL CRUD operations to be carried out from within the node app.</p>
 <p>So, first we need to install the sqlite3 module in our app. Open a terminal, change to the myapp directory and run the command:</p>
-<div class="code highlight-python"><div class="highlight"><pre>npm install sqlite3
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span> <span class="n">sqlite3</span>
 </pre></div>
 </div>
 <p>Then open <cite>app.js</cite> in a text editor and import the sqlite3 module and create the Database object which we will call <cite>db</cite>. When we create the database object we pass the path to <cite>music.db</cite> to it so that the <cite>music</cite> database is connected to the object. The two lines of code we need are const <code class="docutils literal"><span class="pre">sqlite3</span> <span class="pre">=</span> <span class="pre">require('sqlite3').verbose()</span></code> and <code class="docutils literal"><span class="pre">let</span> <span class="pre">db</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">sqlite3.Database('music.db')</span></code>. This can be seen below where the full contents of <cite>app.js</cite> are reproduced:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;)
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;)
 const app = express()
 const sqlite3 = require(&#39;sqlite3&#39;).verbose()
 const port =3000
@@ -114,8 +115,8 @@ app.get(&#39;/example&#39;, function (req, res, next) {
 app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
 </pre></div>
 </div>
-<p>In the code above we have created an sqlite3 database object but we are not actually using it to do anything. Let us remove the two lines where we assign a value of &#8216;Brian&#8217; to the variable <cite>firstName</cite> and replace it with a query to our <cite>music.db</cite> database using the <cite>get</cite> method of our database object, <cite>db</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre>const express = require(&#39;express&#39;)
+<p>In the code above we have created an sqlite3 database object but we are not actually using it to do anything. Let us remove the two lines where we assign a value of ‘Brian’ to the variable <cite>firstName</cite> and replace it with a query to our <cite>music.db</cite> database using the <cite>get</cite> method of our database object, <cite>db</cite>:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;)
 const app = express()
 const sqlite3 = require(&#39;sqlite3&#39;).verbose()
 const port =3000
@@ -141,33 +142,33 @@ app.listen(port, () =&gt; console.log(`app listening on port ${port}`))
 <div class="section" id="mongodb-and-mongoose">
 <h2>MongoDB and mongoose<a class="headerlink" href="#mongodb-and-mongoose" title="Permalink to this headline">¶</a></h2>
 <p>A Mongo database consists of JSON objects called collections in which the keys are assigned values. A mongoose schema can be written which describes the a particular collection and which inherits mongoose methods for CRUD operations. An example from the MDN tutorial is shown below:</p>
-<div class="code highlight-python"><div class="highlight"><pre>var mongoose = require(&#39;mongoose&#39;);
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">mongoose</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;mongoose&#39;</span><span class="p">);</span>
 
-var Schema = mongoose.Schema;
+<span class="n">var</span> <span class="n">Schema</span> <span class="o">=</span> <span class="n">mongoose</span><span class="o">.</span><span class="n">Schema</span><span class="p">;</span>
 
-var BookSchema = new Schema(
-  {
-    title: {type: String, required: true},
-    author: {type: Schema.Types.ObjectId, ref: &#39;Author&#39;, required: true},
-    summary: {type: String, required: true},
-    isbn: {type: String, required: true},
-    genre: [{type: Schema.Types.ObjectId, ref: &#39;Genre&#39;}]
-  }
-);
+<span class="n">var</span> <span class="n">BookSchema</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Schema</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="n">title</span><span class="p">:</span> <span class="p">{</span><span class="nb">type</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+    <span class="n">author</span><span class="p">:</span> <span class="p">{</span><span class="nb">type</span><span class="p">:</span> <span class="n">Schema</span><span class="o">.</span><span class="n">Types</span><span class="o">.</span><span class="n">ObjectId</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="s1">&#39;Author&#39;</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="p">{</span><span class="nb">type</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+    <span class="n">isbn</span><span class="p">:</span> <span class="p">{</span><span class="nb">type</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+    <span class="n">genre</span><span class="p">:</span> <span class="p">[{</span><span class="nb">type</span><span class="p">:</span> <span class="n">Schema</span><span class="o">.</span><span class="n">Types</span><span class="o">.</span><span class="n">ObjectId</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="s1">&#39;Genre&#39;</span><span class="p">}]</span>
+  <span class="p">}</span>
+<span class="p">);</span>
 
-// Virtual for book&#39;s URL
-BookSchema
-.virtual(&#39;url&#39;)
-.get(function () {
-  return &#39;/catalog/book/&#39; + this._id;
-});
+<span class="o">//</span> <span class="n">Virtual</span> <span class="k">for</span> <span class="n">book</span><span class="s1">&#39;s URL</span>
+<span class="n">BookSchema</span>
+<span class="o">.</span><span class="n">virtual</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">)</span>
+<span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;/catalog/book/&#39;</span> <span class="o">+</span> <span class="n">this</span><span class="o">.</span><span class="n">_id</span><span class="p">;</span>
+<span class="p">});</span>
 
-//Export model
-module.exports = mongoose.model(&#39;Book&#39;, BookSchema);
+<span class="o">//</span><span class="n">Export</span> <span class="n">model</span>
+<span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="n">mongoose</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="n">BookSchema</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>After instantiation of the BookSchema object from the mongoose Schema object a &#8216;virtual&#8217; is then added to the schema.
-Virtuals can combine data from different fields of the collection with hard coded data. In the example here a virtual for a URL for a specific book is constructed using the _id field from the database and hardcoded details for other parts of the URL (&#8216;/catalog/book/&#8217;).</p>
+<p>After instantiation of the BookSchema object from the mongoose Schema object a ‘virtual’ is then added to the schema.
+Virtuals can combine data from different fields of the collection with hard coded data. In the example here a virtual for a URL for a specific book is constructed using the _id field from the database and hardcoded details for other parts of the URL (‘/catalog/book/’).</p>
 <p>countDocuments() is an example of a mongoose schema method which will be available to a schema object such as BookSchema.</p>
 </div>
 </div>
@@ -202,21 +203,18 @@ Virtuals can combine data from different fields of the collection with hard code
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/databases.txt"
+      <li><a href="_sources/databases.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -227,11 +225,11 @@ Virtuals can combine data from different fields of the collection with hard code
       &copy;2018, Steve Greig.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
-      <a href="_sources/databases.txt"
+      <a href="_sources/databases.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

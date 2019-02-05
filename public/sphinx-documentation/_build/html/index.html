@@ -1,36 +1,37 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Express With Steve &mdash; Learning Express 0 documentation</title>
-    
+    <title>Express With Steve &#8212; Learning Express 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
         VERSION:     '0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Learning Express 0 documentation" href="#" />
-    <link rel="next" title="Node Modules" href="node-modules.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Install Node and NPM with NVM" href="node-modules.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -41,7 +42,8 @@
 <h1>Express With Steve<a class="headerlink" href="#express-with-steve" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="node-modules.html">Node Modules</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="node-modules.html">Install Node and NPM with NVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="node-modules.html#node-modules">Node Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="node-modules.html#node-package-manager-npm">Node Package Manager (NPM)</a></li>
 </ul>
 </li>
@@ -89,14 +91,14 @@
 </div>
 <div class="section" id="create-an-express-app">
 <h2>Create an Express App<a class="headerlink" href="#create-an-express-app" title="Permalink to this headline">¶</a></h2>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">mkdir</span> <span class="k">new</span><span class="o">-</span><span class="nx">directory</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">mkdir</span> <span class="k">new</span><span class="o">-</span><span class="nx">directory</span>
 <span class="nx">cd</span> <span class="k">new</span><span class="o">-</span><span class="nx">directory</span>
 <span class="nx">npm</span> <span class="nx">init</span> <span class="o">-</span><span class="nx">y</span>
 <span class="nx">npm</span> <span class="nx">install</span> <span class="nx">express</span>
 </pre></div>
 </div>
 <p>Use a text editor to create a file called <cite>app.js</cite> and place the following contents in it:</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
 
 <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
@@ -109,7 +111,7 @@
 <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Now run the app from your terminal with the command <code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>. Open a browser window and navigate to <cite>www.localhost:3000/example</cite>. You should see &#8216;Hello World!</p>
+<p>Now run the app from your terminal with the command <code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>. Open a browser window and navigate to <cite>www.localhost:3000/example</cite>. You should see ‘Hello World!</p>
 <div class="section" id="links">
 <h3>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
 <p><cite>expressjs.com/Getting Started/Installing</cite></p>
@@ -117,7 +119,7 @@
 </div>
 <div class="section" id="nodemon">
 <h3>nodemon<a class="headerlink" href="#nodemon" title="Permalink to this headline">¶</a></h3>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">nodemon</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">nodemon</span>
 </pre></div>
 </div>
 <p>If any changes are made to the <cite>app.js</cite> code the server has to be stopped (use <code class="docutils literal"><span class="pre">Ctr</span> <span class="pre">c</span></code>) and restarted (<code class="docutils literal"><span class="pre">node</span> <span class="pre">app.js</span></code>) and the browser window has to be refreshed in order for the changes to take effect. Installing <cite>nodemon</cite> and starting the app with <code class="docutils literal"><span class="pre">nodemon</span> <span class="pre">app.js</span></code> enables changes to <cite>app.js</cite> to be made without the need for manually restarting the server every time these changes are saved. The browser will still have to be refreshed manually.</p>
@@ -125,7 +127,7 @@
 <div class="section" id="app-method-path-handler">
 <h3>app.METHOD(PATH, HANDLER)<a class="headerlink" href="#app-method-path-handler" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>get</cite> method of the express <cite>app</cite> object, <cite>app.get()</cite> is an example of the general pattern app.METHOD(PATH, HANDLER) where HANDLER is one function. Later in this tutorial we will see that a chain of HANDLER functions can be used. This is central to the Express middleware approach to app development.</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
 
 <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
@@ -136,8 +138,8 @@
 <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>We can introduce a variable which we will call <cite>firstName</cite> with a value of &#8216;Brian&#8217;. In a real app this might be the result of a database query. This can be used inside the <cite>res.send</cite> function so it is displayed in the browser. In the code below I have used a variable called <cite>output</cite> as the argument to <cite>res.send()</cite>. This will be helpful in later examples where there will be more to output to the browser.</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<p>We can introduce a variable which we will call <cite>firstName</cite> with a value of ‘Brian’. In a real app this might be the result of a database query. This can be used inside the <cite>res.send</cite> function so it is displayed in the browser. In the code below I have used a variable called <cite>output</cite> as the argument to <cite>res.send()</cite>. This will be helpful in later examples where there will be more to output to the browser.</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
 
 <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 
@@ -178,28 +180,25 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="node-modules.html" title="next chapter">Node Modules</a></li>
+      <li>Next: <a href="node-modules.html" title="next chapter">Install Node and NPM with NVM</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/index.txt"
+      <li><a href="_sources/index.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -210,11 +209,11 @@
       &copy;2018, Steve Greig.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
-      <a href="_sources/index.txt"
+      <a href="_sources/index.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
