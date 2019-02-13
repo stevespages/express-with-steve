@@ -34,3 +34,62 @@ Generally an npm package has the same name as its github page. For example `mult
 
 On the npm page for a package (for example npmjs.com/package/express) there is a link to the homepage (for example expressjs.com) and a link to the repository (github for express). For express-sessions the link to the homepage is the same link as for the repository except that it takes you to the ReadMe file on the github page not the top of the page. So, the express-sessions API is documented on the npm page and the github page and there is not an official website for it. The express module has the same information on its npm and github pages. The express API documentation is not on these pages it is on the expressjs.com website.
 
+npm init
+--------
+
+A node project can be started by creating a root directory and changing directory into it and then running the command ``npm init``. If the tag `-y` is used then all the questions will be answered with a `yes`. Once we run `npm init -y` inside our new project directory we will create a `package.json` file.
+
+npm install express
+-------------------
+
+We can now install our first node module, `express`. When we do this express will be added to the `package.json` file as a dependency.
+
+app.js or index.js
+------------------
+
+Now we can create the key file for an express app. We will call this `app.js` although `index.js` is often used. The minimum content to create a working website is:
+
+.. code::
+
+   const express = require('express');
+   
+   const app = express();
+   
+   app.get('/', function(req, res, next){
+           res.send('Hello World!');
+   });
+   
+   app.listen(3000);
+
+Next we need to open a new terminal and change directory into our project root directory. Then run `node app.js`.
+
+Now if we go to `http://localhost:3000` in a browser we will see `Hello World!`.
+
+nodemon
+-------
+
+Every time we change any file in the root directory of our project we will need to restart the server. However this can be done automatically using `nodemon`. First run ``npm install --save-dev nodemon``. This will show as a development dependency in `package.json`. We now need to modify `package.json`:
+
+.. code::
+
+   {
+     "name": "my-app",
+     "version": "1.0.0",
+     "description": "",
+     "main": "app.js",
+     "scripts": {
+       "test": "echo \"Error: no test specified\" && exit 1",
+       "devstart": "nodemon ./bin/www"
+     },
+     "keywords": [],
+     "author": "",
+     "license": "ISC",
+     "dependencies": {
+       "express": "^4.16.4"
+     },
+     "devDependencies": {
+       "nodemon": "^1.18.9"
+     }
+   }
+
+We have added a key to the `scripts` object called `devstart` with a value of `nodemon ./bin/www`. Now we can start the app by opening a terminal, changing directory into the project's root directory and running the command `npm run devstart'.

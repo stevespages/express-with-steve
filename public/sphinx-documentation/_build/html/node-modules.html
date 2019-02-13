@@ -63,6 +63,57 @@
 <p>Generally an npm package has the same name as its github page. For example <cite>multer</cite> is found at github.com/expressjs/multer and is installed with: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save</span> <span class="pre">multer</span></code>. However, <cite>express-session</cite> is found at github.com/expressjs/session. It is installed with: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save</span> <span class="pre">express-session</span></code>.</p>
 <p>On the npm page for a package (for example npmjs.com/package/express) there is a link to the homepage (for example expressjs.com) and a link to the repository (github for express). For express-sessions the link to the homepage is the same link as for the repository except that it takes you to the ReadMe file on the github page not the top of the page. So, the express-sessions API is documented on the npm page and the github page and there is not an official website for it. The express module has the same information on its npm and github pages. The express API documentation is not on these pages it is on the expressjs.com website.</p>
 </div>
+<div class="section" id="npm-init">
+<h2>npm init<a class="headerlink" href="#npm-init" title="Permalink to this headline">¶</a></h2>
+<p>A node project can be started by creating a root directory and changing directory into it and then running the command <code class="docutils literal"><span class="pre">npm</span> <span class="pre">init</span></code>. If the tag <cite>-y</cite> is used then all the questions will be answered with a <cite>yes</cite>. Once we run <cite>npm init -y</cite> inside our new project directory we will create a <cite>package.json</cite> file.</p>
+</div>
+<div class="section" id="npm-install-express">
+<h2>npm install express<a class="headerlink" href="#npm-install-express" title="Permalink to this headline">¶</a></h2>
+<p>We can now install our first node module, <cite>express</cite>. When we do this express will be added to the <cite>package.json</cite> file as a dependency.</p>
+</div>
+<div class="section" id="app-js-or-index-js">
+<h2>app.js or index.js<a class="headerlink" href="#app-js-or-index-js" title="Permalink to this headline">¶</a></h2>
+<p>Now we can create the key file for an express app. We will call this <cite>app.js</cite> although <cite>index.js</cite> is often used. The minimum content to create a working website is:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+
+<span class="n">const</span> <span class="n">app</span> <span class="o">=</span> <span class="n">express</span><span class="p">();</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Next we need to open a new terminal and change directory into our project root directory. Then run <cite>node app.js</cite>.</p>
+<p>Now if we go to <cite>http://localhost:3000</cite> in a browser we will see <cite>Hello World!</cite>.</p>
+</div>
+<div class="section" id="nodemon">
+<h2>nodemon<a class="headerlink" href="#nodemon" title="Permalink to this headline">¶</a></h2>
+<p>Every time we change any file in the root directory of our project we will need to restart the server. However this can be done automatically using <cite>nodemon</cite>. First run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save-dev</span> <span class="pre">nodemon</span></code>. This will show as a development dependency in <cite>package.json</cite>. We now need to modify <cite>package.json</cite>:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;my-app&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;app.js&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;echo </span><span class="se">\&quot;</span><span class="s2">Error: no test specified</span><span class="se">\&quot;</span><span class="s2"> &amp;&amp; exit 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devstart&quot;</span><span class="p">:</span> <span class="s2">&quot;nodemon ./bin/www&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;keywords&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;license&quot;</span><span class="p">:</span> <span class="s2">&quot;ISC&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;express&quot;</span><span class="p">:</span> <span class="s2">&quot;^4.16.4&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;nodemon&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.18.9&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We have added a key to the <cite>scripts</cite> object called <cite>devstart</cite> with a value of <cite>nodemon ./bin/www</cite>. Now we can start the app by opening a terminal, changing directory into the project’s root directory and running the command <a href="#id1"><span class="problematic" id="id2">`</span></a>npm run devstart’.</p>
+</div>
 </div>
 
 
@@ -77,6 +128,10 @@
 <li><a class="reference internal" href="#install">Install</a></li>
 <li><a class="reference internal" href="#node-modules">Node Modules</a></li>
 <li><a class="reference internal" href="#node-package-manager-npm">Node Package Manager (NPM)</a></li>
+<li><a class="reference internal" href="#npm-init">npm init</a></li>
+<li><a class="reference internal" href="#npm-install-express">npm install express</a></li>
+<li><a class="reference internal" href="#app-js-or-index-js">app.js or index.js</a></li>
+<li><a class="reference internal" href="#nodemon">nodemon</a></li>
 </ul>
 </li>
 </ul>

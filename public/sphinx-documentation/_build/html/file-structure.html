@@ -42,6 +42,56 @@
   <p><a class="reference internal" href="index.html"><span class="doc">Home</span></a></p>
 <div class="section" id="file-structure">
 <h1>File Structure<a class="headerlink" href="#file-structure" title="Permalink to this headline">¶</a></h1>
+<p>If we wrote all the code for our app in the <cite>app.js</cite> file it would be inconvenient. We can use the <cite>Express</cite> routing system to create a more convenient file structure for our app. Inside a directory call <cite>routes</cite> we can create a file with a name that reflects the part of the website the file deals with. For example we could call it <cite>catalog.js</cite> if it contains code dealing with a library catalog. Inside our <cite>app.js</cite> file we need to require and use this new file:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">app</span><span class="o">.</span><span class="n">js</span>
+
+<span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">catalogRouter</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;./routes/catalog&#39;</span><span class="p">);</span>
+
+<span class="n">const</span> <span class="n">app</span> <span class="o">=</span> <span class="n">express</span><span class="p">();</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;/catalog&#39;</span><span class="p">,</span> <span class="n">catalogRouter</span><span class="p">);</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Inside <cite>routes/catalog.js</cite> we should have:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">routes</span><span class="o">/</span><span class="n">catalog</span><span class="o">.</span><span class="n">js</span>
+
+<span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">router</span> <span class="o">=</span> <span class="n">express</span><span class="o">.</span><span class="n">Router</span><span class="p">();</span>
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;This is the catalog section of the website&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="n">router</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Now if we go to <cite>localhost:3000/catalog</cite> in the browser we will see <cite>This is the catalog section of the website</cite>.</p>
+<p>In this case the route handler function is very simple. If there were many different routes in  <cite>routes/catalog.js</cite> and if their route handler functions were quite complicated then the file could get large and confusing. So, the handler functions can be put in a seperate file. According to the MVC pattern we might create a directory called <cite>controllers</cite>. We would then put a file in it called, for example, <cite>bookController.js</cite>. This would have a series of <cite>exports</cite> statements for each of the route handlers. Because the route handler we used is the root (‘/’) we might call it <cite>index</cite>. So, we would have in <cite>controllers/bookController.js</cite>:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">controllers</span><span class="o">/</span><span class="n">bookController</span><span class="o">.</span><span class="n">js</span>
+
+<span class="n">exports</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="nb">next</span><span class="p">){</span>
+   <span class="n">res</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;This is the catalog section of the website&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>We would now change  <cite>routes/catalog.js</cite> to:</p>
+<p>..code:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">routes</span><span class="o">/</span><span class="n">catalog</span><span class="o">.</span><span class="n">js</span>
+
+<span class="n">const</span> <span class="n">express</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">router</span> <span class="o">=</span> <span class="n">express</span><span class="o">.</span><span class="n">Router</span><span class="p">();</span>
+<span class="n">const</span> <span class="n">book_controller</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;./controllers/bookController&#39;</span><span class="p">);</span>
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">book_controller</span><span class="o">.</span><span class="n">index</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="n">router</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>A large website might have a number of sections each with its own <cite>js</cite> file in the <cite>routes</cite> directory and its own <cite>js</cite> file in the <cite>controllers</cite> directory. The <cite>app.js</cite> file will require the <cite>js</cite> files (modules) from the <cite>routes</cite> directory and these will require the <cite>js</cite> files from the <cite>controllers</cite> directory. The <cite>app.js</cite> file will also determine what prefix is needed in the browser pathname to navigate to these routes. In the example above in <cite>app.js</cite> we had <code class="docutils literal"><span class="pre">app.use('/catalog',</span> <span class="pre">catalogRouter);</span></code>. So, <cite>/catalog</cite> will be appended to the domain name of the website to get to the routes in <cite>catalogRouter</cite>. The remainder of the pathname (which is absent in the example we gave above as we used ‘/’. If we had used ‘/fred’ then to get to that route we would need to append <cite>/catalog/fred</cite> to the domain name for the site.</p>
 </div>
 
 
