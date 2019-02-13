@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Install Node and NPM with NVM &#8212; Learning Express 0 documentation</title>
+    <title>Node, NPM and NVM &#8212; Learning Express 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -40,8 +40,10 @@
           <div class="body" role="main">
             
   <p><a class="reference internal" href="index.html"><span class="doc">Home</span></a></p>
-<div class="section" id="install-node-and-npm-with-nvm">
-<h1>Install Node and NPM with NVM<a class="headerlink" href="#install-node-and-npm-with-nvm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="node-npm-and-nvm">
+<h1>Node, NPM and NVM<a class="headerlink" href="#node-npm-and-nvm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
 <p><cite>Node Version Manager</cite> (NVM) can be used to install and manage different versions of <cite>Node</cite>.</p>
 <p>Instructions are at <cite>https://github.com/creationix/nvm</cite>. Run:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">o</span><span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">creationix</span><span class="o">/</span><span class="n">nvm</span><span class="o">/</span><span class="n">v0</span><span class="o">.</span><span class="mf">34.0</span><span class="o">/</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span> <span class="o">|</span> <span class="n">bash</span>
@@ -51,9 +53,10 @@
 <p>The latest release of Node (with npm included) is downloaded, compiled and installed with <code class="docutils literal"><span class="pre">nvm</span> <span class="pre">install</span> <span class="pre">node</span></code>. Note this is the latest release not the current LTS version.</p>
 </div>
 <div class="section" id="node-modules">
-<h1>Node Modules<a class="headerlink" href="#node-modules" title="Permalink to this headline">¶</a></h1>
+<h2>Node Modules<a class="headerlink" href="#node-modules" title="Permalink to this headline">¶</a></h2>
 <p>In the Node.js module system, each file is treated as a separate module. Node.js has several modules compiled into the binary. These core modules are defined within Node.js’s source code and are located in the lib/ folder. Core modules will be preferentially loaded if a file with the same name exists.</p>
 <p>If the module identifier passed to <cite>require()</cite> is not a core module and does not begin with ‘/’, ‘../’ or ‘./’, then Node.js starts at the parent directory of the current module, and adds <cite>/node_modules</cite>. Node.js will not append <cite>node_modules</cite> to a pathe already ending in <cite>node_modules</cite>. If <cite>node_modules</cite> is not found there Node.js goes to the parent directory and looks for it. If it is not there it goes to the parent of that directory and so on until the root of the file systeme is reached.</p>
+</div>
 <div class="section" id="node-package-manager-npm">
 <h2>Node Package Manager (NPM)<a class="headerlink" href="#node-package-manager-npm" title="Permalink to this headline">¶</a></h2>
 <p>Node modules that use the npm system are (all?) listed at www.npmjs.com. A description of the package is found there. Also, a link to the github page is normally found. The github page often has the same information reproduced in a ReadMe file. Whether the documentation at npmjs.com and github is always the same I doubt. So, best to check out both.</p>
@@ -70,8 +73,9 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Install Node and NPM with NVM</a></li>
-<li><a class="reference internal" href="#node-modules">Node Modules</a><ul>
+<li><a class="reference internal" href="#">Node, NPM and NVM</a><ul>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#node-modules">Node Modules</a></li>
 <li><a class="reference internal" href="#node-package-manager-npm">Node Package Manager (NPM)</a></li>
 </ul>
 </li>

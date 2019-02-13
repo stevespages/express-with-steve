@@ -1,7 +1,10 @@
 :doc:`Home </index>`
 
-Install Node and NPM with NVM
-=============================
+Node, NPM and NVM
+=================
+
+Install
+-------
 
 `Node Version Manager` (NVM) can be used to install and manage different versions of `Node`.
 
@@ -16,7 +19,7 @@ Run `command -v nvm` to check it has installed (outputs `nvm`)
 The latest release of Node (with npm included) is downloaded, compiled and installed with ``nvm install node``. Note this is the latest release not the current LTS version.
 
 Node Modules
-============
+------------
 
 In the Node.js module system, each file is treated as a separate module. Node.js has several modules compiled into the binary. These core modules are defined within Node.js's source code and are located in the lib/ folder. Core modules will be preferentially loaded if a file with the same name exists.
 
