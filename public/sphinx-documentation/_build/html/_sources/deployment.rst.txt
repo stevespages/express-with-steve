@@ -3,6 +3,36 @@
 Deploy Using Github and Heroku
 ==============================
 
+While building and maintaining a `node-express` app one can use `git` to keep backups of the app in a repository on `Github`. This repo can automatically update the site if it is hosted at `Heroku`.
+
+Clone a Github Repository
+-------------------------
+
+If you (or someone else) has a `node-express` app in a Github repository then a copy of it can be cloned onto your computer:
+
+.. code::
+
+   $ git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+
+Then `cd` into the newly created `YOUR-REPOSITORY` directory and run: ``npm install``. Now the app will work and can be run locally and viewed in a browser.
+
+If the site is edited locally, the edits can be committed using git and then pushed to the repo on Github to update it. The work flow is:
+
+.. code::
+
+   // edit files
+   
+   git add.
+
+   git commit -m "Say what you did"
+
+   git push origin master
+
+Now the edits that were made will be on `Github` and deployed on `Heroku`.
+
+Deploying This Documentation
+----------------------------
+
 Here we will see how this documentation is deployed. It is written using Sphinx. A text editor (I am currently using vim) is used to create an `index.rst` and other `.rst` files. With sphinx installed these files can be converted into html files using the command ``make html``. These html files are generated in a directory called `html`. An express app is created which serves these static files to the browser:
 
 .. code::

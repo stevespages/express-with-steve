@@ -42,6 +42,28 @@
   <p><a class="reference internal" href="index.html"><span class="doc">Home</span></a></p>
 <div class="section" id="deploy-using-github-and-heroku">
 <h1>Deploy Using Github and Heroku<a class="headerlink" href="#deploy-using-github-and-heroku" title="Permalink to this headline">¶</a></h1>
+<p>While building and maintaining a <cite>node-express</cite> app one can use <cite>git</cite> to keep backups of the app in a repository on <cite>Github</cite>. This repo can automatically update the site if it is hosted at <cite>Heroku</cite>.</p>
+<div class="section" id="clone-a-github-repository">
+<h2>Clone a Github Repository<a class="headerlink" href="#clone-a-github-repository" title="Permalink to this headline">¶</a></h2>
+<p>If you (or someone else) has a <cite>node-express</cite> app in a Github repository then a copy of it can be cloned onto your computer:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+</pre></div>
+</div>
+<p>Then <cite>cd</cite> into the newly created <cite>YOUR-REPOSITORY</cite> directory and run: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span></code>. Now the app will work and can be run locally and viewed in a browser.</p>
+<p>If the site is edited locally, the edits can be committed using git and then pushed to the repo on Github to update it. The work flow is:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">edit</span> <span class="n">files</span>
+
+<span class="n">git</span> <span class="n">add</span><span class="o">.</span>
+
+<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;Say what you did&quot;</span>
+
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>
+</pre></div>
+</div>
+<p>Now the edits that were made will be on <cite>Github</cite> and deployed on <cite>Heroku</cite>.</p>
+</div>
+<div class="section" id="deploying-this-documentation">
+<h2>Deploying This Documentation<a class="headerlink" href="#deploying-this-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Here we will see how this documentation is deployed. It is written using Sphinx. A text editor (I am currently using vim) is used to create an <cite>index.rst</cite> and other <cite>.rst</cite> files. With sphinx installed these files can be converted into html files using the command <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code>. These html files are generated in a directory called <cite>html</cite>. An express app is created which serves these static files to the browser:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>const express = require(&#39;express&#39;);
 const path = require(&#39;path&#39;);
@@ -83,13 +105,23 @@ app.listen(PORT, () =&gt; {
 <p>We can see that we have a directory, <cite>express-with-steve</cite>. This directory is under git version control (it has <cite>.git</cite> and <cite>.gitignore</cite> in it but these and also <cite>node_modules</cite> are not shown in the tree structure above). When <cite>.rst</cite> files are edited and the command <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> is run html files in <cite>public/sphinx-documentation/_build/html</cite> are updated. As can be seen from the <cite>app.js</cite> code this directory is being accessed by <cite>app.js</cite>.</p>
 <p>The contents of the <cite>express-with-steve</cite> directory is pushed to www.github.com/stevespages/express-with-steve. An app called <cite>express-with-steve</cite> was created at <cite>heroku</cite> and linked to the github repo referred to above. So, when changes to the sphinx documentation are made and pushed to github they update the heroku website.</p>
 </div>
+</div>
 
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deploy Using Github and Heroku</a><ul>
+<li><a class="reference internal" href="#clone-a-github-repository">Clone a Github Repository</a></li>
+<li><a class="reference internal" href="#deploying-this-documentation">Deploying This Documentation</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
