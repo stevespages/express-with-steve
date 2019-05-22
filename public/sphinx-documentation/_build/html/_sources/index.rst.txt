@@ -21,6 +21,7 @@ Express With Steve
    file-structure
    template-engines
    deployment
+   code-examples
    notes
 
 .. highlight:: javascript
