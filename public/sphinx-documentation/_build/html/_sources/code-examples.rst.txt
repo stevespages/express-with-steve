@@ -24,15 +24,6 @@ source: https://raw.githubusercontent.com/stevespages/express-with-steve/master/
 
 This shows a minimal implementation of a route using the express.Router class
 
-mailer
-------
-
-web (no link given as the program as written enables unlimeted numbers of emails to be sent from my gmail account which would be undesirable!)
-
-git (no link to the code is given as currently it contains my gmail username and password. These need to be passed to the program as environment variables on the Heroku server and also on my local server so that they can be omitted from the code that is stored in this site's git repository)
-
-This shows how the mailer npm module can be used to send an email from a gmail account from within an express app.
-
 env-var
 -------
 
