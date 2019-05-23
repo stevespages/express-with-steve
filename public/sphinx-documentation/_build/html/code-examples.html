@@ -43,20 +43,25 @@
 <div class="section" id="code-examples">
 <h1>Code Examples<a class="headerlink" href="#code-examples" title="Permalink to this headline">¶</a></h1>
 <p>The code examples each have a link to the result of the code called web and a link to the code itself hosted at github called git. If applicable there is also a link to the pug file that generates the html.</p>
-<p>You may also want to see the <a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/app.js">app.js</a> file</p>
+<p>You may also want to see the <a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/app.js">app.js</a> file.</p>
+<p>The full code for <a class="reference external" href="https://github/stevespages/express-with-steve">express-with-steve</a> is also available on github.</p>
 <div class="section" id="different-route">
 <h2>different-route<a class="headerlink" href="#different-route" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="./different-route">web</a></p>
-<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/different-route.j">git</a></p>
+<p>web: <a class="reference external" href="./different-route">different-route</a></p>
+<p>source: <a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/different-route.js">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/different-route.js</a></p>
 <p>This shows a minimal implementation of a route using the express.Router class</p>
 </div>
 <div class="section" id="mailer">
 <h2>mailer<a class="headerlink" href="#mailer" title="Permalink to this headline">¶</a></h2>
-<p>This shows how the mailer npm module can be used to send an email from a gmail account from an express app.</p>
+<p>web (no link given as the program as written enables unlimeted numbers of emails to be sent from my gmail account which would be undesirable!)</p>
+<p>git (no link to the code is given as currently it contains my gmail username and password. These need to be passed to the program as environment variables on the Heroku server and also on my local server so that they can be omitted from the code that is stored in this site’s git repository)</p>
+<p>This shows how the mailer npm module can be used to send an email from a gmail account from within an express app.</p>
 </div>
 <div class="section" id="env-var">
 <h2>env-var<a class="headerlink" href="#env-var" title="Permalink to this headline">¶</a></h2>
-<p>This shows how environment variables can be supplied to a node express app and used from within the app. This can be preferable to hardcoding them and risking them being exposed (for example on git) to malicious users.</p>
+<p>web: <a class="reference external" href="./env-var">env-var</a></p>
+<p>source: <a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/env-var.js">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/env-var.js</a></p>
+<p>This shows how environment variables can be supplied to a node express app and used from within the app. This can be preferable to hardcoding them and risking them being exposed (for example on git) to malicious users. If you follow the web link for this code example you will only see something in the browser if the server was supplied with an environment variable called MY_ENV_VAR when it was started. Follow the git link above to see how this can be done.</p>
 </div>
 </div>
 
