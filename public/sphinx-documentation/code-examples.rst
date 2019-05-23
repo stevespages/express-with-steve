@@ -3,7 +3,7 @@
 Code Examples
 =============
 
-The code examples each have a link to the result of the code called web and a link to the code itself hosted at github called git. If applicable there is also a link to the pug file that generates the html.
+The code examples each have a link to the result of the code called web and a link to the code itself hosted at github. If applicable there is also a link to the pug file that generates the html.
 
 You may also want to see the app.js_ file.
 
