@@ -11,7 +11,7 @@ You may also want to see the app.js_ file.
 
 The full code for express-with-steve_ is also available on github.
 
-.. _express-with-steve: https://github/stevespages/express-with-steve
+.. _express-with-steve: https://github.com/stevespages/express-with-steve
 
 different-route
 ---------------
