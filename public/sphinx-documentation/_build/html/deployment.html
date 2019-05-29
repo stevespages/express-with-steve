@@ -104,6 +104,11 @@ app.listen(PORT, () =&gt; {
 </div>
 <p>We can see that we have a directory, <cite>express-with-steve</cite>. This directory is under git version control (it has <cite>.git</cite> and <cite>.gitignore</cite> in it but these and also <cite>node_modules</cite> are not shown in the tree structure above). When <cite>.rst</cite> files are edited and the command <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> is run html files in <cite>public/sphinx-documentation/_build/html</cite> are updated. As can be seen from the <cite>app.js</cite> code this directory is being accessed by <cite>app.js</cite>.</p>
 <p>The contents of the <cite>express-with-steve</cite> directory is pushed to www.github.com/stevespages/express-with-steve. An app called <cite>express-with-steve</cite> was created at <cite>heroku</cite> and linked to the github repo referred to above. So, when changes to the sphinx documentation are made and pushed to github they update the heroku website.</p>
+<p>From the heroku cli or web dashboard one needs to set up a link to the github page. Also the app needs a Procfile with the instruction to start the app such as <cite>web: node app.js</cite></p>
+</div>
+<div class="section" id="major-changes">
+<h2>Major Changes<a class="headerlink" href="#major-changes" title="Permalink to this headline">¶</a></h2>
+<p>This website was originally created as an ordinary Express app. I then moved the content into a newly created Express Application Generator app. This worked locally but when I pushed the changed app to github the heroku hosted version of the site crashed. Initially I got an H10 Heroku error which turned out to be due to the fact I had not changed the contents of the Procfile. This was <cite>web: node app.js</cite> which was correct for starting an ordinary Express app but not an Express ApplicationGenerator app. I changed the Procfile contents to <cite>web: node bin/www</cite>. Now I was getting an H14 error. This was solved by restarting the dyno using the heroku cli on my computer: <cite>steve&#64;Dell:~$ heroku ps:scale web=1 -a express-with-steve</cite>. Now the app displays in the browser properly when served from Heroku.</p>
 </div>
 </div>
 
@@ -118,6 +123,7 @@ app.listen(PORT, () =&gt; {
 <li><a class="reference internal" href="#">Deploy Using Github and Heroku</a><ul>
 <li><a class="reference internal" href="#clone-a-github-repository">Clone a Github Repository</a></li>
 <li><a class="reference internal" href="#deploying-this-documentation">Deploying This Documentation</a></li>
+<li><a class="reference internal" href="#major-changes">Major Changes</a></li>
 </ul>
 </li>
 </ul>

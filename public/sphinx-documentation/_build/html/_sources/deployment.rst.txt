@@ -78,3 +78,12 @@ The overall directory structure for the express app that serves the html files g
 We can see that we have a directory, `express-with-steve`. This directory is under git version control (it has `.git` and `.gitignore` in it but these and also `node_modules` are not shown in the tree structure above). When `.rst` files are edited and the command ``make html`` is run html files in `public/sphinx-documentation/_build/html` are updated. As can be seen from the `app.js` code this directory is being accessed by `app.js`.
 
 The contents of the `express-with-steve` directory is pushed to www.github.com/stevespages/express-with-steve. An app called `express-with-steve` was created at `heroku` and linked to the github repo referred to above. So, when changes to the sphinx documentation are made and pushed to github they update the heroku website.
+
+From the heroku cli or web dashboard one needs to set up a link to the github page. Also the app needs a Procfile with the instruction to start the app such as `web: node app.js`
+
+Major Changes
+-------------
+
+This website was originally created as an ordinary Express app. I then moved the content into a newly created Express Application Generator app. This worked locally but when I pushed the changed app to github the heroku hosted version of the site crashed. Initially I got an H10 Heroku error which turned out to be due to the fact I had not changed the contents of the Procfile. This was `web: node app.js` which was correct for starting an ordinary Express app but not an Express ApplicationGenerator app. I changed the Procfile contents to `web: node bin/www`. Now I was getting an H14 error. This was solved by restarting the dyno using the heroku cli on my computer: `steve@Dell:~$ heroku ps:scale web=1 -a express-with-steve`. Now the app displays in the browser properly when served from Heroku.
+
+
