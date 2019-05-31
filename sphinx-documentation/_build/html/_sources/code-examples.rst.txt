@@ -42,7 +42,7 @@ mailer_
 
 .. _mailer: ./mailer
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/mailer
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/mailer.js
 
 npm install mailer
 
@@ -62,3 +62,18 @@ https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/ex
 https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/javascripts/external-javascript.js
 
 This demonstrates importing a javascript file into a pug file. Express application generator generates a public directory for serving static files. It puts three directories in there one of which is called javascripts. In this code example we put a file called my-functions.js in this javascripts directory. Application generator also creates a views directory with three files in it. These are errors.pug, layout.pug and index.pug
+
+multer
+------
+
+multer_
+
+.. _multer: ./multer
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.js
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.pug
+
+npm install multer
+
+A directory called `multer-uploads` was created in the `public` directory for uploads to be stored in.

@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  form(method='post' enctype='multipart/form-data')
+    label(for='upload') Select file to upload: 
+    input#upload.form-control(type='file' name='upload')
+    button.btn.btn-primary(type='submit') Submit
