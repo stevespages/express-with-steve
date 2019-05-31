@@ -44,9 +44,9 @@ mailer_
 
 https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/mailer.js
 
-npm install mailer
+npm modules: mailer
 
-This demonstrates use of the mailer module to send an email. A password is required for the email account that the email is sent from. It would be insecure to supply hardcode this in the programme and then store it in a public repository such as the one I have on github. So I set an environment variable, GMAIL_PASSWORD, when I start the server and access this from within node using process.env.GMAIL_PASSWORD. I am unlikely to start the Heroku (production) server with the required environment variable (although I might!) so it probably won't work. Run locally I may start the server with the environment variable and so it should work then.
+This demonstrates use of the mailer module to send an email. A password is required for the email account that the email is sent from. It would be insecure to hardcode this in the programme and then store it in a public repository such as the one I have on github. So I set an environment variable, GMAIL_PASSWORD, when I start the server and access this from within node using process.env.GMAIL_PASSWORD. I am unlikely to start the Heroku (production) server with the required environment variable (although I might!) so it probably won't send an email. Run locally I may start the server with the environment variable and so it should work then.
 
 external-javascript
 -------------------
@@ -72,8 +72,36 @@ multer_
 
 https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.js
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.pug
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/multer.pug
 
-npm install multer
+npm modules: multer
 
 A directory called `multer-uploads` was created in the `public` directory for uploads to be stored in.
+
+multer-2-files
+--------------
+
+multer-2-files_
+
+.. _multer-2-files: ./multer-2-files
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer-2-files.js
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/multer-2-files.pug
+
+npm modules: multer
+
+A directory called `multer-uploads` was created in the `public` directory for uploads to be stored in.
+
+login
+-----
+
+login_
+
+.. _login: ./login
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/login.js
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/login.pug
+
+This login system has no provision for registration or changing password or forgot password? On navigating to /login a session is initiated. If the user is not logged in they see a login form. If the user is logged in they see a logout link. So, they can log in and logout in sequence indefinitely...

@@ -61,8 +61,8 @@
 <h2>mailer<a class="headerlink" href="#mailer" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="./mailer">mailer</a></p>
 <p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/mailer.js">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/mailer.js</a></p>
-<p>npm install mailer</p>
-<p>This demonstrates use of the mailer module to send an email. A password is required for the email account that the email is sent from. It would be insecure to supply hardcode this in the programme and then store it in a public repository such as the one I have on github. So I set an environment variable, GMAIL_PASSWORD, when I start the server and access this from within node using process.env.GMAIL_PASSWORD. I am unlikely to start the Heroku (production) server with the required environment variable (although I might!) so it probably won’t work. Run locally I may start the server with the environment variable and so it should work then.</p>
+<p>npm modules: mailer</p>
+<p>This demonstrates use of the mailer module to send an email. A password is required for the email account that the email is sent from. It would be insecure to hardcode this in the programme and then store it in a public repository such as the one I have on github. So I set an environment variable, GMAIL_PASSWORD, when I start the server and access this from within node using process.env.GMAIL_PASSWORD. I am unlikely to start the Heroku (production) server with the required environment variable (although I might!) so it probably won’t send an email. Run locally I may start the server with the environment variable and so it should work then.</p>
 </div>
 <div class="section" id="external-javascript">
 <h2>external-javascript<a class="headerlink" href="#external-javascript" title="Permalink to this headline">¶</a></h2>
@@ -76,9 +76,24 @@
 <h2>multer<a class="headerlink" href="#multer" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="./multer">multer</a></p>
 <p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.js">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.js</a></p>
-<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.pug">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer.pug</a></p>
-<p>npm install multer</p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/multer.pug">https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/multer.pug</a></p>
+<p>npm modules: multer</p>
 <p>A directory called <cite>multer-uploads</cite> was created in the <cite>public</cite> directory for uploads to be stored in.</p>
+</div>
+<div class="section" id="multer-2-files">
+<h2>multer-2-files<a class="headerlink" href="#multer-2-files" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="./multer-2-files">multer-2-files</a></p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer-2-files.js">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/multer-2-files.js</a></p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/multer-2-files.pug">https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/multer-2-files.pug</a></p>
+<p>npm modules: multer</p>
+<p>A directory called <cite>multer-uploads</cite> was created in the <cite>public</cite> directory for uploads to be stored in.</p>
+</div>
+<div class="section" id="login">
+<h2>login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="./login">login</a></p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/login.js">https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/login.js</a></p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/login.pug">https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/login.pug</a></p>
+<p>This login system has no provision for registration or changing password or forgot password? On navigating to /login a session is initiated. If the user is not logged in they see a login form. If the user is logged in they see a logout link. So, they can log in and logout in sequence indefinitely…</p>
 </div>
 </div>
 
@@ -96,6 +111,8 @@
 <li><a class="reference internal" href="#mailer">mailer</a></li>
 <li><a class="reference internal" href="#external-javascript">external-javascript</a></li>
 <li><a class="reference internal" href="#multer">multer</a></li>
+<li><a class="reference internal" href="#multer-2-files">multer-2-files</a></li>
+<li><a class="reference internal" href="#login">login</a></li>
 </ul>
 </li>
 </ul>

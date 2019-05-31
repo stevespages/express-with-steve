@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  form(method='post' enctype='multipart/form-data')
+    label(for='upload_1') Select first file: 
+    input#upload.form-control(type='file' name='upload_1')
+    label(for='upload_2') Select second file: 
+    input#upload.form-control(type='file' name='upload_2')
+    button.btn.btn-primary(type='submit') Submit
