@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  script(type='text/javascript' src='/javascripts/external-javascript.js')
+  h1= title
+  p Welcome to #{title}
+  p#demo The button below should change this paragraph... 
+  button(type="button" onclick="myFunction()") Try it
