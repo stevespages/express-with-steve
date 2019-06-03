@@ -96,16 +96,35 @@ A directory called `multer-uploads` was created in the `public` directory for up
 users
 -----
 
-users_
+login-demo-page_ 
 
-.. _login: ./login
+.. _login-demo-page: ./login-demo-page
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/login-demo-page.js
 
 https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/users.js
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/users/login.pug
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/login-demo-page.pug
 
 node modules: bcrypt express-session
 
-The routes users.js have get and post routes for registration, login and forgot password (and change password?). The views for the get routes are in the views/users directory. There is also a user/user-id route which is password protected and therefore only able to be viewed if that user is logged in. This route has a logout link but there is no need for a login link.
+This section of Code Examples illustrates the implementation of a login system for a website. A typical page (it could be the home page or any other page of a web site) which is here called login-demo-page has been used to show how a login and a register link can be displayed if the page is being viewed by a non logged in user but these links are not displayed when a user is logged in. Also when a user is logged in their name and / or other personal details about them can be displayed as well as a logout link and a change password link.
 
-There is a route called logged-in-or-out in the routes directory (corresponding to a page on the website not specific to handling users and therefore not in users.js) which is a page that can be displayed whether a user is logged in or not. It displays some links including a login or a logout link depending on whether the user is logged in or out. If the user is logged in it also displays a welcome message with the name of the logged in user.
+The routes/users.js file has get and post routes for registration, login and forgot password and change password?. The views (pug files) for the get routes are in the views/users directory. There is also a user/user-id route which is password protected and therefore only able to be viewed if that user is logged in.
+
+A get request to users/register displays a form with fields for name, email and password. On submitting the forma post request with the entered data is sent to users/register where it is entered into a database along with an automatically generated id for the user. The schema of the sqlite3 database is shown here:
+
+.. code::
+
+    steve@Dell:~/Desktop/express-with-steve$ sqlite3 sqlite3.db
+    SQLite version 3.22.0 2018-01-22 18:45:57
+    Enter ".help" for usage hints.
+    sqlite> .schema
+    CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    email TEXT,
+    password TEXT,
+    name TEXT
+    );
+    sqlite>
+

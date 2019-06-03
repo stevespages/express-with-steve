@@ -1,8 +1,8 @@
-extends layout
+extends ../layout
 
 block content
   h1= title
-  form(method='POST' action='/login')
+  form(method='POST')
     label(for='email') Email:
     input#email.form-control(type='email' name='email')
     label(for='password') Password:

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+  ul
+    p 
+      a(href='/link1') Link One
+    p
+      a(href='/link2') Link Two
+    if !user
+      p
+        a(href='/users/login') Login
+      p
+        a(href='/users/register') Register
+    if user
+      p
+        a(href='/users/logout') Logout
+      P Welcome #{user}
+  p This page demonstrates procedures relating to user management such as register, login, logout, change password and forgot password. This page could be the home page or any other page on a website. If a user is not logged in the page will show a register link and a login link. If a user is logged in some personal details (in this case their name) can be displayed. Additionally, the login link and the register link will no longer be displayed while a logout link will be displayed.
+  p Code in routes/login-demo-page.js passes the session variable req.session.user to views/login-demo-page.pug which uses the value of this session variable to determine which navigation links to display and whether or not to display the name of the logged in user.
+  p If you click the register link you can register for the site and you will then be logged in. If you are registered you can click the login link and be logged in. In both cases you will then be redirected back to this page as a logged in user so now your name will be displayed and there will be a logout link instead of the register and login links.
+  p The code can be seen along with further information in the users section of the  Code Examples of this site.
