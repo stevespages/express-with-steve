@@ -93,15 +93,19 @@ npm modules: multer
 
 A directory called `multer-uploads` was created in the `public` directory for uploads to be stored in.
 
-login
+users
 -----
 
-login_
+users_
 
 .. _login: ./login
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/login.js
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/users.js
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/login.pug
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/users/login.pug
 
-This login system has no provision for registration or changing password or forgot password? On navigating to /login a session is initiated. If the user is not logged in they see a login form. If the user is logged in they see a logout link. So, they can log in and logout in sequence indefinitely...
+node modules: bcrypt express-session
+
+The routes users.js have get and post routes for registration, login and forgot password (and change password?). The views for the get routes are in the views/users directory. There is also a user/user-id route which is password protected and therefore only able to be viewed if that user is logged in. This route has a logout link but there is no need for a login link.
+
+There is a route called logged-in-or-out in the routes directory (corresponding to a page on the website not specific to handling users and therefore not in users.js) which is a page that can be displayed whether a user is logged in or not. It displays some links including a login or a logout link depending on whether the user is logged in or out. If the user is logged in it also displays a welcome message with the name of the logged in user.
