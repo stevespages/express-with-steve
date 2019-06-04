@@ -24,13 +24,22 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-	if(bcrypt.compareSync(req.body.password, '$2b$10$c995pjb75nxS9KZAKwmO4ubnMUJcSmK2.wGQqmqd3h9SNtiNGmin2') && req.body.email === 'greigsteve@gmail.com') {
-		req.session.user = 'Steve';
-		// if successful redirect to a page on the site (could be the home page)
-		res.redirect('/login-demo-page');
-	}
-	// if unsuccessful back to the login page
-	res.redirect('/users/login');
+	let sql = `SELECT * FROM users WHERE email = ?`;
+	db.get(sql, [req.body.email], function(err, row) {
+		if(!row){
+			console.log('Invalid Username');
+			res.redirect('/users/login');
+		} else {
+			bcrypt.compare(req.body.password, row.password, function(err, result) {
+				if(result) {
+					req.session.user = row.name;
+					res.redirect('/login-demo-page');
+				} else {
+					res.redirect('/users/login');
+				}
+			});
+		}
+	});
 });
 
 router.get('/logout', function(req, res, next) {
