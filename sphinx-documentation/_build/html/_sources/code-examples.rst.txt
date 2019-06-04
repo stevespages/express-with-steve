@@ -110,7 +110,7 @@ https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/us
 
 https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/users/register.pug
 
-node modules: bcrypt express-session
+node modules: bcrypt express-session sqlite3
 
 This section of Code Examples illustrates the implementation of a login system for a website. A typical page (it could be the home page or any other page of a web site) which is here called login-demo-page has been used to show how a login and a register link can be displayed if the page is being viewed by a non logged in user but these links are not displayed when a user is logged in. Also when a user is logged in their name and / or other personal details about them can be displayed as well as a logout link and a change password link.
 

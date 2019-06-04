@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const bcrypt = require('bcrypt');
+const sqlite3 = require('sqlite3');
+
+const db = new sqlite3.Database('sqlite3.db');
 
 router.get('/register', function(req, res, next) {
 	res.render('users/register', { title: 'Register' });
@@ -8,7 +11,12 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
 	// store id (auto generated), name, email, encrypted password in users.db
-	// code...
+	bcrypt.hash(req.body.password, 10, function(err, hash) {
+		let sql = `INSERT INTO users(email, password, name) VALUES (?, ?, ?)`;
+		db.run(sql, [req.body.email, hash, req.body.name], () => {});
+		req.session.user = req.body.name;
+		res.redirect('/login-demo-page');
+	});
 });
 
 router.get('/login', function(req, res, next) {
