@@ -1,8 +1,11 @@
 extends layout
 
 block content
+  // jquery-3.4.1.min.js was downloaded from jquery.com into /public/javascripts
   script(src='/javascripts/jquery-3.4.1.min.js')
+  // javascript.js has myFunction() defined in it
   script(type='text/javascript' src='/javascripts/javascript.js')
+  // jquery.js has the jquery code that displays text after the document loads
   script(src='/javascripts/jquery.js')
   h1= title
   p#demo The button below should change this para
