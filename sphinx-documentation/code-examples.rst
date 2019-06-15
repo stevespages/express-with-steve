@@ -48,20 +48,22 @@ npm modules: mailer
 
 This demonstrates use of the mailer module to send an email. A password is required for the email account that the email is sent from. It would be insecure to hardcode this in the programme and then store it in a public repository such as the one I have on github. So I set an environment variable, GMAIL_PASSWORD, when I start the server and access this from within node using process.env.GMAIL_PASSWORD. I am unlikely to start the Heroku (production) server with the required environment variable (although I might!) so it probably won't send an email. Run locally I may start the server with the environment variable and so it should work then.
 
-external-javascript
--------------------
+javascript-and-jquery
+---------------------
 
-external-javascript_
+javascript-and-jquery_
 
-.. _external-javascript: ./external-javascript
+.. _javascript-and-jquery: ./javascript-and-jquery
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/external-javascript.js
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/javascript-and-jquery.js
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/external-javascript.pug
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/javascript-and-jquery.pug
 
-https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/javascripts/external-javascript.js
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/javascripts/javascript.js
 
-This demonstrates importing a javascript file into a pug file. Express application generator generates a public directory for serving static files. It puts three directories in there one of which is called javascripts. In this code example we put a file called my-functions.js in this javascripts directory. Application generator also creates a views directory with three files in it. These are errors.pug, layout.pug and index.pug
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/javascripts/jquery.js
+
+This demonstrates importing a javascript and a jquery file into a pug file. Express application generator generates a public directory for serving static files. It puts three directories in there one of which is called javascripts. In this code example we put a file called javascripts.js in this javascripts directory. The javascript.js file has a function called myFunction() in it which changes the text in a paragraph when a button is clicked. We also have a file called jquery.js in the /public/javascripts directory. This is also linked to from the pug script. This has some jquery code in it which causes some text (The page just loaded) to be displayed once the page has loaded.
 
 multer
 ------

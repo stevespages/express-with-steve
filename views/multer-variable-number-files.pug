@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  script(type='text/javascript' src='/javascripts/multer-variable-number-files.js')
+  h1= title
+  p(id='demo') hmmm
+  form(method='post' enctype='multipart/form-data')
+    <button type='button' onclick="displayPhotoUploadFieldset()">Upload Photo?</button>
+    label(for='upload_1') Select first file: 
+    input#upload.form-control(type='file' name='upload_1')
+    label(for='upload_2') Select second file: 
+    input#upload.form-control(type='file' name='upload_2')
+    button.btn.btn-primary(type='submit') Submit
