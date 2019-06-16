@@ -63,7 +63,52 @@ https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/j
 
 https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/javascripts/jquery.js
 
-This demonstrates importing a javascript and a jquery file into a pug file. Express application generator generates a public directory for serving static files. It puts three directories in there one of which is called javascripts. In this code example we put a file called javascripts.js in this javascripts directory. The javascript.js file has a function called myFunction() in it which changes the text in a paragraph when a button is clicked. We also have a file called jquery.js in the /public/javascripts directory. This is also linked to from the pug script. This has some jquery code in it which causes some text (The page just loaded) to be displayed once the page has loaded.
+This demonstrates importing a javascript and a jquery file into a pug file. Express application generator generates a public directory for serving static files. It puts three directories in there one of which is called javascripts. In this code example we put a file called javascript.js in this javascripts directory. The javascript.js file has a function called myFunction() in it which changes the text in a paragraph when a button is clicked. We also have a file called jquery.js in the /public/javascripts directory. This is also linked to from the pug script. This has some jquery code in it which causes some text (The page just loaded) to be displayed once the page has loaded.
+
+We could have installed jquery with npm. The jquery-3.4.1.js file would then be in the node_modules directory and we would have to make sure that the .pug files which used it linked correctly to it instead of express.static to link to public/javascripts/jquery-3.4.1.js.
+
+Another option is to link from the .pug file to jquery on a CDN. It may download faster to the browser from the CDN than from your own server. Also jquery might be cached on the browser already if a site has been visited which links to jquery hosted on the same CDN.
+
+In an HTML file we could place the following code (immediately before the closing body tag is a good place):
+
+.. code::
+
+   <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity=
+   "blahblahblah" crossorigin="anonymous"></script>
+   <script>window.jQuery || document.write('<script src=
+   "jquery-3.0.0.min.js"><\/script');</script>
+
+If we were using PUG we would have to write the HTML above differenctly and / or link to an external javascript file with the code in. Now jquery would use the CDN but if offline it would use the version hosted with the website.
+
+In our public/javascript/jquery.js file we have the following code:
+
+.. code::
+
+   $("document").ready(function() {
+     $("#content").append("<p>The page just loaded</p>");
+   })
+
+A newer way to do the same thing is:
+
+.. code::
+
+   $(function() {
+     "use strict"
+     // code
+   })
+
+jquery-counter
+--------------
+
+jquery-counter_
+
+.. _jquery-counter: ./jquery-counter
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/routes/jquery-counter.js
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/views/jquery-counter.pug
+
+https://raw.githubusercontent.com/stevespages/express-with-steve/master/public/javascripts/jquery-counter.js
 
 multer
 ------

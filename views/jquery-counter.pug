@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  script(src='/javascripts/jquery-3.4.1.min.js')
+  script(src='/javascripts/jquery-counter.js')
+  h1= title
+  button(type="button" id="counter") Add 1
+  input(type="hidden" id="hidden-count" value=0)
+  p#result
+
